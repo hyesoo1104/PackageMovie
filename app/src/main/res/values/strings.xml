@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PackageMovie</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="createGroup">Create Group</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
+    <string name="title_activity_scaleable_layout1">ScaleableLayout1</string>
+
+</resources>

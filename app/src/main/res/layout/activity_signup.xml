@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/bg_signup2">
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/main_sl"
+        sl:scale_base_width="1.08"
+        sl:scale_base_height="1.92">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/signup_title"
+            sl:scale_top="0.0"
+            sl:scale_left="0.0"
+            sl:scale_width="1.08"
+            sl:scale_height="0.3"
+            />
+
+
+
+
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_groupname"
+            sl:scale_top="0.3"
+            sl:scale_left="0.05"
+            sl:scale_width="1.08"
+            sl:scale_height="0.15"
+            />
+
+        <EditText
+            android:id="@+id/et_groupid"
+            android:gravity="center_vertical|left"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:hint="Group Name"
+            sl:scale_textsize="0.05"
+            sl:scale_top="0.45"
+            sl:scale_left="0.05"
+            sl:scale_width="0.98"
+            sl:scale_height="0.1"
+
+            />
+
+
+
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_password"
+            sl:scale_top="0.58"
+            sl:scale_left="0.05"
+            sl:scale_width="1.08"
+            sl:scale_height="0.15"
+            />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:gravity="center_vertical|left"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            sl:scale_textsize="0.05"
+            sl:scale_top="0.73"
+            sl:scale_left="0.05"
+            sl:scale_width="0.98"
+            sl:scale_height="0.1"
+            />
+
+
+
+
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_repassword"
+            sl:scale_top="0.86"
+            sl:scale_left="0.05"
+            sl:scale_width="0.98"
+            sl:scale_height="0.15" />
+
+        <EditText
+            android:id="@+id/et_repassword"
+            android:gravity="center_vertical|left"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:inputType="textPassword"
+            android:hint="Confirm Password"
+            android:paddingLeft="10dp"
+            sl:scale_textsize="0.05"
+            sl:scale_top="1.01"
+            sl:scale_left="0.05"
+            sl:scale_width="0.98"
+            sl:scale_height="0.1"
+            />
+
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_signup_create_selector"
+            sl:scale_top="1.65"
+            sl:scale_left="0.05"
+            sl:scale_width="0.98"
+            sl:scale_height="0.15"
+            android:id="@+id/btn_signup_create" />
+
+
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+</LinearLayout>

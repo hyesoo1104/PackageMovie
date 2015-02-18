@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/bg_login2"
+    android:gravity="center"
+    tools:context="com.example.ohhye.packagemovie.LoginActivity">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:src="@drawable/app_title"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/edit_ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/title">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:scrollbarStyle="insideInset"
+            android:inputType="textEmailAddress"
+            android:hint="Group Name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/edit_ID">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:paddingLeft="10dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox_autologin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자동 로그인"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentLeft="true"
+        android:checked="false"
+        android:layout_below="@id/edit_pwd"
+        android:textColor="#cbffffff" />
+
+    <RelativeLayout
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/checkbox_autologin">
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:textAllCaps="false"
+            android:text="Login"
+            android:textSize="15dp"
+            android:textColor="#ffffff"
+            android:background="#83eccd77" />
+
+        <Button
+            android:id="@+id/btn_createGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginRight="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:text="Create Group"
+            android:textAllCaps="false"
+            android:textSize="15dp"
+            android:layout_toLeftOf="@id/btn_login"
+            android:textColor="#ffffff"
+            android:background="#91cc8621"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
