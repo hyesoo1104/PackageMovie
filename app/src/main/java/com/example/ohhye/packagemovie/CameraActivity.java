@@ -34,7 +34,6 @@ public class CameraActivity  extends ActionBarActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_camera);
 
-
         // SurfaceView 클래스 객체를 이용해서 카메라에 받은 녹화하고 재생하는데 쓰일것이다.
         surfaceView = (SurfaceView)findViewById(R.id.cameraView);
         // SurfaceView 클래스를 컨트롤하기위한 SurfaceHolder 생성
