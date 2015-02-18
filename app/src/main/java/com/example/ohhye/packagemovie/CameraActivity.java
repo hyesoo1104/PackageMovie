@@ -43,11 +43,6 @@ public class CameraActivity  extends ActionBarActivity{
         // 버퍼없음
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-//        Button recordBtn = (Button) findViewById(R.id.recordBtn);
-//        Button recordStopBtn = (Button) findViewById(R.id.recordStopBtn);
-//        Button playBtn = (Button) findViewById(R.id.playBtn);
-//        Button playStopBtn = (Button) findViewById(R.id.playStopBtn);
-
     }
 
 
