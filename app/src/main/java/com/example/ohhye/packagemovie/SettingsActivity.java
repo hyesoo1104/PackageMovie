@@ -37,19 +37,19 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.wifiUploadOnOff:
-                //On = fffb6d6b       Off = 4CD0C2
+                //On = FFFFD15B       Off = ff959595
                 //OFF일때
                 if(wifiUploadOnOff==0) {
                     wifiUploadOnOff=1;
                     btn_wifiUploadOnOff.setText("ON");
-                    String onColor = "#fffb6d6b";
+                    String onColor = "#FFFFD15B";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(onColor));
                 }
                 //ON일때
                 else if(wifiUploadOnOff==1){
                     wifiUploadOnOff=0;
                     btn_wifiUploadOnOff.setText("OFF");
-                    String offColor = "#4CD0C2";
+                    String offColor = "#ff959595";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(offColor));
                 }
                 break;

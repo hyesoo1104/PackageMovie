@@ -81,7 +81,7 @@
             android:paddingLeft="15dp"
             android:gravity="center"
             android:text = "OFF"
-            android:textColor = "#4CD0C2"
+            android:textColor = "#ff959595"
             sl:scale_textsize="0.09"
             sl:scale_top="1.346"
             sl:scale_left="0.9"
