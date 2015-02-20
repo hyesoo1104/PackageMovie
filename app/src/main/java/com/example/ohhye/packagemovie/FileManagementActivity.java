@@ -22,6 +22,8 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         btn_file_add.setOnClickListener(this);
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -29,5 +31,12 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
             break;
 
         }
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold,R.anim.finish_fade);
     }
 }

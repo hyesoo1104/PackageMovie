@@ -55,4 +55,10 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 break;
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold,R.anim.finish_fade);
+    }
 }

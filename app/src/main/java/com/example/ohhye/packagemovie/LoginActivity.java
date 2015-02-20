@@ -35,6 +35,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i); // 로딩이 끝난후 이동할 Activity
                 overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
+                finish();
                 break;
             case R.id.btn_createGroup:
                 startActivity(new Intent(getApplication(), SignUpActivity.class));

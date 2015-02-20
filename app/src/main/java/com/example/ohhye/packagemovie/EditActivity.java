@@ -14,4 +14,9 @@ public class EditActivity  extends ActionBarActivity {
         setContentView(R.layout.activity_main_edit);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold,R.anim.finish_fade);
+    }
 }
