@@ -1,12 +1,117 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.ohhye.packagemovie.SignUpActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    tools:context=".EditActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center">
 
-    <TextView android:text="Edit Activity" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff7f7f7"
+        sl:scale_top="0.0"
+        sl:scale_left="0.0"
+        sl:scale_base_width="2.2"
+        sl:scale_base_height="1.23">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/icon_edit"
+            sl:scale_top="0.0"
+            sl:scale_left="0.0"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#559AEF"
+            android:gravity="center_vertical"
+            android:text = "편집"
+            android:textColor = "#ffffff"
+            sl:scale_textsize="0.075"
+            sl:scale_top="0.0"
+            sl:scale_left="0.2"
+            sl:scale_width="0.8"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_add"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_add"
+            sl:scale_top="0.0"
+            sl:scale_left="1.0"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_list"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_list"
+            sl:scale_top="0.0"
+            sl:scale_left="1.2"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_text"
+            sl:scale_top="0.0"
+            sl:scale_left="1.4"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_bgm"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_bgm"
+            sl:scale_top="0.0"
+            sl:scale_left="1.6"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_trans"
+            sl:scale_top="0.0"
+            sl:scale_left="1.8"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+        <ImageView
+            android:id="@+id/btn_edit_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/btn_edit_complete"
+            sl:scale_top="0.0"
+            sl:scale_left="2.0"
+            sl:scale_width="0.2"
+            sl:scale_height="0.2"
+            />
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+
+
+</LinearLayout>
