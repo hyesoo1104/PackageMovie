@@ -1,12 +1,155 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.ohhye.packagemovie.SignUpActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    tools:context=".SignUpActivity"
+    android:gravity="center"
+    android:layout_gravity="center">
 
-    <TextView android:text="Settings Activity" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#fff7f7f7"
+        sl:scale_top="0.0"
+        sl:scale_left="0.0"
+        sl:scale_base_width="1.23"
+        sl:scale_base_height="2.1">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/icon_settings"
+            sl:scale_top="0.0"
+            sl:scale_left="0.0"
+            sl:scale_width="0.15"
+            sl:scale_height="0.15"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/settings_title"
+            android:gravity="center_vertical"
+            android:text = "설정"
+            android:textColor = "#ffffff"
+            sl:scale_textsize="0.065"
+            sl:scale_top="0.0"
+            sl:scale_left="0.15"
+            sl:scale_width="1.08"
+            sl:scale_height="0.15"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/settings_bg"
+            android:gravity="center_horizontal|bottom"
+            android:text = "GroupID\n"
+            android:textColor = "#fff5f5f5"
+            sl:scale_textsize="0.09"
+            sl:scale_top="0.15"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="1.196"
+            />
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff7f7f7"
+            android:paddingLeft="15dp"
+            android:gravity="left|center_vertical"
+            android:text = "Wifi 연결 시 동영상 업로드"
+            android:textColor = "#ff3f3f3f"
+            sl:scale_textsize="0.065"
+            sl:scale_top="1.346"
+            sl:scale_left="0.0"
+            sl:scale_width="0.9"
+            sl:scale_height="0.25"
+            />
+
+        <TextView
+            android:id="@+id/wifiUploadOnOff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff7f7f7"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:text = "OFF"
+            android:textColor = "#4CD0C2"
+            sl:scale_textsize="0.09"
+            sl:scale_top="1.346"
+            sl:scale_left="0.9"
+            sl:scale_width="0.33"
+            sl:scale_height="0.25"
+            />
+
+
+
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff7f7f7"
+            android:paddingLeft="15dp"
+            android:gravity="left|center_vertical"
+            android:text = "비밀번호 변경"
+            android:textColor = "#ff3f3f3f"
+            sl:scale_textsize="0.065"
+            sl:scale_top="1.598"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="0.25"
+            />
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff7f7f7"
+            android:paddingLeft="15dp"
+            android:gravity="left|center_vertical"
+            android:text = "로그아웃"
+            android:textColor = "#ff3f3f3f"
+            sl:scale_textsize="0.065"
+            sl:scale_top="1.850"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="0.25"
+            />
+
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffd1d1d1"
+            sl:scale_top="1.596"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="0.002"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffd1d1d1"
+            sl:scale_top="1.848"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="0.003"/>
+
+
+
+
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+
+
+</LinearLayout>
