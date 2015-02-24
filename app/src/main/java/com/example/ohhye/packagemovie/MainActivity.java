@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_camera:
-                startActivity(new Intent(getApplication(), CameraActivity.class));
+                startActivity(new Intent(getApplication(), CameraActivity2.class));
                 overridePendingTransition(R.anim.fade,R.anim.hold);
                 break;
             case R.id.btn_main_edit:

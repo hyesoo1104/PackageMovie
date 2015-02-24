@@ -9,5 +9,6 @@
     <string name="createGroup">Create Group</string>
     <string name="title_activity_create_group">CreateGroupActivity</string>
     <string name="title_activity_scaleable_layout1">ScaleableLayout1</string>
+    <string name="title_activity_camera_activity2">CameraActivity2</string>
 
 </resources>

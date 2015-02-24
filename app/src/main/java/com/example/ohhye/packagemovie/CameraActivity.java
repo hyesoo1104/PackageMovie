@@ -6,19 +6,11 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -31,8 +23,8 @@ public class CameraActivity  extends ActionBarActivity implements View.OnClickLi
     // 카메라 상태를 저장하고 있는 객체
     private Camera camera = null;
 
-    SurfaceView surfaceView;
-    SurfaceHolder holder;
+    private SurfaceView surfaceView;
+    private SurfaceHolder holder;
 
 
     @Override
