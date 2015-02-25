@@ -7,5 +7,5 @@
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/PhoneAudioList"/>
+        android:id="@+id/edit_add_bgm_list"/>
 </LinearLayout>
