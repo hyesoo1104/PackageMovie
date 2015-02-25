@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -76,15 +77,18 @@ public class EditActivity  extends Activity implements View.OnClickListener {
             case R.id.btn_edit_add:
                 //리스트
                 if(FRAGMENT_FLAG==1){
+                    Log.d("MyTag","Add Scene Click");
                     addScene();
                 }
                 //BGM
                 else if(FRAGMENT_FLAG==2){
+                    Log.d("MyTag","Add BGM Click");
                     addBGM();
                 }
                 break;
 
             case R.id.btn_edit_list:
+                FRAGMENT_FLAG = 1;
                 Log.d("MyTag","list btn click");
                 fr = new Edit_ListFragment();
                 setFragment(fr);
@@ -101,6 +105,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btn_edit_bgm:
+                FRAGMENT_FLAG = 2;
                 Log.d("MyTag","bgm btn click");
                 fr = new Edit_BgmFragment();
                 setFragment(fr);
@@ -156,6 +161,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
     private void addBGM(){
         //폰에 있는 MP3파일 중 고르기
-
+        Intent i =  new Intent(this,Edit_AddBGM.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i); // 로딩이 끝난후 이동할 Activity
     }
 }
