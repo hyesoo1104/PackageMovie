@@ -17,7 +17,7 @@
         sl:scale_top="0.0"
         sl:scale_left="0.0"
         sl:scale_base_width="1.23"
-        sl:scale_base_height="2.1">
+        sl:scale_base_height="0.35">
 
 
         <ImageView
@@ -55,6 +55,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/btn_edit_add"
             android:background="@drawable/btn_edit_add"
             sl:scale_top="0.15"
             sl:scale_left="0.015"
@@ -62,6 +63,7 @@
             sl:scale_height="0.2"/>
 
         <Button
+            android:id="@+id/btn_edit_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_edit_list"
@@ -71,6 +73,7 @@
             sl:scale_height="0.2"/>
 
         <Button
+            android:id="@+id/btn_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_edit_text"
@@ -81,6 +84,7 @@
 
 
         <Button
+            android:id="@+id/btn_edit_trans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_edit_trans"
@@ -89,8 +93,8 @@
             sl:scale_width="0.2"
             sl:scale_height="0.2"/>
 
-
         <Button
+            android:id="@+id/btn_edit_bgm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_edit_bgm"
@@ -101,6 +105,7 @@
 
 
         <Button
+            android:id="@+id/btn_edit_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_edit_complete"
@@ -110,9 +115,16 @@
             sl:scale_height="0.2"/>
 
 
+
     </com.ssomai.android.scalablelayout.ScalableLayout>
 
-
+    <fragment
+        android:id="@+id/edit_fragment"
+        android:name="com.example.ohhye.packagemovie.Edit_ListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/activity_main_edit"
+     />
 
 
 

@@ -22,5 +22,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.ssomai:android.scalablelayout:2.0.0'
-    compile files('libs/httpclient-4.4.jar')
+
 }
