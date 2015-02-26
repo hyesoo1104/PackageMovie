@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="80dip"
+            android:layout_height="70dip"
+            android:orientation="horizontal"
+            android:gravity="left">
+
+            <ImageView
+                android:id="@+id/bgm_list_item_checked_area"
+                android:layout_width="10dip"
+                android:layout_height="match_parent"
+                android:background="#ffafafaf" />
+
+            <ImageView
+                android:id="@+id/bgm_list_item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/bgm_temp_image"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/bgm_list_item_bgm_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="BGM Name" android:textSize="20sp" android:textColor="#ff787878"/>
+
+            <TextView
+                android:id="@+id/bgm_list_item_bgm_genre"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="BGM Genre"
+                android:textColor="#ffb1b1b1"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

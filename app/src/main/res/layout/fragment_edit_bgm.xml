@@ -4,8 +4,10 @@
     android:background="#FFFFFF"
     tools:context="com.example.ohhye.packagemovie.Edit_BgmFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="fragment_edit_bgm" />
+    <!-- TODO: BGM리스트 만들기-->
+    <ListView
+        android:id="@+id/bgmListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

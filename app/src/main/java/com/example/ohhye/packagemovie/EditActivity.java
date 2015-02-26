@@ -88,25 +88,29 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btn_edit_list:
-                FRAGMENT_FLAG = 1;
                 Log.d("MyTag","list btn click");
+                FRAGMENT_FLAG = 1;
+                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text);
                 fr = new Edit_ListFragment();
                 setFragment(fr);
                 break;
 
             case R.id.btn_edit_text:
-                addText();
+                if(FRAGMENT_FLAG==1) addText();
                 break;
 
             case R.id.btn_edit_trans:
+                FRAGMENT_FLAG = 0;
+                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text_unable);
                 Log.d("MyTag","trans btn click");
                 fr = new Edit_TransFrgment();
                 setFragment(fr);
                 break;
 
             case R.id.btn_edit_bgm:
-                FRAGMENT_FLAG = 2;
                 Log.d("MyTag","bgm btn click");
+                FRAGMENT_FLAG = 2;
+                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text_unable);
                 fr = new Edit_BgmFragment();
                 setFragment(fr);
                 break;
