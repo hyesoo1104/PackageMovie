@@ -144,9 +144,6 @@ class BGMAdapter extends BaseAdapter {
         return bgmDataArr.get(position);
     }
 
-    public int getPath(int position) {
-        return bgmDataArr.get(position).path;
-    }
 
     @Override
     public long getItemId(int position) {
