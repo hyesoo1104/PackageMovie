@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context="com.example.ohhye.packagemovie.Edit_BgmFragment">
+    tools:context="com.example.ohhye.packagemovie.fragment.Edit_BgmFragment">
 
     <!-- TODO: BGM리스트 만들기-->
     <ListView

@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util;
 
 import android.app.Activity;
 import android.widget.Toast;

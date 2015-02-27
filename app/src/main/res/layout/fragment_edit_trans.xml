@@ -2,10 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context="com.example.ohhye.packagemovie.Edit_TransFrgment">
+    tools:context="com.example.ohhye.packagemovie.fragment.Edit_TransFrgment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="fragment_edit_trans" />
+    <!-- TODO: 전환효과 리스트 만들기-->
+    <ListView
+        android:id="@+id/transListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -11,6 +11,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.example.ohhye.packagemovie.util.manager.CameraManager;
+import com.example.ohhye.packagemovie.util.manager.FileManager;
+import com.example.ohhye.packagemovie.util.manager.MediaManager;
+import com.example.ohhye.packagemovie.R;
 
 import java.io.IOException;
 

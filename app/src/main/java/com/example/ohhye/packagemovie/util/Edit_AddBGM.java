@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -12,6 +12,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import com.example.ohhye.packagemovie.R;
 
 /**
  * Created by ohhye on 2015-02-26.

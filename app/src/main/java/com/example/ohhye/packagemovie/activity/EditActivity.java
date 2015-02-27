@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.ohhye.packagemovie.util.Edit_AddBGM;
+import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
+import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
+import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
+import com.example.ohhye.packagemovie.R;
 
 /**
  * Created by ohhye on 2015-01-26.

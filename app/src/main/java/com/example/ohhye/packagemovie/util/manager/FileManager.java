@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util.manager;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;

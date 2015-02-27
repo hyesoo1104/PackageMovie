@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util.manager;
 
 import android.hardware.Camera;
 import android.media.MediaRecorder;

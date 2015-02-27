@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;

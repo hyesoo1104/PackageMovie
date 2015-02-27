@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 
 import android.content.Intent;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.BackPressCloseHandler;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 

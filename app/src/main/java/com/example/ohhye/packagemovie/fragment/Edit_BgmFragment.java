@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,6 +16,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.ohhye.packagemovie.R;
 
 import java.util.ArrayList;
 
@@ -67,7 +69,7 @@ public class Edit_BgmFragment extends Fragment {
         dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.bgm_temp_image), "Mr Pink",  "genre8", R.raw.mr_pink) );
 
-        mAdapter = new BGMAdapter(mContext, R.layout.edit_bgm_list_item, dataArr);
+        mAdapter = new BGMAdapter(mContext, R.layout.item_edit_bgm_list, dataArr);
         bgmList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         bgmList.setAdapter(mAdapter);
 

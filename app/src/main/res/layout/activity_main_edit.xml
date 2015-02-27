@@ -120,7 +120,7 @@
 
     <fragment
         android:id="@+id/edit_fragment"
-        android:name="com.example.ohhye.packagemovie.Edit_ListFragment"
+        android:name="com.example.ohhye.packagemovie.fragment.Edit_ListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/activity_main_edit"

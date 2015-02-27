@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@drawable/bg_login2"
     android:gravity="center"
-    tools:context="com.example.ohhye.packagemovie.LoginActivity">
+    tools:context="com.example.ohhye.packagemovie.activity.LoginActivity">
 
 
     <ImageView

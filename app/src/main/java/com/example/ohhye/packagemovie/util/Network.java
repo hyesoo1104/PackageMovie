@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.util;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.ohhye.packagemovie.R;
 import com.google.gson.Gson;
 
 import java.util.HashMap;

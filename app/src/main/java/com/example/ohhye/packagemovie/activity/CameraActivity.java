@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
@@ -11,6 +11,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.example.ohhye.packagemovie.R;
 
 /**
  * Created by ohhye on 2015-01-26.

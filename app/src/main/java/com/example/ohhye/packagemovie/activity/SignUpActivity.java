@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.ohhye.packagemovie.util.Network;
+import com.example.ohhye.packagemovie.R;
 
 
 public class SignUpActivity extends ActionBarActivity implements View.OnClickListener {

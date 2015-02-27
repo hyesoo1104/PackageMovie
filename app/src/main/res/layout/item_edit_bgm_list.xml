@@ -20,7 +20,7 @@
                 android:id="@+id/bgm_list_item_checked_area"
                 android:layout_width="10dip"
                 android:layout_height="match_parent"
-                android:background="#ffafafaf" />
+                android:background="#ffcbcbcb" />
 
             <ImageView
                 android:id="@+id/bgm_list_item_image"

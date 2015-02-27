@@ -1,9 +1,11 @@
-package com.example.ohhye.packagemovie;
+package com.example.ohhye.packagemovie.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.example.ohhye.packagemovie.R;
 
 /**
  * Created by ohhye on 2015-01-26.
