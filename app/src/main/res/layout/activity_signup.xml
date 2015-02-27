@@ -38,7 +38,7 @@
             />
 
         <EditText
-            android:id="@+id/et_groupid"
+            android:id="@+id/signup_groupid"
             android:gravity="center_vertical|left"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             />
 
         <EditText
-            android:id="@+id/et_password"
+            android:id="@+id/signup_password"
             android:gravity="center_vertical|left"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
             sl:scale_height="0.15" />
 
         <EditText
-            android:id="@+id/et_repassword"
+            android:id="@+id/signup_repassword"
             android:gravity="center_vertical|left"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -11,5 +11,6 @@
     <string name="title_activity_scaleable_layout1">ScaleableLayout1</string>
     <string name="title_activity_camera_activity2">CameraActivity2</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="server_ip">http://210.118.74.131:8080/PackageMovie/</string>
 
 </resources>
