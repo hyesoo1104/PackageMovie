@@ -7,23 +7,28 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.ohhye.packagemovie.util.Edit_AddBGM;
+import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
-import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.Edit_AddBGM;
 
 /**
  * Created by ohhye on 2015-01-26.
  */
 public class EditActivity  extends Activity implements View.OnClickListener {
+
+    private final int SELECT_MOVIE = 2;
 
     //Button
     Button btn_edit_add;
@@ -74,6 +79,15 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     }
 
     //선택된 것들을 하나의 객체로 담아두기
+
+
+    private void setFragment(Fragment fr){
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.edit_fragment, fr);
+        fragmentTransaction.commit();
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -128,18 +142,9 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
     }
 
-    private void setFragment(Fragment fr){
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.edit_fragment, fr);
-        fragmentTransaction.commit();
-    }
 
-    private void addScene(){
-        //갤러리에서 선택해서 가져오기
 
-    }
-
+    //--------------------------------------------자막추가----------------------------------------------------------------------
     private void addText(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -169,10 +174,73 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         alert.show();
     }
 
+
+
+
+
+    //--------------------------------------------음악추가----------------------------------------------------------------------
     private void addBGM(){
         //폰에 있는 MP3파일 중 고르기
         Intent i =  new Intent(this,Edit_AddBGM.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i); // 로딩이 끝난후 이동할 Activity
     }
+
+
+
+
+
+    //--------------------------------------------영상추가----------------------------------------------------------------------
+    private void addScene(){
+        //갤러리에서 선택해서 가져오기
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("video/*");
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try
+        {
+            startActivityForResult(i, SELECT_MOVIE);
+        } catch (android.content.ActivityNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        super.onActivityResult(requestCode,resultCode,intent);
+
+        if(resultCode == RESULT_OK)
+        {
+            if(requestCode == SELECT_MOVIE)
+            {
+                Uri uri = intent.getData();
+                String path = getPath(uri);
+                String name = getName(uri);
+                Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\nuri : " + uri.toString() );
+            }
+
+        }
+    }
+
+    // 실제 경로 찾기
+    private String getPath(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    // 파일명 찾기
+    private String getName(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
 }

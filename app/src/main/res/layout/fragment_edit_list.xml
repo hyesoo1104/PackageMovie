@@ -6,7 +6,7 @@
 
     <!-- TODO: 발리로 서버에 있는거 가져와서 리스트 구현 -->
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+    <ListView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="fragment_edit_list" />
 
 </FrameLayout>
