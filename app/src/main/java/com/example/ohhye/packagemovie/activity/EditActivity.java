@@ -21,7 +21,7 @@ import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
-import com.example.ohhye.packagemovie.object.Snapmovie;
+import com.example.ohhye.packagemovie.singtone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Edit_AddBGM;
 
 /**
@@ -43,11 +43,11 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : BGM
 
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         //TODO :팝업창띄워서 메인으로 돌아가면 편집하던 내용을 다시 복구할 수 없다고 창띄워주기.
     }
-
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

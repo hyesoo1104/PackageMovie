@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie.object;
+package com.example.ohhye.packagemovie.singtone_object;
 
 import java.util.HashMap;
 
