@@ -43,6 +43,10 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : BGM
 
 
+    @Override
+    public void onBackPressed() {
+        //TODO :팝업창띄워서 메인으로 돌아가면 편집하던 내용을 다시 복구할 수 없다고 창띄워주기.
+    }
 
 
     @Override

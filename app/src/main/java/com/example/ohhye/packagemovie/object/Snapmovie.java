@@ -12,8 +12,8 @@ public class Snapmovie {
 
     //자막 리스트
     private final static HashMap<Integer,String> subtitle= new HashMap<Integer,String>();
-    private static int trans = 0;
-    private static int bgm = 0;
+    private static int trans_num = 0;
+    private static int bgm_num = 0;
 
     private final static int TRANS_EFFECT_BLACK = 1;
     private final static int TRANS_EFFECT_WHITE = 2;
@@ -23,8 +23,8 @@ public class Snapmovie {
     private final static String bgm_path ="";
 
     public Snapmovie(int _trans,int _bgm){
-        trans = _trans;
-        bgm = _bgm;
+        trans_num = _trans;
+        bgm_num = _bgm;
     }
 
 
@@ -36,15 +36,23 @@ public class Snapmovie {
     }
 
     public void resetSnapmovie(){
-        trans = 0;
-        bgm = 0;
+        trans_num = 0;
+        bgm_num = 0;
     }
 
     public int getBGMType(){
-        return bgm;
+        return bgm_num;
     }
 
     public void setBGMType(int type){
-        bgm = type;
+        bgm_num = type;
+    }
+
+    public int getTransEffectType(){
+        return trans_num;
+    }
+
+    public void setTransEffectType(int type){
+        trans_num = type;
     }
 }

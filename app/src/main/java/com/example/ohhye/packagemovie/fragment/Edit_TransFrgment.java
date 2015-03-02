@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.object.Snapmovie;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,8 @@ public class Edit_TransFrgment extends Fragment {
 
         //리스트 아이템 추가
         dataArr.add(new TransData(BitmapFactory.decodeResource(getResources(),
+                R.drawable.icon_no_trans_effect), "No Effect",  "영상 간 전환 효과 없음") );
+        dataArr.add(new TransData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.icon_diptoblack), "Dip to Black",  "점점 어두워지는 전환 효과") );
         dataArr.add(new TransData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.icon_diptowhite), "Dip to White",  "점점 밝아지는 전환 효과") );
@@ -67,6 +70,8 @@ public class Edit_TransFrgment extends Fragment {
                 TransData item = mAdapter.transDataArr.get(position);
                 view.findViewById(R.id.trans_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
                 mAdapter.notifyDataSetChanged();
+
+                Snapmovie.getSnapmovie().setTransEffectType(position);
             }
         });
 
@@ -133,6 +138,15 @@ public class Edit_TransFrgment extends Fragment {
             }
 
             ImageView checkedArea = (ImageView)convertView.findViewById(R.id.trans_list_item_checked_area);
+            if(position==Snapmovie.getSnapmovie().getTransEffectType())
+            {
+                checkedArea.setBackgroundColor(Color.rgb(255, 198, 0));
+            }
+            else
+            {
+                checkedArea.setBackgroundColor(Color.rgb(203, 203, 203));
+            }
+
 
             ImageView transImage = (ImageView)convertView.findViewById(R.id.trans_list_item_image);
             transImage.setImageBitmap(transDataArr.get(position).transImg);
