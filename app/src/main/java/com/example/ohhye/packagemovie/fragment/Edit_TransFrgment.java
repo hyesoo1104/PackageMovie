@@ -54,6 +54,7 @@ public class Edit_TransFrgment extends Fragment {
         transList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         transList.setAdapter(mAdapter);
 
+
         transList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

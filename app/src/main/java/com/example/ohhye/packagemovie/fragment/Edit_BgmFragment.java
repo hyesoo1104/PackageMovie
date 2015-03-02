@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.object.Snapmovie;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class Edit_BgmFragment extends Fragment {
     ArrayList<BGMData> dataArr = new ArrayList<BGMData>();
     MediaPlayer mp;
     View rootView;
+    View temp;
 
     @Override
     public void onAttach(Activity activity) {
@@ -77,6 +79,11 @@ public class Edit_BgmFragment extends Fragment {
 
         bgmList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         bgmList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
+        //처음 오리지날 BGM으로 셋팅
+
+
 
 
         bgmList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,7 +93,6 @@ public class Edit_BgmFragment extends Fragment {
                 for(int i=0; i<size; i++)
                 {
                     parent.getChildAt(i).findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(203, 203, 203));
-
                 }
                 if(mp!=null){
                     mp.stop();
@@ -94,6 +100,9 @@ public class Edit_BgmFragment extends Fragment {
                 BGMData item = mAdapter.bgmDataArr.get(position);
                 int path = item.path;
                 view.findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
+
+                Snapmovie.getSnapmovie().setBGMType(position);
+
                 mAdapter.notifyDataSetChanged();
                 if(mAdapter.bgmDataArr.get(position).path!=0) {
                     mp = MediaPlayer.create(mContext, path);
@@ -168,7 +177,17 @@ class BGMAdapter extends BaseAdapter {
             convertView = Inflater.inflate(layoutId, parent, false);
         }
 
+
         ImageView checkedArea = (ImageView)convertView.findViewById(R.id.bgm_list_item_checked_area);
+        if(position==Snapmovie.getSnapmovie().getBGMType())
+        {
+            checkedArea.setBackgroundColor(Color.rgb(255, 198, 0));
+        }
+        else
+        {
+            checkedArea.setBackgroundColor(Color.rgb(203, 203, 203));
+        }
+
 
         ImageView bgmImage = (ImageView)convertView.findViewById(R.id.bgm_list_item_image);
         bgmImage.setImageBitmap(bgmDataArr.get(position).bgmImg);
@@ -182,5 +201,6 @@ class BGMAdapter extends BaseAdapter {
 
         return convertView;
     }
+
 
 }

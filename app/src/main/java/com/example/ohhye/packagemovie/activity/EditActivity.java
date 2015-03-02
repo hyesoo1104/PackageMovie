@@ -21,6 +21,7 @@ import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
+import com.example.ohhye.packagemovie.object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Edit_AddBGM;
 
 /**
@@ -49,7 +50,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_edit);
 
-
+        Snapmovie.getSnapmovie().resetSnapmovie();
 
         btn_edit_add = (Button)findViewById(R.id.btn_edit_add);
         btn_edit_list = (Button)findViewById(R.id.btn_edit_list);
