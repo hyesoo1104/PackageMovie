@@ -60,7 +60,7 @@ public class Edit_TransFrgment extends Fragment {
                 int size = parent.getChildCount();
                 for(int i=0; i<size; i++)
                 {
-                    parent.getChildAt(i).findViewById(R.id.trans_list_item_checked_area).setBackgroundColor(Color.rgb(175, 175, 175));
+                    parent.getChildAt(i).findViewById(R.id.trans_list_item_checked_area).setBackgroundColor(Color.rgb(203, 203, 203));
 
                 }
                 TransData item = mAdapter.transDataArr.get(position);

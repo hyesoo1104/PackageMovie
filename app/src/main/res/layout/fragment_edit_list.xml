@@ -2,11 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.ohhye.packagemovie.fragment.Edit_ListFragment">
 
     <!-- TODO: 발리로 서버에 있는거 가져와서 리스트 구현 -->
-    <!-- TODO: Update blank fragment layout -->
-    <ListView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="fragment_edit_list" />
+    <ListView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/edit_scene_list" />
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding ="10dp"
+        android:src="@drawable/icon_trashcan"
+        android:background="#dbe4e7"
+        android:layout_gravity="center_horizontal|bottom"
+     />
+
 
 </FrameLayout>

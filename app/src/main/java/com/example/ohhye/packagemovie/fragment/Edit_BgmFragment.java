@@ -53,6 +53,8 @@ public class Edit_BgmFragment extends Fragment {
         bgmList = (ListView)rootView.findViewById(R.id.bgmListView);
 
         dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
+                R.drawable.bgm_temp_image), "Original",  "녹화된 동영상의 소리가 재생됩니다.", 0) );
+        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.bgm_temp_image), "Bike Rides",  "genre1", R.raw.bike_rides) );
         dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.bgm_temp_image), "Blue Skies",  "genre2", R.raw.blue_skies) );
@@ -70,8 +72,12 @@ public class Edit_BgmFragment extends Fragment {
                 R.drawable.bgm_temp_image), "Mr Pink",  "genre8", R.raw.mr_pink) );
 
         mAdapter = new BGMAdapter(mContext, R.layout.item_edit_bgm_list, dataArr);
+
+
+
         bgmList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         bgmList.setAdapter(mAdapter);
+
 
         bgmList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -79,7 +85,7 @@ public class Edit_BgmFragment extends Fragment {
                 int size = parent.getChildCount();
                 for(int i=0; i<size; i++)
                 {
-                    parent.getChildAt(i).findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(175, 175, 175));
+                    parent.getChildAt(i).findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(203, 203, 203));
 
                 }
                 if(mp!=null){
@@ -89,8 +95,10 @@ public class Edit_BgmFragment extends Fragment {
                 int path = item.path;
                 view.findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
                 mAdapter.notifyDataSetChanged();
-                mp = MediaPlayer.create(mContext, path);
-                mp.start();
+                if(mAdapter.bgmDataArr.get(position).path!=0) {
+                    mp = MediaPlayer.create(mContext, path);
+                    mp.start();
+                }
             }
         });
 
