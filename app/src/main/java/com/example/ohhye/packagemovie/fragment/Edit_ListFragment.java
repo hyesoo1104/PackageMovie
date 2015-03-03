@@ -2,10 +2,16 @@ package com.example.ohhye.packagemovie.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +26,7 @@ import com.example.ohhye.packagemovie.R;
 import java.util.ArrayList;
 
 
-public class Edit_ListFragment extends Fragment{
+public class Edit_ListFragment extends Fragment {
 
 
     Context mContext;
@@ -58,21 +64,110 @@ public class Edit_ListFragment extends Fragment{
         sceneList.setAdapter(mAdapter);
 
         sceneList.setOnItemLongClickListener(new ListViewItemLongClickListener());
+        sceneList.setOnDragListener(DragListener);
         return rootView;
     }
 
+
+    /*
+    *   LongClick
+    */
 
     private class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
     {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
-
-
+            DragShadow dragShadow = new DragShadow(view);
+            Log.d("long clicked", "pos" + " " + position);
+            view.startDrag(null, dragShadow, view, 0);
             return false;
         }
 
     }
+
+    View.OnLongClickListener longListen = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            DragShadow dragShadow = new DragShadow(v);
+
+            ClipData data = ClipData.newPlainText("", "");
+
+            v.startDrag(data, dragShadow, v, 0);
+
+            return false;
+        }
+    };
+
+    private class DragShadow extends View.DragShadowBuilder {
+
+        View greyBox=null;
+
+        public DragShadow(View view) {
+            super(view);
+            // TODO Auto-generated constructor stub
+            greyBox = view;
+        }
+
+        @Override
+        public void onDrawShadow(Canvas canvas) {
+            // TODO Auto-generated method stub
+            // super.onDrawShadow(canvas);
+
+            greyBox.draw(canvas);
+        }
+
+        @Override
+        public void onProvideShadowMetrics(Point shadowSize,
+                                           Point shadowTouchPoint) {
+            // TODO Auto-generated method stub
+            // super.onProvideShadowMetrics(shadowSize, shadowTouchPoint);
+            View v = getView();
+
+            int height = (int) v.getHeight();
+            int width = (int) v.getWidth();
+
+            greyBox.setBackgroundColor(Color.rgb(225,225,225));
+            shadowSize.set(width, height);
+
+            shadowTouchPoint.set(width / 2, height / 2); //기준점??? 터치포인트가 쉐도우이미지 가운데로됨.
+
+        }
+
+
+    }
+
+    View.OnDragListener DragListener = new View.OnDragListener() {
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            // TODO Auto-generated method stub
+
+            int dragEvent = event.getAction();
+
+            switch (dragEvent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    Log.i("Drag ", "Entered");
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    Log.i("Drag ", "Exit");
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.i("Drag ", "Drop");
+
+
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        }
+
+    };
+
 
     //-----------------------------------------------AddItem--------------------------------------------------------------------------
     public void addItem(ArrayList<SceneData> dataArr, Bitmap thumbnail, String name, String duration){
