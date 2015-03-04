@@ -34,6 +34,11 @@ public class Edit_ListFragment extends Fragment {
     ListView sceneList;
     SceneListAdapter mAdapter;
 
+    int selectedItemPosition = -1;
+
+    ImageView removeArea = null;
+
+    View greyBox=null;
     View rootView;
 
 
@@ -50,6 +55,7 @@ public class Edit_ListFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_edit_list, container, false);
 
         sceneList = (ListView)rootView.findViewById(R.id.edit_scene_list);
+        removeArea = (ImageView)rootView.findViewById(R.id.edit_scene_list_item_remove);
 
         //리스트 아이템 추가
         dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
@@ -80,6 +86,7 @@ public class Edit_ListFragment extends Fragment {
         {
             DragShadow dragShadow = new DragShadow(view);
             Log.d("long clicked", "pos" + " " + position);
+            selectedItemPosition = position;
             view.startDrag(null, dragShadow, view, 0);
             return false;
         }
@@ -103,7 +110,7 @@ public class Edit_ListFragment extends Fragment {
 
     private class DragShadow extends View.DragShadowBuilder {
 
-        View greyBox=null;
+
 
         public DragShadow(View view) {
             super(view);
@@ -129,7 +136,7 @@ public class Edit_ListFragment extends Fragment {
             int height = (int) v.getHeight();
             int width = (int) v.getWidth();
 
-            greyBox.setBackgroundColor(Color.rgb(225,225,225));
+            greyBox.setBackgroundColor(Color.rgb(235,235,235));
             shadowSize.set(width, height);
 
             shadowTouchPoint.set(width / 2, height / 2); //기준점??? 터치포인트가 쉐도우이미지 가운데로됨.
@@ -156,7 +163,11 @@ public class Edit_ListFragment extends Fragment {
                     break;
                 case DragEvent.ACTION_DROP:
                     Log.i("Drag ", "Drop");
-
+                    greyBox.setBackgroundColor(Color.rgb(255,255,255));
+                    if(removeArea.getTop()<event.getY())
+                    {
+                        removeItem(selectedItemPosition);
+                    }
 
                     break;
                 default:
@@ -172,6 +183,13 @@ public class Edit_ListFragment extends Fragment {
     //-----------------------------------------------AddItem--------------------------------------------------------------------------
     public void addItem(ArrayList<SceneData> dataArr, Bitmap thumbnail, String name, String duration){
         dataArr.add(new SceneData(thumbnail,name,duration));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    //-----------------------------------------------RemoveItem--------------------------------------------------------------------------
+    public void removeItem(int position){
+        dataArr.remove(position);
+        mAdapter.notifyDataSetChanged();
     }
 
 

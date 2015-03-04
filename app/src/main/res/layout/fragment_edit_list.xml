@@ -11,6 +11,7 @@
         android:id="@+id/edit_scene_list" />
 
     <ImageView android:layout_width="match_parent"
+        android:id = "@+id/edit_scene_list_item_remove"
         android:layout_height="50dp"
         android:padding ="10dp"
         android:src="@drawable/icon_trashcan"
