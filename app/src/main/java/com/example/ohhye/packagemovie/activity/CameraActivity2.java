@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.util.manager.CameraManager;
 import com.example.ohhye.packagemovie.util.manager.FileManager;
 import com.example.ohhye.packagemovie.util.manager.MediaManager;
-import com.example.ohhye.packagemovie.R;
 
 import java.io.IOException;
 
@@ -140,6 +140,7 @@ public class CameraActivity2 extends ActionBarActivity {
             Log.i("camera", "Camera Preview");
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setPreviewSize(width, height);
+            parameters.setColorEffect(Camera.Parameters.EFFECT_NEGATIVE);
             mCamera.startPreview();
         }
     };

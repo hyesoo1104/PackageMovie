@@ -1,15 +1,29 @@
 package com.example.ohhye.packagemovie.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.Network;
 
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
+
+
+    Network net;
+    Context mContext;
+
+    EditText login_group_id;
+    EditText login_pwd;
+
+    String group_name = "";
+    String password = "";
 
     Button btn_login;
     Button btn_createGroup;
@@ -19,6 +33,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mContext = this;
+        net = new Network(mContext);
+
+        login_group_id = (EditText)findViewById(R.id.login_group_id);
+        login_pwd = (EditText)findViewById(R.id.login_pwd);
+
         btn_login = (Button)findViewById(R.id.btn_login);
         btn_createGroup = (Button)findViewById(R.id.btn_createGroup);
 
@@ -26,24 +46,44 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         btn_createGroup.setOnClickListener(this);
 
 
-
-
     }
 
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_login:
-                Intent i =  new Intent(this,MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i); // 로딩이 끝난후 이동할 Activity
-                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
-                finish();
+                String id = login_group_id.getText().toString();
+                String pwd = login_pwd.getText().toString();
+                net.login(id,pwd);
                 break;
             case R.id.btn_createGroup:
-                startActivity(new Intent(getApplication(), SignUpActivity.class));
-                overridePendingTransition(R.anim.slide_out_left,R.anim.slide_in_right);
+                signUp();
                 break;
         }
 
     }
+
+
+    public void login(){
+        FileManagementActivity.id = login_group_id.getText().toString();
+        Intent i =  new Intent(this,MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i); // 로딩이 끝난후 이동할 Activity
+        overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
+        finish();
+    }
+
+    public void signUp(){
+        startActivity(new Intent(getApplication(), SignUpActivity.class));
+        overridePendingTransition(R.anim.slide_out_left,R.anim.slide_in_right);
+    }
+
+    public void toast(String result){
+        if(result.equals("600"))
+            Toast.makeText(mContext, "이미 존재하는 그룹 아이디입니다.", Toast.LENGTH_SHORT).show();
+        else if(result.equals("601"))
+            Toast.makeText(mContext,"존재하지 않은 그룹 아이디입니다.",Toast.LENGTH_SHORT).show();
+        else if(result.equals("602"))
+            Toast.makeText(mContext,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+    }
+
 }

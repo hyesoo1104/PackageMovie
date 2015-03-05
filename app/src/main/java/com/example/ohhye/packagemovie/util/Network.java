@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.activity.LoginActivity;
+import com.example.ohhye.packagemovie.activity.SignUpActivity;
 import com.example.ohhye.packagemovie.singtone_object.VolleySingleton;
 import com.google.gson.Gson;
 
@@ -26,8 +28,11 @@ public class Network{
 
     private static String uri;
 
-    private String result="";
+    public String result="";
     private String server_ip;
+
+
+    Parser parser = new Parser();
 
     public Network(Context context) {
         this.context = context;
@@ -35,14 +40,28 @@ public class Network{
     }
 
 
+
+
+    /* ------------------------
+    *  회원가입
+    ---------------------------*/
     public void createGroup(final String Groupname, final String Password){
+        //URI 설정
         uri = server_ip+"makeGroup";
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 // response
-                result = response;
+                // 응답 JSON Parsing
+                result = parser.result_parser(response);
                 Log.d("result", result);
+
+                if(result.equals("200")) {
+                    ((SignUpActivity)context).onBackPressed();
+                }
+                ((SignUpActivity)context).toast(result);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -54,12 +73,88 @@ public class Network{
             @Override
             protected Map<String, String> getParams() {
                 mParams = new HashMap<String, String>();
-                mParams.put("Groupname", Groupname);
-                mParams.put("Password", Password);
+                mParams.put("group_id", Groupname);
+                mParams.put("group_password", Password);
 
                 return mParams;
             }
         };
         VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
     }
+
+    /* ------------------------
+    *  로그인
+    ---------------------------*/
+    public void login(final String Groupname, final String Password){
+        uri = server_ip+"login";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // response
+                result = parser.result_parser(response);
+                Log.d("result", result);
+
+                //임시!! 항상 로그인
+                result ="200";
+
+                if(result.equals("200")) {
+                    ((LoginActivity)context).login();
+                }else {
+                    ((LoginActivity)context).toast(result);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error
+                // Log.d("Error.Response", response);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                mParams = new HashMap<String, String>();
+                mParams.put("group_id", Groupname);
+                mParams.put("group_password", Password);
+
+                return mParams;
+            }
+        };
+        VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
+    }
+
+
+
+    /* ------------------------
+    *  파일 리스트 불러오기
+    ---------------------------*/
+    public void load_file_list(){
+        uri = server_ip+"login";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // response
+                result = parser.result_parser(response);
+                Log.d("result", result);
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error
+                // Log.d("Error.Response", response);
+            }
+        })/* {
+            @Override
+            protected Map<String, String> getParams() {
+                mParams = new HashMap<String, String>();
+
+                return mParams;
+            }
+        }*/;
+        VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
+    }
+
+
 }

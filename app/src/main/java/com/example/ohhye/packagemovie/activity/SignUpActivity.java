@@ -17,7 +17,7 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
 
     Network net;
 
-    Context mContext;
+    public static Context mContext;
 
     Button btn_create;
 
@@ -35,7 +35,7 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        mContext = getApplicationContext();
+        mContext = this;
         net = new Network(mContext);
 
         btn_create = (Button)findViewById(R.id.btn_signup_create);
@@ -70,7 +70,6 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
                 if(password.equals(repassword))
                 {
                     net.createGroup(group_name,password);
-                    onBackPressed();
                 }
                 else
                 {
@@ -79,5 +78,16 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
 
                 break;
         }
+    }
+
+    public void toast(String result){
+        if(result.equals("600"))
+            Toast.makeText(mContext,"이미 존재하는 그룹 아이디입니다.",Toast.LENGTH_SHORT).show();
+        else if(result.equals("601"))
+            Toast.makeText(mContext,"존재하지 않은 그룹 아이디입니다.",Toast.LENGTH_SHORT).show();
+        else if(result.equals("602"))
+            Toast.makeText(mContext,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+        else if(result.equals("200"))
+            Toast.makeText(mContext,"그룹이 정상적으로 만들어졌습니다.\n 이제 스냅무비를 만들어보세요!",Toast.LENGTH_SHORT).show();
     }
 }

@@ -26,6 +26,7 @@
         android:layout_below="@id/title">
 
         <EditText
+            android:id="@+id/login_group_id"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
@@ -49,6 +50,7 @@
         android:layout_below="@id/edit_ID">
 
         <EditText
+            android:id="@+id/login_pwd"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
