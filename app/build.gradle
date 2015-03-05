@@ -34,14 +34,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile files('libs/json_simple-1.1.jar')
 
-    compile files('libs/commons-codec-1.9.jar')
-    compile files('libs/httpclient-win-4.4.jar')
-    compile files('libs/jna-platform-4.1.0.jar')
-    compile files('libs/commons-logging-1.2.jar')
-    compile files('libs/httpclient-cache-4.4.jar')
-    compile files('libs/httpclient-4.4.jar')
-    compile files('libs/fluent-hc-4.4.jar')
-    compile files('libs/httpmime-4.4.jar')
-    compile files('libs/jna-4.1.0.jar')
-    compile files('libs/httpcore-4.4.jar')
+
+
+    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3') {
+        exclude module: "httpclient"
+    }
 }

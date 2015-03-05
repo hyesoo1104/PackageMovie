@@ -21,7 +21,7 @@ import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
-import com.example.ohhye.packagemovie.singtone_object.Snapmovie;
+import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Edit_AddBGM;
 
 /**

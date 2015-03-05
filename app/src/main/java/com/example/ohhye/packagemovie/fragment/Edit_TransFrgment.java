@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.singtone_object.Snapmovie;
+import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 
 import java.util.ArrayList;
 

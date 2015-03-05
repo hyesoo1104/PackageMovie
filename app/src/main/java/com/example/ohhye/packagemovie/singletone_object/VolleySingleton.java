@@ -1,4 +1,4 @@
-package com.example.ohhye.packagemovie.singtone_object;
+package com.example.ohhye.packagemovie.singletone_object;
 
 
 import android.content.Context;

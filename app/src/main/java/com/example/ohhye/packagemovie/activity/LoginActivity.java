@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.util.Network;
+import com.example.ohhye.packagemovie.util.SendFile;
 
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
@@ -64,7 +65,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
 
     public void login(){
-        FileManagementActivity.id = login_group_id.getText().toString();
+        SendFile.id = login_group_id.getText().toString();
         Intent i =  new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i); // 로딩이 끝난후 이동할 Activity

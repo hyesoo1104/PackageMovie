@@ -10,7 +10,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.activity.LoginActivity;
 import com.example.ohhye.packagemovie.activity.SignUpActivity;
-import com.example.ohhye.packagemovie.singtone_object.VolleySingleton;
+import com.example.ohhye.packagemovie.singletone_object.VolleySingleton;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
