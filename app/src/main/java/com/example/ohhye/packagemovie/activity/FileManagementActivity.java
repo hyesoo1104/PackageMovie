@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.util.SendFile;
+import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
+import com.example.ohhye.packagemovie.vo.UploadFile;
+
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -19,6 +22,7 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
 
     String url = "";
     String response ="";
+    ArrayBlockingQueue<UploadFile> uploadQueue = null;
 
     private ImageView btn_file_add;
     private Button btn_file_upload;
@@ -36,6 +40,8 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         btn_file_upload.setOnClickListener(this);
         url = this.getText(R.string.server_ip).toString();
         url = url+"uploadFile";
+
+        uploadQueue = UploadQueue.getUploadQueue();
         Log.d("myTag",url);
     }
 
@@ -49,8 +55,15 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
             break;
 
             case R.id.btn_upload:
-                new SendFile().execute(null,null,null);
-            break;
+                //임시 Upload객체
+                //String _id, String _path, String _date, Integer _size, String _running_time
+                UploadFile temp = new UploadFile(id,path,"20150306",3,"running_time");
+                try {
+                    uploadQueue.put(temp);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.ohhye.packagemovie.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
 import com.example.ohhye.packagemovie.util.Network;
 import com.example.ohhye.packagemovie.util.SendFile;
+import com.example.ohhye.packagemovie.vo.UploadFile;
+
+import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
@@ -66,6 +71,19 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     public void login(){
         SendFile.id = login_group_id.getText().toString();
+        FileManagementActivity.id = login_group_id.getText().toString();
+
+        UploadFile temp = new UploadFile(login_group_id.getText().toString(),
+                Environment.getExternalStorageDirectory()+"/DCIM/Camera/20140614_045425.jpg","20150306",3,"running_time");
+        try {
+            UploadQueue.getUploadQueue().put(temp);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
+        new SendFile().execute(q,null,null);
+
         Intent i =  new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i); // 로딩이 끝난후 이동할 Activity
