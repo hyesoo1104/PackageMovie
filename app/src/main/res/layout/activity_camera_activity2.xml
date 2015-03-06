@@ -13,15 +13,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
+    <ImageView
+        android:id="@+id/camera_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/camera_grid"/>
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        android:id="@+id/relativeLayout">
 
 
         <ImageView
@@ -43,9 +50,61 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/menu_camera_settings"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#23000000"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/relativeLayout">
+
+        <Button
+            android:id="@+id/btn_camera_settings_grid"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/grid_off" />
+
+        <Button
+            android:id="@+id/btn_camera_settings_flash"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/flash_off" />
+
+        <Button
+            android:id="@+id/btn_camera_settings_motion"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/motion_off" />
+
+        <Button
+            android:id="@+id/btn_camera_settings_timer"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/timer_off" />
+
+        <Button
+            android:id="@+id/btn_camera_settings_filter"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/filter" />
+
+
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/menu_camera_settings_filter_menu"
+        android:layout_marginLeft="1dp"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#23000000"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/menu_camera_settings">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -54,7 +113,7 @@
         android:background="@android:color/transparent">
 
         <ImageView
-            android:id="@+id/record"
+            android:id="@+id/btn_camera_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

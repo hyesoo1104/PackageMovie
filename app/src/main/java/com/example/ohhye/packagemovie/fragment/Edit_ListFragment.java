@@ -75,9 +75,9 @@ public class Edit_ListFragment extends Fragment {
     }
 
 
-    /*
+    /*---------------------------------------------------------------------------------------------------------------
     *   LongClick
-    */
+    ---------------------------------------------------------------------------------------------------------------*/
 
     private class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
     {
@@ -92,6 +92,10 @@ public class Edit_ListFragment extends Fragment {
         }
 
     }
+
+    /*---------------------------------------------------------------------------------------------------------------
+   *   LongClickListener
+   ---------------------------------------------------------------------------------------------------------------*/
 
     View.OnLongClickListener longListen = new View.OnLongClickListener() {
 
@@ -108,9 +112,11 @@ public class Edit_ListFragment extends Fragment {
         }
     };
 
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *   DragShadow
+    ---------------------------------------------------------------------------------------------------------------*/
     private class DragShadow extends View.DragShadowBuilder {
-
-
 
         public DragShadow(View view) {
             super(view);
@@ -142,10 +148,11 @@ public class Edit_ListFragment extends Fragment {
             shadowTouchPoint.set(width / 2, height / 2); //기준점??? 터치포인트가 쉐도우이미지 가운데로됨.
 
         }
-
-
     }
 
+    /*---------------------------------------------------------------------------------------------------------------
+    *   DragListener
+    ---------------------------------------------------------------------------------------------------------------*/
     View.OnDragListener DragListener = new View.OnDragListener() {
 
         @Override
@@ -157,6 +164,9 @@ public class Edit_ListFragment extends Fragment {
             switch (dragEvent) {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     Log.i("Drag ", "Entered");
+                    break;
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    Log.i("Drag ", "Exit");
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
                     Log.i("Drag ", "Exit");
@@ -174,26 +184,31 @@ public class Edit_ListFragment extends Fragment {
                     break;
             }
 
-            return true;
+            return false;
         }
 
     };
 
-
-    //-----------------------------------------------AddItem--------------------------------------------------------------------------
+    /*---------------------------------------------------------------------------------------------------------------
+    *   AddItem
+    ---------------------------------------------------------------------------------------------------------------*/
     public void addItem(ArrayList<SceneData> dataArr, Bitmap thumbnail, String name, String duration){
         dataArr.add(new SceneData(thumbnail,name,duration));
         mAdapter.notifyDataSetChanged();
     }
 
-    //-----------------------------------------------RemoveItem--------------------------------------------------------------------------
+    /*---------------------------------------------------------------------------------------------------------------
+    *   RemoveItem
+    ---------------------------------------------------------------------------------------------------------------*/
     public void removeItem(int position){
         dataArr.remove(position);
         mAdapter.notifyDataSetChanged();
     }
 
 
-    //-----------------------------------------------SceneData--------------------------------------------------------------------------
+    /*---------------------------------------------------------------------------------------------------------------
+    *   SceneData
+   --------------------------------------------------------------------------------------------------------------- */
     class SceneData{
         Bitmap thumbnail;
         String name;
@@ -207,7 +222,9 @@ public class Edit_ListFragment extends Fragment {
     }
 
 
-    //-----------------------------------------------Adapter--------------------------------------------------------------------------
+    /* ---------------------------------------------------------------------------------------------------------------
+    *   Adapter
+    ---------------------------------------------------------------------------------------------------------------*/
 
     class SceneListAdapter extends BaseAdapter {
         Context context;
