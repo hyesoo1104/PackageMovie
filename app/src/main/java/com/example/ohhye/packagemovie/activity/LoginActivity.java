@@ -28,7 +28,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     EditText login_group_id;
     EditText login_pwd;
 
-    String group_name = "";
+    public static String group_name = "";
     String password = "";
 
     Button btn_login;
@@ -57,9 +57,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_login:
-                String id = login_group_id.getText().toString();
                 String pwd = login_pwd.getText().toString();
-                net.login(id,pwd);
+                group_name = login_group_id.getText().toString();
+                net.login(group_name,pwd);
                 break;
             case R.id.btn_createGroup:
                 signUp();

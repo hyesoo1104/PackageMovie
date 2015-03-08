@@ -24,6 +24,7 @@ import com.example.ohhye.packagemovie.util.manager.CameraManager;
 import com.example.ohhye.packagemovie.util.manager.FileManager;
 import com.example.ohhye.packagemovie.util.manager.MediaManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,8 +44,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
     private int timer_time = 0;
     private int mCameraFacing;       // 전면 or 후면 카메라 상태 저장
 
-    private int start_count=0;
-    private int end_count=0;
+    private String video_path = "";
 
     private View settings_menu;
     private View filter_menu;
@@ -258,18 +258,16 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             mCamera = null;
         }
     }
- /*   @Override
+    @Override
     protected void onPause() {
         Log.d("myTag","------------PAUSE------------");
         super.onPause();
-         mTimer.cancel();
-        MediaManager.releaseMediaRecorder(mMediaRecorder, mCamera);
-        CameraManager.releaseCamera(mCamera);
-        captureButton
-                .setImageResource(R.drawable.device_access_camera);
-        isRecording = false;
+        mTimer.cancel();
+        if(isRecording==true) {
+            record();
+        }
     }
-*/
+
 //    @Override
 //    protected  void onResume(){
 //        Log.d("myTag","------------RESUME------------");
@@ -321,6 +319,10 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
         }
     };
 
+    /*
+    *  -----------동영상녹화-----------
+     */
+
     private  void record(){
         if (isRecording) {
             Log.d("myTag","Click");
@@ -332,6 +334,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             captureButton
                     .setImageResource(R.drawable.device_access_camera);
 
+            FileManager.upload_record_file(video_path);
             isRecording = false;
         } else {
             if (prepareVideoRecorder()) {
@@ -348,6 +351,8 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
 
     private boolean prepareVideoRecorder() {
 
+        File tmp = FileManager.getOutputMediaFile();
+
         CameraManager.releaseCamera(mCamera);
 
         mCamera = CameraManager.getCameraInstance(mCamera);
@@ -362,8 +367,8 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
         mMediaRecorder.setProfile(CamcorderProfile
                 .get(CamcorderProfile.QUALITY_720P));
 
-        mMediaRecorder.setOutputFile(FileManager.getOutputMediaFile()
-                .toString());
+
+        mMediaRecorder.setOutputFile(tmp.toString());
 
         mMediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
 
@@ -376,6 +381,8 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             MediaManager.releaseMediaRecorder(mMediaRecorder, mCamera);
             return false;
         }
+
+        video_path = tmp.getPath();
         return true;
     }
 
@@ -395,12 +402,15 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
                 Log.d("Timer","capture"+timer_time*1000);
 
                 //타이머 시간만큼 타이머 걸고 녹화시작
-                if(timer_time!=0) {
+                if(timer_time!=0&&isRecording==false) {
                     startTimer();
                 }
-                else if(timer_time==0||isRecording==true) record();
+                else record();
                 break;
             case R.id.btn_camera_change:
+                //촬영중에는 버튼 비활성화
+                if(isRecording ==true) break;
+
                 closeCamera();
                 isFrontCamera = !isFrontCamera;
                 if (isFrontCamera) {
@@ -413,6 +423,9 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
                 mCamera.startPreview();
                 break;
             case R.id.btn_camera_settings:
+                //촬영중에는 버튼 비활성화
+                if(isRecording ==true) break;
+
                 //닫혀있을때
                 if(setting_menu_visible==false)
                 {
@@ -538,10 +551,14 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             mTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    //촬영시작
-                    Log.d("Timer","Complete!!");
-                    stopTimer();
-                    record();
+                    runOnUiThread(new Runnable(){
+                        public void run(){
+                            //촬영시작
+                            Log.d("Timer","Complete!!");
+                            stopTimer();
+                            record();
+                        }
+                    });
                 }
             },timer_time*1000);
         Log.d("Timer","Start!!!");
