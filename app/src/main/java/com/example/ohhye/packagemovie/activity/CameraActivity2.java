@@ -1,10 +1,13 @@
 package com.example.ohhye.packagemovie.activity;
 
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -12,11 +15,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.util.manager.CameraManager;
@@ -27,20 +28,23 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static android.view.animation.AnimationUtils.loadAnimation;
 
-
-public class CameraActivity2 extends ActionBarActivity implements View.OnClickListener, Animation.AnimationListener {
+public class CameraActivity2 extends ActionBarActivity implements View.OnClickListener, Animation.AnimationListener, SensorEventListener {
 
     private boolean isRecording = false;
     private boolean isFrontCamera = false;
     private boolean setting_menu_visible = false;
+    private boolean s_isClose = false;
+    private boolean s_isDark = false;
     private boolean isGrid  = false;
     private boolean isFlash = false;
     private boolean isMotion = false;
     private boolean isFilterMenu = false;
     private int timer_time = 0;
     private int mCameraFacing;       // 전면 or 후면 카메라 상태 저장
+
+    private int start_count=0;
+    private int end_count=0;
 
     private View settings_menu;
     private View filter_menu;
@@ -50,7 +54,8 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
     private Camera.Parameters mCameraParameter;
     private MediaRecorder mMediaRecorder = null;
 
-    private ImageView btn_camera_capture = null;
+    private ImageView captureButton;
+    private ImageView btn_camera_capture;
     private ImageView btn_camera_change;
     private ImageView btn_camera_settings;
     private ImageView camera_grid;
@@ -60,6 +65,12 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
     private Button btn_camera_settings_motion;
     private Button btn_camera_settings_timer;
     private Button btn_camera_settings_filter;
+
+    //Sensor(Motion)
+    private SensorManager sensorManager;
+    private Sensor proximitySensor;
+    private Sensor lightSensor;
+
 
     //Timer
     private TimerTask mTask;
@@ -90,46 +101,86 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
         // 버퍼없음
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
+        //Sensor
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         //Timer
         mTimer = new Timer();
 
-/*
 
-        captureButton = (ImageView) findViewById(R.id.record);
+    }
 
-        captureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRecording) {
-                    Log.d("myTag","Click");
-                    mMediaRecorder.stop();
-                    MediaManager.releaseMediaRecorder(mMediaRecorder, mCamera);
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (proximitySensor != null)
+            sensorManager.registerListener(this, proximitySensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        if (lightSensor != null)
+            sensorManager.registerListener(this, lightSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
-                    mCamera.lock();
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (sensorManager != null)
+            sensorManager.unregisterListener(this);
+    }
 
-                    captureButton
-                            .setImageResource(R.drawable.device_access_camera);
-
-                    isRecording = false;
-                } else {
-                    if (prepareVideoRecorder()) {
-                        mMediaRecorder.start();
-                        captureButton.setImageResource(R.drawable.av_stop);
-                        isRecording = true;
-                    } else {
-                        MediaManager.releaseMediaRecorder(mMediaRecorder,
-                                mCamera);
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        switch(event.sensor.getType()){
+            case Sensor.TYPE_LIGHT:
+                if(event.values[0]<20)
+                {
+                    s_isDark = true;
+                }
+                else s_isDark = false;
+               // Log.d("Motion-Light","Light : "+event.values[0]);
+                break;
+            case Sensor.TYPE_PROXIMITY:
+                if(event.values[0]==0)
+                {
+                    s_isClose = true;
+                }
+                else s_isClose = false;
+                Log.d("Motion-Proximity","Proximity : "+event.values[0]);
+                if(isMotion&&s_isClose)
+                {
+                    if(!isRecording) {
+                        //촬영시작
+                        record();
+                        Log.d("Motion", "촬영시작!");
+                    }
+                    else if(isRecording)
+                    {
+                        //촬영종료
+                        record();
+                        Log.d("Motion","촬영종료!");
                     }
                 }
-            }
-        });*/
+
+                break;
+        }
+
+
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
 
     private void init(){
         settings_menu = findViewById(R.id.menu_camera_settings);
         filter_menu = findViewById(R.id.menu_camera_settings_filter_menu);
+
+        captureButton = (ImageView) findViewById(R.id.btn_camera_capture);
 
         camera_grid = (ImageView)findViewById(R.id.camera_grid);
         btn_camera_capture = (ImageView)findViewById(R.id.btn_camera_capture);
@@ -270,6 +321,30 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
         }
     };
 
+    private  void record(){
+        if (isRecording) {
+            Log.d("myTag","Click");
+            mMediaRecorder.stop();
+            MediaManager.releaseMediaRecorder(mMediaRecorder, mCamera);
+
+            mCamera.lock();
+
+            captureButton
+                    .setImageResource(R.drawable.device_access_camera);
+
+            isRecording = false;
+        } else {
+            if (prepareVideoRecorder()) {
+                mMediaRecorder.start();
+                captureButton.setImageResource(R.drawable.av_stop);
+                isRecording = true;
+            } else {
+                MediaManager.releaseMediaRecorder(mMediaRecorder,
+                        mCamera);
+            }
+        }
+    }
+
 
     private boolean prepareVideoRecorder() {
 
@@ -319,8 +394,11 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
                 }
                 Log.d("Timer","capture"+timer_time*1000);
 
-                startTimer();
-
+                //타이머 시간만큼 타이머 걸고 녹화시작
+                if(timer_time!=0) {
+                    startTimer();
+                }
+                else if(timer_time==0||isRecording==true) record();
                 break;
             case R.id.btn_camera_change:
                 closeCamera();
@@ -463,6 +541,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
                     //촬영시작
                     Log.d("Timer","Complete!!");
                     stopTimer();
+                    record();
                 }
             },timer_time*1000);
         Log.d("Timer","Start!!!");
@@ -477,7 +556,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             mTimer.purge();
             mTimer = null;
         }
-        Log.d("Timer","Stop!!!");
+        Log.d("Timer", "Stop!!!");
     }
     @Override
     public void onAnimationStart(Animation animation) {

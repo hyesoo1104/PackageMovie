@@ -1,5 +1,6 @@
 package com.example.ohhye.packagemovie.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -51,7 +52,7 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_file_add:
-
+                startActivity(new Intent(getApplication(), StreamingActivity.class));
             break;
 
             case R.id.btn_upload:

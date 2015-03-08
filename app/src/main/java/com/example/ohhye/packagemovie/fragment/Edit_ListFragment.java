@@ -184,7 +184,7 @@ public class Edit_ListFragment extends Fragment {
                     break;
             }
 
-            return false;
+            return true;
         }
 
     };
