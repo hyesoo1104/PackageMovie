@@ -1,5 +1,7 @@
 package com.example.ohhye.packagemovie.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,6 +10,7 @@ import android.hardware.SensorManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -17,6 +20,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.ohhye.packagemovie.R;
@@ -321,7 +325,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
 
     /*
     *  -----------동영상녹화-----------
-     */
+    */
 
     private  void record(){
         if (isRecording) {
@@ -334,8 +338,51 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             captureButton
                     .setImageResource(R.drawable.device_access_camera);
 
-            FileManager.upload_record_file(video_path);
+
+            final File file = new File(video_path);
+
+            //동영상제목 설정
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+            alert.setTitle("동영상 제목");
+            alert.setMessage("촬영한 영상의 제목을 입력해주세요");
+
+            final EditText input = new EditText(this);
+            input.setText(file.getName());
+            alert.setView(input);
+
+            alert.setNegativeButton("저장 취소",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // 파일 삭제.
+                            file.delete();
+                        }
+                    });
+
+            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String value = input.getText().toString();
+                    // Do something with value!
+                    // 파일 이름 변경
+                    File _mediaStorageDir = new File(
+                            Environment
+                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
+                            "PackageMovie");
+                    File rename_file = new File(_mediaStorageDir.getPath() + File.separator+value+ ".mp4");
+                    file.renameTo(rename_file);
+
+
+                    FileManager.upload_record_file(rename_file.getPath(),value); //녹화파일 업로드
+                    Log.d("Path",""+rename_file.getPath());
+               }
+            });
+
+            alert.show();
+
+
             isRecording = false;
+
+
         } else {
             if (prepareVideoRecorder()) {
                 mMediaRecorder.start();

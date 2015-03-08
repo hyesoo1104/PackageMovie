@@ -6,15 +6,13 @@ package com.example.ohhye.packagemovie.vo;
 public class UploadFile {
     String group_id = "";
     String path = "";
-    String date = "";
-    Integer size = 0;
+    String name = "";
     String running_time="";
 
-    public UploadFile(String _id, String _path, String _date, Integer _size, String _running_time){
+    public UploadFile(String _id, String _path, String _name, String _running_time){
         group_id = _id;
         path = _path;
-        date = _date;
-        size = _size;
+        name = _name;
         running_time = _running_time;
     }
 
@@ -26,12 +24,8 @@ public class UploadFile {
         return path;
     }
 
-    public String getDate(){
-        return date;
-    }
-
-    public Integer getSize(){
-        return size;
+    public String getName(){
+        return name;
     }
 
     public String getRunning_time(){

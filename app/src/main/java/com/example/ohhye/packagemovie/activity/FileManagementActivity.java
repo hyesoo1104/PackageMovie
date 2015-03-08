@@ -58,7 +58,7 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
             case R.id.btn_upload:
                 //임시 Upload객체
                 //String _id, String _path, String _date, Integer _size, String _running_time
-                UploadFile temp = new UploadFile(id,path,"20150306",3,"running_time");
+                UploadFile temp = new UploadFile(id,path,"name","running_time");
                 try {
                     uploadQueue.put(temp);
                 } catch (InterruptedException e) {

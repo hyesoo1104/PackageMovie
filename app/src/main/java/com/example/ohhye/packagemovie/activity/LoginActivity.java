@@ -3,7 +3,6 @@ package com.example.ohhye.packagemovie.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
@@ -73,13 +72,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         SendFile.id = login_group_id.getText().toString();
         FileManagementActivity.id = login_group_id.getText().toString();
 
-        UploadFile temp = new UploadFile(login_group_id.getText().toString(),
-                Environment.getExternalStorageDirectory()+"/DCIM/Camera/20140614_045425.jpg","20150306",3,"running_time");
-        try {
-            UploadQueue.getUploadQueue().put(temp);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
         new SendFile().execute(q,null,null);

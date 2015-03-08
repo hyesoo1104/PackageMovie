@@ -64,8 +64,7 @@ public class SendFile extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void, Vo
                 builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
                 //문자열 데이터 추가
                 builder.addTextBody("group_id", file_info.getGroupId(), ContentType.create("Multipart/related", "UTF-8"));
-                builder.addTextBody("date", file_info.getDate(), ContentType.create("Multipart/related", "UTF-8"));
-                builder.addTextBody("size", file_info.getSize().toString(), ContentType.create("Multipart/related", "UTF-8"));
+                builder.addTextBody("name", file_info.getName(), ContentType.create("Multipart/related", "UTF-8"));
                 builder.addTextBody("runningTime", file_info.getRunning_time(), ContentType.create("Multipart/related", "UTF-8"));
                 //파일 데이터 추가
                 builder.addPart("multipartFile", new FileBody(file)); //빌더에 FileBody 객체에 인자로 File 객체를 넣어준다.

@@ -1,6 +1,7 @@
 package com.example.ohhye.packagemovie.util.manager;
 
 import android.annotation.SuppressLint;
+import android.media.MediaMetadataRetriever;
 import android.os.Environment;
 import android.util.Log;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class FileManager {
     @SuppressLint("SimpleDateFormat")
     private static ArrayBlockingQueue<UploadFile> uploadQueue = UploadQueue.getUploadQueue();
+    private String origin_path = "";
 
     public static File getOutputMediaFile() {
 
@@ -43,8 +45,26 @@ public class FileManager {
         return mediaFile;
     }
 
-    public static void upload_record_file(String file_path){
-        UploadFile temp = new UploadFile(LoginActivity.group_name,file_path,"20150306",3,"running_time");
+
+
+    public static void upload_record_file(String file_path,String file_name){
+        String running_time = "";
+        //재생시간 얻기
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(file_path);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInmillisec = Long.parseLong( time );
+        long duration = timeInmillisec / 1000;
+        long hours = duration / 3600;
+        long minutes = (duration - hours * 3600) / 60;
+        long seconds = duration - (hours * 3600 + minutes * 60);
+
+        if(hours!=0) running_time = running_time+hours+":";
+        running_time = minutes+":"+seconds;
+
+        Log.d("Running Time",running_time);
+
+        UploadFile temp = new UploadFile(LoginActivity.group_name,file_path,file_name,running_time);
         try {
             uploadQueue.put(temp);
         } catch (InterruptedException e) {
