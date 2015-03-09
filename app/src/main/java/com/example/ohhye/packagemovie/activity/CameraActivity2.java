@@ -348,6 +348,7 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
             alert.setMessage("촬영한 영상의 제목을 입력해주세요");
 
             final EditText input = new EditText(this);
+            input.setSingleLine();
             //확장자를 뺀 이름
             String tmp_filename = file.getName();
             int FileIdx = tmp_filename.lastIndexOf(".");

@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
 import com.example.ohhye.packagemovie.util.Network;
-import com.example.ohhye.packagemovie.util.SendFile;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -69,12 +68,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
 
     public void login(){
-        SendFile.id = login_group_id.getText().toString();
+        UploadQueue.id = login_group_id.getText().toString();
         FileManagementActivity.id = login_group_id.getText().toString();
 
 
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
-        new SendFile().execute(q,null,null);
+        new UploadQueue().execute(q, null, null);
 
         Intent i =  new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
