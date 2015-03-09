@@ -166,12 +166,8 @@ public class CameraActivity2 extends ActionBarActivity implements View.OnClickLi
                         Log.d("Motion","촬영종료!");
                     }
                 }
-
                 break;
         }
-
-
-
     }
 
     @Override
