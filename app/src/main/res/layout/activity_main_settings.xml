@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/settings_bg"
             android:gravity="center_horizontal|bottom"
+            android:id="@+id/settings_id"
             android:text = "GroupID\n"
             android:textColor = "#fff5f5f5"
             sl:scale_textsize="0.09"

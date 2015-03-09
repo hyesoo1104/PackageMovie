@@ -1,21 +1,12 @@
 package com.example.ohhye.packagemovie.activity;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
-
-import java.util.ArrayList;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -23,6 +14,7 @@ import java.util.ArrayList;
 public class SettingsActivity extends ActionBarActivity implements View.OnClickListener{
 
     private TextView btn_wifiUploadOnOff;
+    private static TextView settings_id;
     private int wifiUploadOnOff = 0; //OFF
 
     @Override
@@ -31,8 +23,11 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         setContentView(R.layout.activity_main_settings);
 
         btn_wifiUploadOnOff=(TextView)findViewById(R.id.wifiUploadOnOff);
+        settings_id = (TextView)findViewById(R.id.settings_id);
+        settings_id.setText(LoginActivity.group_name+"\n");
         btn_wifiUploadOnOff.setOnClickListener(this);
     }
+
 
 
     @Override

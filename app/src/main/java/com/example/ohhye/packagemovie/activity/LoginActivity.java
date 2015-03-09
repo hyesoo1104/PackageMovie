@@ -68,12 +68,14 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
 
     public void login(){
-        UploadQueue.id = login_group_id.getText().toString();
-        FileManagementActivity.id = login_group_id.getText().toString();
-
+        String group_id = login_group_id.getText().toString();
+        UploadQueue.id = group_id;
+        FileManagementActivity.id = group_id;
 
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
         new UploadQueue().execute(q, null, null);
+
+
 
         Intent i =  new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
