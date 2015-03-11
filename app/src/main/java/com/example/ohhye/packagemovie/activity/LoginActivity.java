@@ -2,10 +2,13 @@ package com.example.ohhye.packagemovie.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     EditText login_group_id;
     EditText login_pwd;
+    CheckBox auto_login;
 
     public static String group_name = "";
     String password = "";
@@ -32,13 +36,20 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     Button btn_login;
     Button btn_createGroup;
 
+    SharedPreferences mPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mContext = this;
+
+        mPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+
         net = new Network(mContext);
+
+        auto_login = (CheckBox)findViewById(R.id.checkbox_autologin);
 
         login_group_id = (EditText)findViewById(R.id.login_group_id);
         login_pwd = (EditText)findViewById(R.id.login_pwd);
@@ -69,12 +80,18 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     public void login(){
         String group_id = login_group_id.getText().toString();
+        String password = login_pwd.getText().toString();
         UploadQueue.id = group_id;
         FileManagementActivity.id = group_id;
 
+        //UploadQueue 동작
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
         new UploadQueue().execute(q, null, null);
 
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putString("id",group_id);
+        editor.putString("pwd",password);
+        editor.commit();
 
 
         Intent i =  new Intent(this,MainActivity.class);
