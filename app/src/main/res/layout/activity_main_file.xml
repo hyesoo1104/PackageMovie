@@ -60,7 +60,18 @@
             android:text="UPLOAD"
             sl:scale_textsize="0.065"
             sl:scale_top="0.5"
-            sl:scale_left="0.4"
+            sl:scale_left="0.35"
+            sl:scale_width="0.5"
+            sl:scale_height="0.2"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_download"
+            android:text="DOWNLOAD"
+            sl:scale_textsize="0.065"
+            sl:scale_top="0.8"
+            sl:scale_left="0.35"
             sl:scale_width="0.5"
             sl:scale_height="0.2"/>
     </com.ssomai.android.scalablelayout.ScalableLayout>
