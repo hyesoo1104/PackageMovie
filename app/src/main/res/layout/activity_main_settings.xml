@@ -29,6 +29,8 @@
             sl:scale_width="0.15"
             sl:scale_height="0.15"
             />
+
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -43,20 +45,171 @@
             sl:scale_height="0.15"
             />
 
-        <TextView
+
+
+
+
+
+
+        <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/settings_bg"
-            android:gravity="center_horizontal|bottom"
-            android:id="@+id/settings_id"
-            android:text = "GroupID\n"
-            android:textColor = "#fff5f5f5"
-            sl:scale_textsize="0.09"
             sl:scale_top="0.15"
             sl:scale_left="0.0"
             sl:scale_width="1.24"
             sl:scale_height="1.196"
             />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@+id/settings_id"
+            android:text = "GroupID"
+            android:textColor = "#fff5f5f5"
+            sl:scale_textsize="0.09"
+            sl:scale_top="1.15"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="0.2"
+            />
+        <!--원래 Background-->
+
+        <ImageView
+            android:id="@+id/settings_bg2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/settings_bg2"
+            sl:scale_top="0.15"
+            sl:scale_left="0.0"
+            sl:scale_width="1.24"
+            sl:scale_height="1.196"
+            />
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_current_pwd"
+            android:text = " Current Password"
+            android:textColor = "#fff5f5f5"
+            sl:scale_textsize="0.04"
+            sl:scale_top="0.39"
+            sl:scale_left="0.05"
+            sl:scale_width="1.24"
+            sl:scale_height="0.2"
+            />
+
+        <EditText
+            android:id="@+id/settings_current_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:scrollbarStyle="insideInset"
+            android:inputType="textPassword"
+            android:hint="현재 비밀번호"
+            sl:scale_textsize="0.05"
+            sl:scale_top="0.45"
+            sl:scale_left="0.05"
+            sl:scale_width="1.1"
+            sl:scale_height="0.1"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_new_pwd"
+            android:text = " New Password"
+            android:textColor = "#fff5f5f5"
+            sl:scale_textsize="0.04"
+            sl:scale_top="0.59"
+            sl:scale_left="0.05"
+            sl:scale_width="1.24"
+            sl:scale_height="0.2"
+            />
+
+        <EditText
+            android:id="@+id/settings_new_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:scrollbarStyle="insideInset"
+            android:inputType="textPassword"
+            android:hint="변경할 비밀번호"
+            sl:scale_textsize="0.05"
+            sl:scale_top="0.65"
+            sl:scale_left="0.05"
+            sl:scale_width="1.1"
+            sl:scale_height="0.1"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_re_new_pwd"
+            android:text = " Confirm New Password"
+            android:textColor = "#fff5f5f5"
+            sl:scale_textsize="0.04"
+            sl:scale_top="0.79"
+            sl:scale_left="0.05"
+            sl:scale_width="1.24"
+            sl:scale_height="0.2"
+            />
+
+        <EditText
+            android:id="@+id/settings_re_new_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#66fefffd"
+            android:textColor="#baffffff"
+            android:textColorHint="#88ffffff"
+            android:textColorHighlight="#ffffce73"
+            android:paddingLeft="10dp"
+            android:scrollbarStyle="insideInset"
+            android:inputType="textPassword"
+            android:hint="변경할 비밀번호 확인"
+            sl:scale_textsize="0.05"
+            sl:scale_top="0.85"
+            sl:scale_left="0.05"
+            sl:scale_width="1.1"
+            sl:scale_height="0.1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_pwd_change"
+            android:text = "변경"
+            android:textColor="#FFFFFF"
+            android:background="#83eccd77"
+            sl:scale_textsize="0.05"
+            sl:scale_top="1.05"
+            sl:scale_left="0.86"
+            sl:scale_width="0.3"
+            sl:scale_height="0.1"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_pwd_cancel"
+            android:background="#91cc8621"
+            android:textColor="#FFFFFF"
+            android:text = "취소"
+            sl:scale_textsize="0.05"
+            sl:scale_top="1.05"
+            sl:scale_left="0.5"
+            sl:scale_width="0.3"
+            sl:scale_height="0.1"
+            />
+
+
 
 
         <TextView
@@ -95,7 +248,7 @@
 
 
         <TextView
-            android:id="@+id/btn_pwd_change"
+            android:id="@+id/btn_settings_pwd_change"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#fff7f7f7"

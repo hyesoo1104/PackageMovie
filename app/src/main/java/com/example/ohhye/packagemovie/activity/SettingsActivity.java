@@ -5,8 +5,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
 
@@ -16,9 +21,20 @@ import com.example.ohhye.packagemovie.R;
 public class SettingsActivity extends ActionBarActivity implements View.OnClickListener{
 
     private TextView btn_wifiUploadOnOff;
+
+    ImageView settings_pwd_bg;
+    TextView txt_current_pwd;
+    EditText settings_current_pwd;
+    TextView txt_new_pwd;
+    EditText settings_new_pwd;
+    TextView txt_re_new_pwd;
+    EditText settings_re_new_pwd;
+    Button btn_pwd_change;
+    Button btn_pwd_cancel;
+
     private static TextView settings_id;
     private TextView btn_logout;
-    private TextView btn_pwd_change;
+    private TextView btn_settings_pwd_change;
     private int wifiUploadOnOff = 0; //OFF
 
     SharedPreferences.Editor edit;
@@ -31,19 +47,104 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         edit = LoginActivity.mPref.edit();
 
         settings_id = (TextView)findViewById(R.id.settings_id);
-        settings_id.setText(LoginActivity.group_name+"\n");
+
+
+        settings_pwd_bg = (ImageView)findViewById(R.id.settings_bg2);
+        txt_current_pwd = (TextView)findViewById(R.id.txt_current_pwd);
+        settings_current_pwd = (EditText)findViewById(R.id.settings_current_pwd);
+        txt_new_pwd = (TextView)findViewById(R.id.txt_new_pwd);
+        settings_new_pwd = (EditText)findViewById(R.id.settings_new_pwd);
+        txt_re_new_pwd = (TextView)findViewById(R.id.txt_re_new_pwd);
+        settings_re_new_pwd = (EditText)findViewById(R.id.settings_re_new_pwd);
+
+        btn_pwd_change = (Button)findViewById(R.id.btn_pwd_change);
+        btn_pwd_cancel = (Button)findViewById(R.id.btn_pwd_cancel);
+
+        btn_pwd_cancel.setOnClickListener(this);
+        btn_pwd_change.setOnClickListener(this);
+
+
+
 
         btn_logout = (TextView)findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(this);
 
-        btn_pwd_change = (TextView)findViewById(R.id.btn_pwd_change);
-        btn_pwd_change.setOnClickListener(this);
+
+        btn_settings_pwd_change = (TextView)findViewById(R.id.btn_settings_pwd_change);
+        btn_settings_pwd_change.setOnClickListener(this);
 
         btn_wifiUploadOnOff=(TextView)findViewById(R.id.wifiUploadOnOff);
         btn_wifiUploadOnOff.setOnClickListener(this);
+
+        changePwdLayout(false);
     }
 
 
+    void changePwdLayout(boolean isVisible){
+
+        if(isVisible == false)
+        {/*
+            settings_pwd_bg = (ImageView)findViewById(R.id.settings_bg2);
+            txt_current_pwd = (TextView)findViewById(R.id.txt_current_pwd);
+            settings_current_pwd = (EditText)findViewById(R.id.settings_current_pwd);
+            txt_new_pwd = (TextView)findViewById(R.id.txt_new_pwd);
+            settings_new_pwd = (EditText)findViewById(R.id.settings_new_pwd);
+            txt_re_new_pwd = (TextView)findViewById(R.id.txt_re_new_pwd);
+            settings_re_new_pwd = (EditText)findViewById(R.id.settings_re_new_pwd);
+
+            btn_pwd_change = (Button)findViewById(R.id.btn_pwd_change);
+            btn_pwd_cancel = (Button)findViewById(R.id.btn_pwd_cancel);*/
+
+
+            settings_id.setText(LoginActivity.group_name+"");
+            settings_id.setVisibility(View.VISIBLE);
+
+            Log.d("id",settings_id.getText().toString());
+            settings_pwd_bg.setVisibility(View.GONE);
+            txt_current_pwd.setVisibility(View.GONE);
+            settings_current_pwd.setVisibility(View.GONE);
+            txt_new_pwd.setVisibility(View.GONE);
+            settings_new_pwd.setVisibility(View.GONE);
+            txt_re_new_pwd.setVisibility(View.GONE);
+            settings_re_new_pwd.setVisibility(View.GONE);
+            btn_pwd_change.setVisibility(View.GONE);
+            btn_pwd_cancel.setVisibility(View.GONE);
+        }
+        else if(isVisible == true)
+        {
+            /*settings_pwd_bg = (ImageView)findViewById(R.id.settings_bg2);
+            txt_current_pwd = (TextView)findViewById(R.id.txt_current_pwd);
+            settings_current_pwd = (EditText)findViewById(R.id.settings_current_pwd);
+            txt_new_pwd = (TextView)findViewById(R.id.txt_new_pwd);
+            settings_new_pwd = (EditText)findViewById(R.id.settings_new_pwd);
+            txt_re_new_pwd = (TextView)findViewById(R.id.txt_re_new_pwd);
+            settings_re_new_pwd = (EditText)findViewById(R.id.settings_re_new_pwd);
+
+            btn_pwd_change = (Button)findViewById(R.id.btn_pwd_change);
+            btn_pwd_cancel = (Button)findViewById(R.id.btn_pwd_cancel);*/
+
+            settings_id.setVisibility(View.GONE);
+
+            settings_pwd_bg.setVisibility(View.VISIBLE);
+            txt_current_pwd.setVisibility(View.VISIBLE);
+            settings_current_pwd.setVisibility(View.VISIBLE);
+            txt_new_pwd.setVisibility(View.VISIBLE);
+            settings_new_pwd.setVisibility(View.VISIBLE);
+            txt_re_new_pwd.setVisibility(View.VISIBLE);
+            settings_re_new_pwd.setVisibility(View.VISIBLE);
+            btn_pwd_change.setVisibility(View.VISIBLE);
+            btn_pwd_cancel.setVisibility(View.VISIBLE);
+
+            settings_current_pwd.setText("");
+            settings_new_pwd.setText("");
+            settings_re_new_pwd.setText("");
+/*
+            btn_pwd_change.setOnClickListener(this);
+            btn_pwd_cancel.setOnClickListener(this);*/
+        }
+
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -66,13 +167,6 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 }
                 break;
 
-            case R.id.btn_pwd_change:
-                startActivity(new Intent(getApplication(), ChangePasswordActivity.class));
-                overridePendingTransition(R.anim.fade,R.anim.hold);
-
-
-                break;
-
             case R.id.btn_logout:
                 edit.remove("autoLogin");
                 edit.remove("id");
@@ -83,7 +177,47 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 overridePendingTransition(R.anim.fade,R.anim.hold);
+                break;
 
+            case R.id.btn_settings_pwd_change:
+                changePwdLayout(true);
+                break;
+
+            case R.id.btn_pwd_change:
+                String current_pwd = LoginActivity.mPref.getString("pwd","null");
+
+                String pwd = settings_current_pwd.getText().toString();
+                String c_pwd=settings_new_pwd.getText().toString();
+                String c_re_pwd =settings_re_new_pwd.getText().toString();
+
+
+                Log.d("current_pwd.equals(c_pwd)", current_pwd.equals(c_pwd) + "       " + current_pwd + "         " + c_pwd);
+                Log.d("c_pwd.equals(c_re_pwd)",c_pwd.equals(c_re_pwd)+"         "+c_pwd+"       "+c_re_pwd);
+
+
+                if(current_pwd.equals(c_pwd))
+                {
+                    Toast.makeText(this, "변경할 비밀번호가 현재 비밀번호와 같습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(current_pwd.equals(pwd)) {
+                        if (c_pwd.equals(c_re_pwd)) {
+                            edit = LoginActivity.mPref.edit();
+                            edit.putString("pwd", settings_new_pwd.getText().toString());
+                            edit.remove("autoLogin");
+                            edit.commit();
+                            Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                            changePwdLayout(false);
+                        } else {
+                            Toast.makeText(this, "변경할 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }else
+                        Toast.makeText(this, "현재 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.btn_pwd_cancel:
+                changePwdLayout(false);
                 break;
         }
     }

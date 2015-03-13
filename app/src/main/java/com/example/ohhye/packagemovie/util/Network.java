@@ -125,6 +125,48 @@ public class Network{
 
 
     /* ------------------------
+    *  비밀번호 변경
+    ---------------------------*/
+    public void user_update(final String Groupname, final String Password, final String new_password){
+        uri = server_ip+"login";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // response
+                result = parser.result_parser(response);
+                Log.d("result", result);
+
+                //임시!! 항상 로그인
+                result ="200";
+
+                if(result.equals("200")) {
+                    ((LoginActivity)context).login(Groupname,Password);
+                }else {
+                    ((LoginActivity)context).toast(result);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error
+                // Log.d("Error.Response", response);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                mParams = new HashMap<String, String>();
+                mParams.put("group_id", Groupname);
+                mParams.put("group_password", Password);
+
+                return mParams;
+            }
+        };
+        VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
+    }
+
+
+
+    /* ------------------------
     *  파일 리스트 불러오기
     ---------------------------*/
     public void load_file_list(){
