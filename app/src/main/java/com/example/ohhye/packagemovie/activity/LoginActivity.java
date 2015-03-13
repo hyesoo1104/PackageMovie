@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -50,6 +51,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         net = new Network(mContext);
 
         auto_login = (CheckBox)findViewById(R.id.checkbox_autologin);
+        auto_login.setChecked(mPref.getBoolean("autoLogin",false));
 
         login_group_id = (EditText)findViewById(R.id.login_group_id);
         login_pwd = (EditText)findViewById(R.id.login_pwd);
@@ -59,6 +61,14 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         btn_login.setOnClickListener(this);
         btn_createGroup.setOnClickListener(this);
+
+
+        if(mPref.getBoolean("autoLogin",false)==true)
+        {
+            String pref_id = mPref.getString("id",null);
+            String pref_pwd = mPref.getString("pwd",null);
+            net.login(pref_id,pref_pwd);
+        }
 
 
     }
@@ -78,9 +88,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
 
-    public void login(){
-        String group_id = login_group_id.getText().toString();
-        String password = login_pwd.getText().toString();
+    public void login(String id, String pwd){
+        String group_id = id;
+        String password = pwd;
         UploadQueue.id = group_id;
         FileManagementActivity.id = group_id;
 
@@ -88,11 +98,15 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
         new UploadQueue().execute(q, null, null);
 
+
+        //아이디 비번 저장, 자동로그인 저장
         SharedPreferences.Editor editor = mPref.edit();
         editor.putString("id",group_id);
         editor.putString("pwd",password);
+        editor.putBoolean("autoLogin",auto_login.isChecked());
         editor.commit();
 
+        Log.d("Login","ID : "+id+"     PWD : "+pwd);
 
         Intent i =  new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

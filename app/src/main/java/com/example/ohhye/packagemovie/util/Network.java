@@ -98,7 +98,7 @@ public class Network{
                 result ="200";
 
                 if(result.equals("200")) {
-                    ((LoginActivity)context).login();
+                    ((LoginActivity)context).login(Groupname,Password);
                 }else {
                     ((LoginActivity)context).toast(result);
                 }
