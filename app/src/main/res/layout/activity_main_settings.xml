@@ -95,6 +95,7 @@
 
 
         <TextView
+            android:id="@+id/btn_pwd_change"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#fff7f7f7"
@@ -111,6 +112,7 @@
 
 
         <TextView
+            android:id="@+id/btn_logout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#fff7f7f7"

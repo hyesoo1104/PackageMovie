@@ -78,8 +78,11 @@
         <activity
             android:name=".activity.StreamingActivity"
             android:label="@string/title_activity_streaming"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password" >
         </activity>
     </application>
 
