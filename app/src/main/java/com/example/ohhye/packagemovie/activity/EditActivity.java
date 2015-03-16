@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -94,6 +96,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         btn_edit_trans.setOnClickListener(this);
         btn_edit_bgm.setOnClickListener(this);
         btn_edit_complete.setOnClickListener(this);
+
 
 
         FragmentManager fm = getFragmentManager();
@@ -248,7 +251,35 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 Uri uri = intent.getData();
                 String path = getPath(uri);
                 String name = getName(uri);
-                Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\nuri : " + uri.toString() );
+                String id = getId(uri);
+
+
+                String running_time = "";
+
+                //재생시간 얻기
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(path);
+                String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                long timeInmillisec = Long.parseLong( time );
+                long duration = timeInmillisec / 1000;
+                long hours = duration / 3600;
+                long minutes = (duration - hours * 3600) / 60;
+                long seconds = duration - (hours * 3600 + minutes * 60);
+
+                if(hours!=0) {
+                    running_time = running_time + hours+":";
+                }
+                else{
+                    running_time = minutes+":"+seconds;
+                }
+
+                long video_id = Long.parseLong(id);
+
+                //썸네일 얻기
+                Bitmap bm = mGetVideoThumnailImg(video_id);
+
+                Edit_ListFragment.addItem(bm,name,running_time);
+                Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time + "\nID : " + id );
             }
 
         }
@@ -275,4 +306,43 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         return cursor.getString(column_index);
     }
 
+    private String getId(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.ImageColumns._ID };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+
+    }
+
+    //썸네일 만들기
+    public Bitmap mGetVideoThumnailImg(long id)
+    {
+
+        ContentResolver mCrThumb 			=   this.getContentResolver();
+        BitmapFactory.Options options		=	new BitmapFactory.Options();
+        options.inSampleSize 						= 1;
+
+        //MICRO_KIND :작은이미지(정사각형) MINI_KIND (중간이미지)
+
+        Bitmap mVideoThumnailBm 		=
+                MediaStore.Video.Thumbnails.getThumbnail(mCrThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
+
+        if(mVideoThumnailBm!=null)
+        {
+            Log.d("thumbnail","동영상의 썸네일의 가로 :"+mVideoThumnailBm.getWidth()+"입니다");
+            Log.d("thumbnail","동영상의 썸네일의 세로 :"+mVideoThumnailBm.getHeight()+"입니다");
+        }
+
+
+        mCrThumb		=	null;
+        options			=	null;
+
+
+
+        return mVideoThumnailBm;
+
+    }
 }

@@ -64,6 +64,10 @@ public class Edit_ListFragment extends Fragment {
         dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene3",  "01:15") );*/
 
+        //dataArr = null;
+
+
+
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);
         sceneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         sceneList.setAdapter(mAdapter);
@@ -209,6 +213,7 @@ public class Edit_ListFragment extends Fragment {
     *   SceneData
    --------------------------------------------------------------------------------------------------------------- */
     static class SceneData{
+       // String type;
         Bitmap thumbnail;
         String name;
         String duration;
