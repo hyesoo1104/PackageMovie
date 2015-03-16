@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -30,9 +29,9 @@ public class Edit_ListFragment extends Fragment {
 
 
     Context mContext;
-    ArrayList<SceneData> dataArr = new ArrayList<SceneData>();
+    static ArrayList<SceneData> dataArr = new ArrayList<SceneData>();
     ListView sceneList;
-    SceneListAdapter mAdapter;
+    static SceneListAdapter mAdapter;
 
     int selectedItemPosition = -1;
 
@@ -58,12 +57,12 @@ public class Edit_ListFragment extends Fragment {
         removeArea = (ImageView)rootView.findViewById(R.id.edit_scene_list_item_remove);
 
         //리스트 아이템 추가
-        dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
+        /*dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene1",  "03:20") );
         dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene2",  "00:02") );
         dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene3",  "01:15") );
+                R.drawable.ic_launcher), "Scene3",  "01:15") );*/
 
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);
         sceneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -192,7 +191,7 @@ public class Edit_ListFragment extends Fragment {
     /*---------------------------------------------------------------------------------------------------------------
     *   AddItem
     ---------------------------------------------------------------------------------------------------------------*/
-    public void addItem(ArrayList<SceneData> dataArr, Bitmap thumbnail, String name, String duration){
+    public static void addItem(Bitmap thumbnail, String name, String duration){
         dataArr.add(new SceneData(thumbnail,name,duration));
         mAdapter.notifyDataSetChanged();
     }
@@ -209,7 +208,7 @@ public class Edit_ListFragment extends Fragment {
     /*---------------------------------------------------------------------------------------------------------------
     *   SceneData
    --------------------------------------------------------------------------------------------------------------- */
-    class SceneData{
+    static class SceneData{
         Bitmap thumbnail;
         String name;
         String duration;
@@ -265,6 +264,7 @@ public class Edit_ListFragment extends Fragment {
             }
 
             ImageView itemThumbnail = (ImageView)convertView.findViewById(R.id.scene_list_item_thumbnail);
+            itemThumbnail.setImageBitmap(sceneDataArr.get(position).thumbnail);
 
             TextView sceneName = (TextView)convertView.findViewById(R.id.scene_list_item_name);
             sceneName.setText(sceneDataArr.get(position).name);

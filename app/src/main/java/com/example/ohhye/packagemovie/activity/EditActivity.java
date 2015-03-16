@@ -8,6 +8,8 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,11 +45,34 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : BGM
 
 
-    /*@Override
+    @Override
     public void onBackPressed() {
         //TODO :팝업창띄워서 메인으로 돌아가면 편집하던 내용을 다시 복구할 수 없다고 창띄워주기.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("편집 종료")
+                .setMessage("편집한 내용은 저장되지 않습니다.\n 메인 메뉴로 돌아가시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    // 확인 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();
+
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                    // 취소 버튼 클릭시 설정
+                    public void onClick(DialogInterface dialog, int whichButton){
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();    // 알림창 객체 생성
+        dialog.show();    // 알림창 띄우기
     }
-*/
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +197,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 String value = input.getText().toString();
                 // Do something with value!
                 Toast.makeText(EditActivity.this, value,Toast.LENGTH_SHORT).show();
+                Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.edit_text_icon);
+                Edit_ListFragment.addItem(bm,value,"00:03");
 
             }
         });
