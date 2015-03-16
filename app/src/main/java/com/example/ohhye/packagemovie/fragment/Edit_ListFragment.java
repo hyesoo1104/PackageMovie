@@ -66,14 +66,14 @@ public class Edit_ListFragment extends Fragment {
 
         //dataArr = null;
 
-
+        dataArr.clear();
 
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);
         sceneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         sceneList.setAdapter(mAdapter);
 
         sceneList.setOnItemLongClickListener(new ListViewItemLongClickListener());
-        sceneList.setOnDragListener(DragListener);
+        rootView.setOnDragListener(DragListener);
         return rootView;
     }
 
@@ -175,7 +175,7 @@ public class Edit_ListFragment extends Fragment {
                     Log.i("Drag ", "Exit");
                     break;
                 case DragEvent.ACTION_DROP:
-                    Log.i("Drag ", "Drop");
+                     Log.i("Drag ", "Drop");
                     greyBox.setBackgroundColor(Color.rgb(255,255,255));
                     if(removeArea.getTop()<event.getY())
                     {
@@ -195,8 +195,8 @@ public class Edit_ListFragment extends Fragment {
     /*---------------------------------------------------------------------------------------------------------------
     *   AddItem
     ---------------------------------------------------------------------------------------------------------------*/
-    public static void addItem(Bitmap thumbnail, String name, String duration){
-        dataArr.add(new SceneData(thumbnail,name,duration));
+    public static void addItem(String path,Bitmap thumbnail, String name, String duration){
+        dataArr.add(new SceneData(path,thumbnail,name,duration));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -213,12 +213,13 @@ public class Edit_ListFragment extends Fragment {
     *   SceneData
    --------------------------------------------------------------------------------------------------------------- */
     static class SceneData{
-       // String type;
+        String path;        //null이면 자막
         Bitmap thumbnail;
         String name;
         String duration;
 
-        SceneData(Bitmap _Img, String _name, String _duration){
+        SceneData(String _path,Bitmap _Img, String _name, String _duration){
+            path = _path;
             thumbnail = _Img;
             name = _name;
             duration = _duration;

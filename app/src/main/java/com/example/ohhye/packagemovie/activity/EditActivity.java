@@ -201,7 +201,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 // Do something with value!
                 Toast.makeText(EditActivity.this, value,Toast.LENGTH_SHORT).show();
                 Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.edit_text_icon);
-                Edit_ListFragment.addItem(bm,value,"00:03");
+                Edit_ListFragment.addItem(null,bm,value,"00:03");
 
             }
         });
@@ -266,11 +266,13 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 long minutes = (duration - hours * 3600) / 60;
                 long seconds = duration - (hours * 3600 + minutes * 60);
 
-                if(hours!=0) {
-                    running_time = running_time + hours+":";
+                if(hours!=0)
+                {
+                    running_time = running_time + hours+":"+minutes + ":" + seconds;
                 }
-                else{
-                    running_time = minutes+":"+seconds;
+                else
+                {
+                    running_time = minutes + ":" + seconds;
                 }
 
                 long video_id = Long.parseLong(id);
@@ -278,7 +280,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 //썸네일 얻기
                 Bitmap bm = mGetVideoThumnailImg(video_id);
 
-                Edit_ListFragment.addItem(bm,name,running_time);
+                Edit_ListFragment.addItem(path,bm,name,running_time);
                 Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time + "\nID : " + id );
             }
 
@@ -333,7 +335,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         if(mVideoThumnailBm!=null)
         {
             Log.d("thumbnail","동영상의 썸네일의 가로 :"+mVideoThumnailBm.getWidth()+"입니다");
-            Log.d("thumbnail","동영상의 썸네일의 세로 :"+mVideoThumnailBm.getHeight()+"입니다");
+            Log.d("thumbnail", "동영상의 썸네일의 세로 :" + mVideoThumnailBm.getHeight() + "입니다");
         }
 
 
