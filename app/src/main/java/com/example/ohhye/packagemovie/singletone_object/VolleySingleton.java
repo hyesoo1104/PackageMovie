@@ -13,7 +13,7 @@ import com.android.volley.toolbox.Volley;
  * Created by ohhye on 2015-02-27.
  */
 public class VolleySingleton {
-    public final static String IMG_URL = "http://210.118.74.131:8080/myapp/";
+    //public final static String IMG_URL = "http://210.118.74.131:8080/myapp/";
     private static VolleySingleton mInstance = null;
     private RequestQueue mRequestQueue;
     private static ImageLoader mImageLoader;

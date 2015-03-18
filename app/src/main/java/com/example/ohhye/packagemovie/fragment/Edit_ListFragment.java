@@ -14,6 +14,7 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -21,14 +22,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.Network;
 
 import java.util.ArrayList;
 
 
-public class Edit_ListFragment extends Fragment {
+public class Edit_ListFragment extends Fragment implements AbsListView.OnScrollListener{
 
-
+    boolean isLoad = false;
+    Network net;
     Context mContext;
+
     static ArrayList<SceneData> dataArr = new ArrayList<SceneData>();
     ListView sceneList;
     static SceneListAdapter mAdapter;
@@ -40,13 +44,23 @@ public class Edit_ListFragment extends Fragment {
     View greyBox=null;
     View rootView;
 
+    private boolean mLockListView;
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = activity.getApplicationContext();
+
     }
 
+ /*   @Override
+    public void onDetach() {
+        super.onDetach();
+        dataArr.clear();
+        isLoad = false;
+    }
+*/
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -55,6 +69,8 @@ public class Edit_ListFragment extends Fragment {
 
         sceneList = (ListView)rootView.findViewById(R.id.edit_scene_list);
         removeArea = (ImageView)rootView.findViewById(R.id.edit_scene_list_item_remove);
+
+        net = new Network(mContext);
 
         //리스트 아이템 추가
         /*dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
@@ -66,7 +82,8 @@ public class Edit_ListFragment extends Fragment {
 
         //dataArr = null;
 
-        dataArr.clear();
+
+       //dataArr.clear();
 
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);
         sceneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -74,8 +91,35 @@ public class Edit_ListFragment extends Fragment {
 
         sceneList.setOnItemLongClickListener(new ListViewItemLongClickListener());
         rootView.setOnDragListener(DragListener);
+
+        sceneList.setOnScrollListener(this);
+
         return rootView;
     }
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *  Data Array Clear
+    ---------------------------------------------------------------------------------------------------------------*/
+    public static void clearArr(){
+        dataArr.clear();
+    }
+
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *  Scroll
+    ---------------------------------------------------------------------------------------------------------------*/
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
 
 
     /*---------------------------------------------------------------------------------------------------------------

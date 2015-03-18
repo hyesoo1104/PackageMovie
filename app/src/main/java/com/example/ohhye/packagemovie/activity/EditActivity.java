@@ -27,6 +27,7 @@ import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Edit_AddBGM;
+import com.example.ohhye.packagemovie.util.Network;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -35,6 +36,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
     private final int SELECT_MOVIE = 2;
 
+    Network net;
     //Button
     Button btn_edit_add;
     Button btn_edit_list;
@@ -83,6 +85,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
         Snapmovie.getSnapmovie().resetSnapmovie();
 
+        net = new Network(getApplicationContext());
+
         btn_edit_add = (Button)findViewById(R.id.btn_edit_add);
         btn_edit_list = (Button)findViewById(R.id.btn_edit_list);
         btn_edit_text = (Button)findViewById(R.id.btn_edit_text);
@@ -103,6 +107,10 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.edit_fragment, new Edit_ListFragment());
         fragmentTransaction.commit();
+
+
+        Edit_ListFragment.clearArr();
+        net.load_file_list();
     }
 
     @Override

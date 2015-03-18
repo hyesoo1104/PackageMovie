@@ -30,7 +30,7 @@ public class StreamingActivity extends ActionBarActivity {
 
         videoView.setMediaController(mediaController);
 
-        Uri uri = Uri.parse("rtsp://210.118.74.131/package_movie/_definst_/mp4:package_movie/test.mp4");
+        Uri uri = Uri.parse("rtsp://210.118.74.131/package_movie/_definst_/mp4:test1/video/test.mp4");
 
         videoView.setVideoURI(uri);
 
