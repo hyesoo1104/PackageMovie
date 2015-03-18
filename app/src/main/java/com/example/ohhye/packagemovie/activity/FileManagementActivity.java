@@ -31,7 +31,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * Created by ohhye on 2015-01-26.
  */
 public class FileManagementActivity  extends ActionBarActivity implements View.OnClickListener {
-    public static String id ="";
+    public static String id = LoginActivity.getID();
 
     File file;
 
@@ -52,7 +52,7 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
     private Button btn_file_upload;
     private Button btn_file_download;
 
-    String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20140614_045425.jpg";
+    String path = Environment.getExternalStorageDirectory()+"/Movies/PackageMovie/20150309_034953.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,9 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
             case R.id.btn_upload:
                 //임시 Upload객체
                 //String _id, String _path, String _date, Integer _size, String _running_time
-                UploadFile temp = new UploadFile(id,path,"name","running_time");
+                File file = new File(path);
+
+                UploadFile temp = new UploadFile(id,path,file.getName(),EditActivity.getRunningTime(path));
                 try {
                     uploadQueue.put(temp);
                 } catch (InterruptedException e) {

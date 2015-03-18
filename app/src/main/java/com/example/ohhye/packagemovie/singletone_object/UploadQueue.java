@@ -2,7 +2,6 @@ package com.example.ohhye.packagemovie.singletone_object;
 
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import com.example.ohhye.packagemovie.vo.UploadFile;
@@ -43,7 +42,7 @@ public class UploadQueue extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void,
 
     String response ="";
 
-    String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20141126_185105.jpg";
+    //String path = Environment.getExternalStorageDirectory()+"/Movies/PackageMovie/";
     String url = "http://210.118.74.131:8080/PackageMovie/uploadFile";
 
     @Override

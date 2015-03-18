@@ -265,23 +265,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 String running_time = "";
 
                 //재생시간 얻기
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(path);
-                String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                long timeInmillisec = Long.parseLong( time );
-                long duration = timeInmillisec / 1000;
-                long hours = duration / 3600;
-                long minutes = (duration - hours * 3600) / 60;
-                long seconds = duration - (hours * 3600 + minutes * 60);
-
-                if(hours!=0)
-                {
-                    running_time = running_time + hours+":"+minutes + ":" + seconds;
-                }
-                else
-                {
-                    running_time = minutes + ":" + seconds;
-                }
+                running_time = getRunningTime(path);
 
                 long video_id = Long.parseLong(id);
 
@@ -293,6 +277,31 @@ public class EditActivity  extends Activity implements View.OnClickListener {
             }
 
         }
+    }
+
+    //재생시간 얻기
+    public static String getRunningTime(String path)
+    {
+        String rt="";
+        //재생시간 얻기
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(path);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInmillisec = Long.parseLong( time );
+        long duration = timeInmillisec / 1000;
+        long hours = duration / 3600;
+        long minutes = (duration - hours * 3600) / 60;
+        long seconds = duration - (hours * 3600 + minutes * 60);
+
+        if(hours!=0)
+        {
+            rt = rt + hours+":"+minutes + ":" + seconds;
+        }
+        else
+        {
+            rt = minutes + ":" + seconds;
+        }
+        return rt;
     }
 
     // 실제 경로 찾기
@@ -330,7 +339,6 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     //썸네일 만들기
     public Bitmap mGetVideoThumnailImg(long id)
     {
-
         ContentResolver mCrThumb 			=   this.getContentResolver();
         BitmapFactory.Options options		=	new BitmapFactory.Options();
         options.inSampleSize 						= 1;
@@ -340,10 +348,11 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         Bitmap mVideoThumnailBm 		=
                 MediaStore.Video.Thumbnails.getThumbnail(mCrThumb, id, MediaStore.Video.Thumbnails.MICRO_KIND, options);
 
-        if(mVideoThumnailBm!=null)
+        Bitmap resizedThumbnail = Bitmap.createScaledBitmap(mVideoThumnailBm,200,160,true);
+        if(resizedThumbnail!=null)
         {
-            Log.d("thumbnail","동영상의 썸네일의 가로 :"+mVideoThumnailBm.getWidth()+"입니다");
-            Log.d("thumbnail", "동영상의 썸네일의 세로 :" + mVideoThumnailBm.getHeight() + "입니다");
+            Log.d("resizedThumbnail","동영상의 썸네일의 가로 :"+resizedThumbnail.getWidth()+"입니다");
+            Log.d("resizedThumbnail", "동영상의 썸네일의 세로 :" + resizedThumbnail.getHeight() + "입니다");
         }
 
 
@@ -352,7 +361,9 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
 
 
-        return mVideoThumnailBm;
+        return resizedThumbnail;
 
     }
+
+
 }
