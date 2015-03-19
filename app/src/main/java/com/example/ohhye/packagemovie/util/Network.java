@@ -257,7 +257,7 @@ public class Network{
             @Override
             public void onResponse(Bitmap response) {
                 Log.d("getThumbnail Response","Response!!!");
-                Edit_ListFragment.addItem(video_path, response, video_name, running_time);
+                Edit_ListFragment.addItem(video_path, response, video_name, convertTime(running_time));
             }
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
@@ -268,5 +268,20 @@ public class Network{
     }
 
 
+
+
+    private String convertTime(String time){
+        String running_time = "";
+        long duration = Long.parseLong(time);
+        long hours = duration / 3600;
+        long minutes = (duration - hours * 3600) / 60;
+        long seconds = duration - (hours * 3600 + minutes * 60);
+
+        if(hours!=0) running_time = running_time+hours+":";
+        running_time = minutes+":"+seconds;
+
+        Log.d("Running Time",running_time);
+        return running_time;
+    }
 
 }

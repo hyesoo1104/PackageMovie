@@ -259,7 +259,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 Uri uri = intent.getData();
                 String path = getPath(uri);
                 String name = getName(uri);
-                String id = getId(uri);
+                String id = getId(uri);         //ID는 썸네일 추출시 필요
 
 
                 String running_time = "";
@@ -317,10 +317,10 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     // 파일명 찾기
     private String getName(Uri uri)
     {
-        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
+        String[] projection = { MediaStore.Images.Media.TITLE };
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME);
+                .getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }

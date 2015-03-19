@@ -55,21 +55,18 @@ public class FileManager {
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         long timeInmillisec = Long.parseLong( time );
         long duration = timeInmillisec / 1000;
-        long hours = duration / 3600;
-        long minutes = (duration - hours * 3600) / 60;
-        long seconds = duration - (hours * 3600 + minutes * 60);
+        running_time = Long.toString(duration);
 
-        if(hours!=0) running_time = running_time+hours+":";
-        running_time = minutes+":"+seconds;
-
-        Log.d("Running Time",running_time);
 
         UploadFile temp = new UploadFile(LoginActivity.group_name,file_path,file_name,running_time);
+
         try {
             uploadQueue.put(temp);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
+
 
 }

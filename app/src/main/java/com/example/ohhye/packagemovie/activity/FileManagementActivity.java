@@ -8,9 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +35,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class FileManagementActivity  extends ActionBarActivity implements View.OnClickListener {
     public static String id = LoginActivity.getID();
-
+    private final int SELECT_MOVIE = 2;
     File file;
 
     private DownloadManager mDownloadManager; //다운로드 매니저.
@@ -73,6 +76,99 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_file_add:
+                selectFile();
+            break;
+
+
+
+            case R.id.btn_download:
+                //다운로드 구현
+
+               break;
+        }
+    }
+
+
+
+    /*---------------------------------------------------------------------------
+     *      Select File & Upload
+     *      usage : Just selectFile() Call!
+     ---------------------------------------------------------------------------*/
+
+    private void selectFile(){
+        //갤러리에서 선택해서 가져오기
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("video/*");
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try
+        {
+            startActivityForResult(i, SELECT_MOVIE);
+        } catch (android.content.ActivityNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        super.onActivityResult(requestCode,resultCode,intent);
+
+        if(resultCode == RESULT_OK)
+        {
+            if(requestCode == SELECT_MOVIE)
+            {
+                Uri uri = intent.getData();
+                String path = getPath(uri);
+                String name = getName(uri);
+
+
+                String running_time = "";
+
+                //재생시간 얻기
+                running_time = getRunningTime(path);
+
+                UploadFile temp = new UploadFile(id, path, name, running_time);
+
+                try {
+                    uploadQueue.put(temp);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.e("Upload", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time );
+            }
+
+        }
+    }
+
+    /*---------------------------------------------------------------------------
+     *      File Download
+     *      usage : download(download_url,this);
+     ---------------------------------------------------------------------------*/
+
+    public void download(String url,Context mContext) {
+        if (mDownloadManager == null) {
+            mDownloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        }
+
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request( uri );
+
+        List<String> pathSegmentList = uri.getPathSegments();
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
+        mFileName = pathSegmentList.get(pathSegmentList.size()-1);
+        request.setTitle("PackageMovie");
+        request.setDescription(mFileName+".mp4");
+
+        mDownloadQueueId = (int) mDownloadManager.enqueue(request);
+    }
+
+
+
+    @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case progressbarType:
@@ -93,51 +189,6 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_file_add:
-                startActivity(new Intent(getApplication(), StreamingActivity.class));
-            break;
-
-            case R.id.btn_upload:
-                //임시 Upload객체
-                //String _id, String _path, String _date, Integer _size, String _running_time
-                File file = new File(path);
-
-                UploadFile temp = new UploadFile(id,path,file.getName(),EditActivity.getRunningTime(path));
-                try {
-                    uploadQueue.put(temp);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.btn_download:
-                //다운로드 구현
-                download(download_url,this);
-               break;
-        }
-    }
-
-
-    public void download(String url,Context mContext) {
-        if (mDownloadManager == null) {
-            mDownloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        }
-
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request( uri );
-
-        List<String> pathSegmentList = uri.getPathSegments();
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
-        mFileName = pathSegmentList.get(pathSegmentList.size()-1);
-        request.setTitle("PackageMovie");
-        request.setDescription(mFileName+".mp4");
-
-        mDownloadQueueId = (int) mDownloadManager.enqueue(request);
-    }
 
 
     private BroadcastReceiver mCompleteReceiver = new BroadcastReceiver() {
@@ -187,6 +238,71 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         overridePendingTransition(R.anim.hold,R.anim.finish_fade);
     }
 
+
+
+
+
+    /*--------------------------------------------
+     *  Get File Infomation Function
+     --------------------------------------------*/
+
+    //재생시간 얻기
+    public static String getRunningTime(String path)
+    {
+        String rt="";
+        //재생시간 얻기
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(path);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInmillisec = Long.parseLong( time );
+        long duration = timeInmillisec / 1000;
+        long hours = duration / 3600;
+        long minutes = (duration - hours * 3600) / 60;
+        long seconds = duration - (hours * 3600 + minutes * 60);
+
+        if(hours!=0)
+        {
+            rt = rt + hours+":"+minutes + ":" + seconds;
+        }
+        else
+        {
+            rt = minutes + ":" + seconds;
+        }
+        return rt;
+    }
+
+
+    // 실제 경로 찾기
+    private String getPath(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    // 파일명 찾기
+    private String getName(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.Media.TITLE };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private String getId(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.ImageColumns._ID };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+
+    }
 
 
 

@@ -63,6 +63,7 @@ public class UploadQueue extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void,
 
                 File file = new File(file_info.getPath());
 
+
                 //Multipart 객체를 선언한다.
                 MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                 builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
