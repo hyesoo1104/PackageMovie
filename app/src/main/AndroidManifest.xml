@@ -84,6 +84,12 @@
             android:name=".activity.ChangePasswordActivity"
             android:label="@string/title_activity_change_password" >
         </activity>
+
+        <service
+            android:name=".service.UploadBackgroundService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

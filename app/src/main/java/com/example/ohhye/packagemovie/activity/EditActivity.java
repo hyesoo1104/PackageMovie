@@ -110,7 +110,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
 
         Edit_ListFragment.clearArr();
-        net.load_file_list();
+        net.load_scene_list();
     }
 
     @Override

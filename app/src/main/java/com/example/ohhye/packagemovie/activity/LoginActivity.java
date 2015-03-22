@@ -14,11 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
+import com.example.ohhye.packagemovie.service.UploadBackgroundService;
 import com.example.ohhye.packagemovie.util.Network;
-import com.example.ohhye.packagemovie.vo.UploadFile;
-
-import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
@@ -97,13 +94,15 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     public void login(String id, String pwd){
         String group_id = id;
         String password = pwd;
-        UploadQueue.id = group_id;
+        UploadBackgroundService.id = group_id;
         FileManagementActivity.id = group_id;
 
-        //UploadQueue 동작
+      /*  //UploadQueue 동작
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
-        new UploadQueue().execute(q, null, null);
+        new UploadQueue().execute(q, null, null);*/
 
+        Intent serviceIntent = new Intent(this,UploadBackgroundService.class);
+        startService(serviceIntent);
 
         //아이디 비번 저장, 자동로그인 저장
         SharedPreferences.Editor editor = mPref.edit();

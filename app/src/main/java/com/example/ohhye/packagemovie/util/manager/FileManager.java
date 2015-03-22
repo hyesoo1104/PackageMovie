@@ -6,7 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.ohhye.packagemovie.activity.LoginActivity;
-import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
+import com.example.ohhye.packagemovie.service.UploadBackgroundService;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class FileManager {
     @SuppressLint("SimpleDateFormat")
-    private static ArrayBlockingQueue<UploadFile> uploadQueue = UploadQueue.getUploadQueue();
+    private static ArrayBlockingQueue<UploadFile> uploadQueue = UploadBackgroundService.getUploadQueue();
     private String origin_path = "";
 
     public static File getOutputMediaFile() {

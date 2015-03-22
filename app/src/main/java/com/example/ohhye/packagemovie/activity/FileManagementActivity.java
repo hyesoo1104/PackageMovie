@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,24 +17,32 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.singletone_object.UploadQueue;
+import com.example.ohhye.packagemovie.service.UploadBackgroundService;
+import com.example.ohhye.packagemovie.util.Network;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by ohhye on 2015-01-26.
  */
-public class FileManagementActivity  extends ActionBarActivity implements View.OnClickListener {
+public class FileManagementActivity  extends ActionBarActivity {
     public static String id = LoginActivity.getID();
     private final int SELECT_MOVIE = 2;
     File file;
@@ -55,6 +64,14 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
     private Button btn_file_upload;
     private Button btn_file_download;
 
+    private Context mContext;
+
+    static Network net;
+    //List View
+    static ArrayList<FileData> dataArr = new ArrayList<FileData>();
+    static FileListAdapter mAdapter;
+    ListView fileList;
+
     String path = Environment.getExternalStorageDirectory()+"/Movies/PackageMovie/20150309_034953.mp4";
 
     @Override
@@ -62,33 +79,63 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_file);
 
+        mContext = this;
+        net = new Network(mContext);
+
+        fileList = (ListView)findViewById(R.id.main_file_list);
+        mAdapter = new FileListAdapter(mContext, R.layout.item_file_list, dataArr);
+        fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        fileList.setAdapter(mAdapter);
+
+        fileList.setOnItemLongClickListener(new ListViewItemLongClickListener());
+
+
         btn_file_add = (ImageView)findViewById(R.id.btn_file_add);
-        btn_file_add.setOnClickListener(this);
-        btn_file_upload = (Button)findViewById(R.id.btn_upload);
-        btn_file_upload.setOnClickListener(this);
-        btn_file_download = (Button)findViewById(R.id.btn_download);
-        btn_file_download.setOnClickListener(this);
+        btn_file_add.setOnClickListener(btnClickListener);
+
         server_ip = this.getText(R.string.server_ip).toString();
         upload_url = server_ip+"uploadFile";
 
-        uploadQueue = UploadQueue.getUploadQueue();
+        uploadQueue = UploadBackgroundService.getUploadQueue();
         Log.d("myTag",upload_url);
+
+        dataArr.clear();
+        net.load_file_list();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_file_add:
-                selectFile();
-            break;
+    private View.OnClickListener btnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_file_add:
+                    selectFile();
+                    break;
 
 
+                case R.id.btn_file_download:
 
-            case R.id.btn_download:
-                //다운로드 구현
-
-               break;
+                    String file_url = "http://";
+                    file_url = file_url+(String)v.getTag();
+                    download(file_url,mContext);
+                    Log.d("Download",file_url+"//////down!!!");
+                    break;
+            }
         }
+    };
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *   LongClick
+    ---------------------------------------------------------------------------------------------------------------*/
+
+    private class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            //LongClick
+            return false;
+        }
+
     }
 
 
@@ -137,10 +184,15 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Log.e("Upload", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time );
+                Log.d("FileSelect", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time );
             }
 
         }
+    }
+
+    public static void refreshList(){
+        dataArr.clear();
+        net.load_file_list();
     }
 
     /*---------------------------------------------------------------------------
@@ -255,19 +307,8 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         retriever.setDataSource(path);
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         long timeInmillisec = Long.parseLong( time );
-        long duration = timeInmillisec / 1000;
-        long hours = duration / 3600;
-        long minutes = (duration - hours * 3600) / 60;
-        long seconds = duration - (hours * 3600 + minutes * 60);
 
-        if(hours!=0)
-        {
-            rt = rt + hours+":"+minutes + ":" + seconds;
-        }
-        else
-        {
-            rt = minutes + ":" + seconds;
-        }
+        rt = Long.toString(timeInmillisec);
         return rt;
     }
 
@@ -293,17 +334,103 @@ public class FileManagementActivity  extends ActionBarActivity implements View.O
         return cursor.getString(column_index);
     }
 
-    private String getId(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.ImageColumns._ID };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
 
+
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *   FileData
+   --------------------------------------------------------------------------------------------------------------- */
+    static class FileData{
+        String path;        //null이면 자막
+        Bitmap thumbnail;
+        String name;
+        String duration;
+
+        FileData(String _path,Bitmap _Img, String _name, String _duration){
+            path = _path;
+            thumbnail = _Img;
+            name = _name;
+            duration = _duration;
+        }
     }
 
 
+    /*---------------------------------------------------------------------------------------------------------------
+   *   AddItem
+   ---------------------------------------------------------------------------------------------------------------*/
+    public static void addItem(String path,Bitmap thumbnail, String name, String duration){
+        dataArr.add(new FileData(path,thumbnail,name,duration));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *   RemoveItem
+    ---------------------------------------------------------------------------------------------------------------*/
+    public void removeItem(int position){
+        dataArr.remove(position);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+
+    /* ---------------------------------------------------------------------------------------------------------------
+    *   Adapter
+    ---------------------------------------------------------------------------------------------------------------*/
+
+    class FileListAdapter extends BaseAdapter {
+        Context context;
+        int layoutId;
+        ArrayList<FileData> fileDataArr;
+        LayoutInflater Inflater;
+
+
+        FileListAdapter(Context _context, int _layoutId, ArrayList<FileData> _fileDataArr) {
+            context = _context;
+            layoutId = _layoutId;
+            fileDataArr = _fileDataArr;
+            Inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return fileDataArr.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return fileDataArr.get(position);
+        }
+
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final int pos = position;
+            // 1번 구역
+            if (convertView == null) {
+                convertView = Inflater.inflate(layoutId, parent, false);
+            }
+
+            ImageView itemThumbnail = (ImageView)convertView.findViewById(R.id.file_list_item_thumbnail);
+            itemThumbnail.setImageBitmap(fileDataArr.get(position).thumbnail);
+
+            TextView sceneName = (TextView)convertView.findViewById(R.id.file_list_item_name);
+            sceneName.setText(fileDataArr.get(position).name);
+
+            TextView sceneDesciption = (TextView)convertView.findViewById(R.id.file_list_item_duration);
+            sceneDesciption.setText(fileDataArr.get(position).duration);
+
+            Button btn_file_download = (Button)convertView.findViewById(R.id.btn_file_download);
+            btn_file_download.setTag(fileDataArr.get(position).path);
+            btn_file_download.setOnClickListener(btnClickListener);
+
+            return convertView;
+        }
+
+    }
 
 }
