@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
+import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Edit_AddBGM;
@@ -105,12 +106,13 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.edit_fragment, new Edit_ListFragment());
+        fragmentTransaction.replace(R.id.edit_fragment, new Edit_SceneListFragment());
         fragmentTransaction.commit();
 
 
-        Edit_ListFragment.clearArr();
-        net.load_scene_list();
+        //서버로부터 리스트 로딩
+        //Edit_ListFragment.clearArr();
+        //net.load_scene_list();
     }
 
     @Override

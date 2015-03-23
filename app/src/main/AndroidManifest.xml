@@ -80,10 +80,7 @@
             android:label="@string/title_activity_streaming"
             android:screenOrientation="landscape" >
         </activity>
-        <activity
-            android:name=".activity.ChangePasswordActivity"
-            android:label="@string/title_activity_change_password" >
-        </activity>
+
 
         <service
             android:name=".service.UploadBackgroundService"
