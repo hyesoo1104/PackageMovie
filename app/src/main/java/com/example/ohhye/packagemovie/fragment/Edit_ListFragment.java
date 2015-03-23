@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -73,12 +74,12 @@ public class Edit_ListFragment extends Fragment implements AbsListView.OnScrollL
         net = new Network(mContext);
 
         //리스트 아이템 추가
-        /*dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
+        dataArr.add(new SceneData("path1",BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene1",  "03:20") );
-        dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
+        dataArr.add(new SceneData("path2",BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene2",  "00:02") );
-        dataArr.add(new SceneData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene3",  "01:15") );*/
+        dataArr.add(new SceneData("path3",BitmapFactory.decodeResource(getResources(),
+                R.drawable.ic_launcher), "Scene3",  "01:15") );
 
         //dataArr = null;
 
@@ -219,7 +220,8 @@ public class Edit_ListFragment extends Fragment implements AbsListView.OnScrollL
                     Log.i("Drag ", "Exit");
                     break;
                 case DragEvent.ACTION_DROP:
-                     Log.i("Drag ", "Drop");
+                    Log.i("Drag ", "Drop");
+
                     greyBox.setBackgroundColor(Color.rgb(255,255,255));
                     if(removeArea.getTop()<event.getY())
                     {
