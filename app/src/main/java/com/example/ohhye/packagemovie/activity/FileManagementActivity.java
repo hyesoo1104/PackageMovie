@@ -42,7 +42,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Created by ohhye on 2015-01-26.
  */
-public class FileManagementActivity  extends ActionBarActivity {
+public class FileManagementActivity  extends ActionBarActivity{
     public static String id = LoginActivity.getID();
     private final int SELECT_MOVIE = 2;
     File file;
@@ -84,10 +84,11 @@ public class FileManagementActivity  extends ActionBarActivity {
 
         fileList = (ListView)findViewById(R.id.main_file_list);
         mAdapter = new FileListAdapter(mContext, R.layout.item_file_list, dataArr);
+
+
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         fileList.setAdapter(mAdapter);
-
-        fileList.setOnItemLongClickListener(new ListViewItemLongClickListener());
+        fileList.setOnItemClickListener(mItemClickListener);
 
 
         btn_file_add = (ImageView)findViewById(R.id.btn_file_add);
@@ -101,6 +102,9 @@ public class FileManagementActivity  extends ActionBarActivity {
 
         dataArr.clear();
         net.load_file_list();
+
+
+
     }
 
     private View.OnClickListener btnClickListener = new View.OnClickListener() {
@@ -113,13 +117,24 @@ public class FileManagementActivity  extends ActionBarActivity {
 
 
                 case R.id.btn_file_download:
-
                     String file_url = "http://";
                     file_url = file_url+(String)v.getTag();
                     download(file_url,mContext);
                     Log.d("Download",file_url+"//////down!!!");
                     break;
             }
+        }
+    };
+
+
+
+    private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long l_position) {
+            String s_path = mAdapter.getItem(position).streaming_path;
+            Intent i = new Intent(getApplication(), StreamingActivity.class);
+            i.putExtra("URL",s_path);
+            startActivity(i);
         }
     };
 
@@ -132,6 +147,7 @@ public class FileManagementActivity  extends ActionBarActivity {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
         {
+            Log.d("LongClick","LongClicksw!!!");
             //LongClick
             return false;
         }
@@ -345,12 +361,14 @@ public class FileManagementActivity  extends ActionBarActivity {
         Bitmap thumbnail;
         String name;
         String duration;
+        String streaming_path;
 
-        FileData(String _path,Bitmap _Img, String _name, String _duration){
+        FileData(String _path,Bitmap _Img, String _name, String _duration, String _streaming_path){
             path = _path;
             thumbnail = _Img;
             name = _name;
             duration = _duration;
+            streaming_path = _streaming_path;
         }
     }
 
@@ -358,8 +376,8 @@ public class FileManagementActivity  extends ActionBarActivity {
     /*---------------------------------------------------------------------------------------------------------------
    *   AddItem
    ---------------------------------------------------------------------------------------------------------------*/
-    public static void addItem(String path,Bitmap thumbnail, String name, String duration){
-        dataArr.add(new FileData(path,thumbnail,name,duration));
+    public static void addItem(String path,Bitmap thumbnail, String name, String duration, String streaming_path){
+        dataArr.add(new FileData(path,thumbnail,name,duration,streaming_path));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -397,7 +415,7 @@ public class FileManagementActivity  extends ActionBarActivity {
         }
 
         @Override
-        public Object getItem(int position) {
+        public FileData getItem(int position) {
             return fileDataArr.get(position);
         }
 

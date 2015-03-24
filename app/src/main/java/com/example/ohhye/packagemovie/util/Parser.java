@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
+import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -60,7 +60,7 @@ public class Parser {
                 running_time = item.get("running_time").toString();
 
                 Bitmap bm = BitmapFactory.decodeResource(Resources.getSystem(),R.drawable.edit_text_icon);
-                Edit_ListFragment.addItem(video_path, bm, video_name, running_time);
+                Edit_SceneListFragment.addItem(video_path, bm, video_name, running_time);
             }
 
             Log.d("fileList : " , fileList.toString());

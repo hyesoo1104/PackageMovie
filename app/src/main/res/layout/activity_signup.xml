@@ -46,6 +46,7 @@
             android:textColor="#baffffff"
             android:textColorHint="#88ffffff"
             android:textColorHighlight="#ffffce73"
+            android:privateImeOptions="defaultInputmode=english"
             android:paddingLeft="10dp"
             android:hint="Group Name"
             sl:scale_textsize="0.05"
@@ -53,11 +54,7 @@
             sl:scale_left="0.05"
             sl:scale_width="0.98"
             sl:scale_height="0.1"
-
             />
-
-
-
 
 
         <ImageView
@@ -82,6 +79,7 @@
             android:paddingLeft="10dp"
             android:inputType="textPassword"
             android:hint="Password"
+            android:privateImeOptions="defaultInputmode=english"
             sl:scale_textsize="0.05"
             sl:scale_top="0.73"
             sl:scale_left="0.05"
@@ -115,6 +113,7 @@
             android:inputType="textPassword"
             android:hint="Confirm Password"
             android:paddingLeft="10dp"
+            android:privateImeOptions="defaultInputmode=english"
             sl:scale_textsize="0.05"
             sl:scale_top="1.01"
             sl:scale_left="0.05"

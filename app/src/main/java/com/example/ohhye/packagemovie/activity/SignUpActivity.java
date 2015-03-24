@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.ohhye.packagemovie.util.Network;
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.Network;
+
+import java.util.regex.Pattern;
 
 
 public class SignUpActivity extends ActionBarActivity implements View.OnClickListener {
@@ -41,12 +45,36 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
         btn_create = (Button)findViewById(R.id.btn_signup_create);
         btn_create.setOnClickListener(this);
 
+
+        int maxLength = 15;
+        InputFilter filterArray = new InputFilter.LengthFilter(maxLength);
+
+
         signup_group = (EditText)findViewById(R.id.signup_groupid);
+        signup_group.setFilters(new InputFilter[]{filterArray,filterAlphaNum});
+
+
         signup_pwd = (EditText)findViewById(R.id.signup_password);
+        signup_pwd.setFilters(new InputFilter[]{filterArray,filterAlphaNum});
+
         signup_repwd = (EditText)findViewById(R.id.signup_repassword);
+        signup_repwd.setFilters(new InputFilter[]{filterArray,filterAlphaNum});
     }
 
 
+    // 영문만 허용 (숫자 포함)
+    protected InputFilter filterAlphaNum = new InputFilter() {
+
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+
+            Pattern ps = Pattern.compile("^[a-zA-Z0-9]+$");
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -67,15 +95,18 @@ public class SignUpActivity extends ActionBarActivity implements View.OnClickLis
                 password = signup_pwd.getText().toString();
                 repassword = signup_repwd.getText().toString();
 
-                if(password.equals(repassword))
+                //아이디나 비밀번호가 입력이 안됬을때
+                if(group_name.equals("")||password.equals(""))
                 {
-                    net.createGroup(group_name,password);
+                    Toast.makeText(mContext,"아이디와 비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    Toast.makeText(mContext,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+                else {
+                    if (password.equals(repassword)) {
+                        net.createGroup(group_name, password);
+                    } else {
+                        Toast.makeText(mContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
                 break;
         }
     }

@@ -13,7 +13,7 @@ import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.activity.FileManagementActivity;
 import com.example.ohhye.packagemovie.activity.LoginActivity;
 import com.example.ohhye.packagemovie.activity.SignUpActivity;
-import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
+import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.singletone_object.VolleySingleton;
 import com.google.gson.Gson;
 
@@ -106,8 +106,6 @@ public class Network{
                 result = parser.result_parser(response);
                 Log.d("result", result);
 
-                //임시!! 항상 로그인
-                result ="200";
 
                 if(result.equals("200")) {
                     ((LoginActivity)context).login(Groupname,Password);
@@ -261,7 +259,7 @@ public class Network{
             @Override
             public void onResponse(Bitmap response) {
                 Log.d("getThumbnail Response","Response!!!");
-                Edit_ListFragment.addItem(video_path, response, video_name, convertTime(running_time));
+                Edit_SceneListFragment.addItem(video_path, response, video_name, convertTime(running_time));
             }
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
@@ -358,7 +356,7 @@ public class Network{
             @Override
             public void onResponse(Bitmap response) {
                 Log.d("getThumbnail Response","Response!!!");
-                FileManagementActivity.addItem(video_path, response, video_name, convertTime(running_time));
+                FileManagementActivity.addItem(video_path, response, video_name, convertTime(running_time),streaming_path);
             }
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override

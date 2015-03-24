@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -68,8 +69,11 @@ public class DndListView extends ListView {
                     if (itemnum == AdapterView.INVALID_POSITION) {
                         break;
                     }
+                    Log.d("Itemnum" ,""+itemnum);
                     ViewGroup item = (ViewGroup) getChildAt(itemnum - getFirstVisiblePosition());
                     mDragPoint = y - item.getTop();
+                    /*TextView txt = (TextView)item.findViewById(R.id.scene_list_item_name);
+                    Log.d("item string" ,""+txt.getText().toString());*/
                     mCoordOffset = ((int)ev.getRawY()) - y;
                     View dragger = item.findViewById(R.id.scene_list_item_thumbnail);
 
@@ -82,8 +86,11 @@ public class DndListView extends ListView {
                         item.setDrawingCacheEnabled(true);
                         // Create a copy of the drawing cache so that it does not get recycled
                         // by the framework when the list tries to clean up memory
+
                         Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
                         startDragging(bitmap, y);
+                        item.destroyDrawingCache();
+
                         mDragPos = itemnum;
                         mFirstDragPos = mDragPos;
                         mHeight = getHeight();
@@ -130,11 +137,11 @@ public class DndListView extends ListView {
     }
 
     private void adjustScrollBounds(int y) {
-        if (y >= mHeight / 4) {
-            mUpperBound = mHeight / 4;
+        if (y >= mHeight / 3) {
+            mUpperBound = mHeight / 3;
         }
-        if (y <= mHeight * 3 / 4) {
-            mLowerBound = mHeight * 3 / 4;
+        if (y <= mHeight * 2 / 3) {
+            mLowerBound = mHeight * 2 / 3;
         }
     }
 
@@ -284,6 +291,8 @@ public class DndListView extends ListView {
     }
 
     private void startDragging(Bitmap bm, int y) {
+
+
         stopDragging();
 
         mWindowParams = new WindowManager.LayoutParams();
@@ -301,7 +310,7 @@ public class DndListView extends ListView {
         mWindowParams.windowAnimations = 0;
 
         ImageView v = new ImageView(mContext);
-        int backGroundColor = Color.parseColor("#e0103010");
+        int backGroundColor = Color.parseColor("#20B2B2B2");
         //int backGroundColor = mContext.getResources().getColor(R.color.dragndrop_background);
 
         v.setBackgroundColor(backGroundColor);
@@ -312,6 +321,8 @@ public class DndListView extends ListView {
         mWindowManager = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
         mWindowManager.addView(v, mWindowParams);
         mDragView = v;
+
+
     }
 
     private void dragView(int x, int y) {
@@ -330,7 +341,7 @@ public class DndListView extends ListView {
     private void stopDragging() {
         if (mDragView != null) {
             WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
-            wm.removeView(mDragView);
+            wm.removeViewImmediate(mDragView);
             mDragView.setImageDrawable(null);
             mDragView = null;
         }

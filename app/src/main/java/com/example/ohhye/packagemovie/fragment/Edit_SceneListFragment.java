@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -58,7 +59,7 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-   // private ListAdapter mAdapter;
+    // private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static Edit_SceneListFragment newInstance(String param1, String param2) {
@@ -137,7 +138,7 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
         sceneList.setDropListener(this);
 
         // Set OnItemClickListener so we can be notified on item clicks
-        //sceneList.setOnItemClickListener(this);
+        sceneList.setOnItemLongClickListener(new ListViewItemLongClickListener());
 
         return view;
     }
@@ -158,9 +159,28 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
     @Override
     public void drop(int from, int to) {
         Log.d("Drop","Drop!!!!");
+        SceneData item = dataArr.remove(from);
+        dataArr.add(to, item);
+        mAdapter.notifyDataSetChanged();
+
     }
 
 
+
+
+    /*---------------------------------------------------------------------------------------------------------------
+    *   LongClick
+    ---------------------------------------------------------------------------------------------------------------*/
+
+    private class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+        {
+           removeItem(position);
+           return false;
+        }
+    }
 
 
     /*---------------------------------------------------------------------------------------------------------------
@@ -181,7 +201,7 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
     /*---------------------------------------------------------------------------------------------------------------
     *   RemoveItem
     ---------------------------------------------------------------------------------------------------------------*/
-    public void removeItem(int position){
+    public static void removeItem(int position){
         dataArr.remove(position);
         mAdapter.notifyDataSetChanged();
     }
@@ -264,6 +284,7 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
     }
 
 
+
  /*   *//**
      * The default content for this Fragment has a TextView that is shown when
      * the list is empty. If you would like to change the text, call this method
@@ -291,5 +312,7 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }*/
+
+
 
 }

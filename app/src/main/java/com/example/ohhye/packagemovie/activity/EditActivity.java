@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
-import com.example.ohhye.packagemovie.fragment.Edit_ListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
@@ -111,8 +110,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
 
         //서버로부터 리스트 로딩
-        //Edit_ListFragment.clearArr();
-        //net.load_scene_list();
+        Edit_SceneListFragment.clearArr();
+        net.load_scene_list();
     }
 
     @Override
@@ -154,7 +153,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 Log.d("MyTag","list btn click");
                 FRAGMENT_FLAG = 1;
                 btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text);
-                fr = new Edit_ListFragment();
+                fr = new Edit_SceneListFragment();
                 setFragment(fr);
                 break;
 
@@ -187,6 +186,9 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
 
 
+
+
+
     //--------------------------------------------자막추가----------------------------------------------------------------------
     private void addText(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -211,7 +213,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 // Do something with value!
                 Toast.makeText(EditActivity.this, value,Toast.LENGTH_SHORT).show();
                 Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.edit_text_icon);
-                Edit_ListFragment.addItem(null,bm,value,"00:03");
+                Edit_SceneListFragment.addItem(null, bm, value, "00:03");
 
             }
         });
@@ -274,7 +276,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 //썸네일 얻기
                 Bitmap bm = mGetVideoThumnailImg(video_id);
 
-                Edit_ListFragment.addItem(path,bm,name,running_time);
+                Edit_SceneListFragment.addItem(path,bm,name,running_time);
                 Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time + "\nID : " + id );
             }
 

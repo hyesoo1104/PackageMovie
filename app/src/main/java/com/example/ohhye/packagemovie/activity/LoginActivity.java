@@ -77,8 +77,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             case R.id.btn_login:
                 String pwd = login_pwd.getText().toString();
                 group_name = login_group_id.getText().toString();
-                //net.login(group_name,pwd);
-                login(group_name,pwd);
+                net.login(group_name,pwd);
+
                 break;
             case R.id.btn_createGroup:
                 signUp();
