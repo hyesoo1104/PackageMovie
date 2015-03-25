@@ -1,6 +1,9 @@
 package com.example.ohhye.packagemovie.service;
 
+import android.app.ProgressDialog;
 import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
@@ -53,7 +56,7 @@ public class UploadBackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         //UploadQueue 동작
         ArrayBlockingQueue<UploadFile> q = getUploadQueue();
-        new UploadQueue().execute(q, null, null);
+        new UploadQueue(getApplicationContext()).execute(q, null, null);
 
         return START_STICKY;
     }
@@ -65,8 +68,18 @@ public class UploadBackgroundService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+
+
     public static class UploadQueue extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void, Void> {
 
+        private Context mContext;
+        ProgressDialog mDialog ;
+
+        public UploadQueue(Context context) {
+            mContext = context;
+            mDialog = new ProgressDialog(mContext);
+
+        }
 
         Parser parser = new Parser();
 
@@ -79,10 +92,21 @@ public class UploadBackgroundService extends Service {
         //String path = Environment.getExternalStorageDirectory()+"/Movies/PackageMovie/";
         String url = "http://210.118.74.131:8080/PackageMovie/uploadFile";
 
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mDialog.setCancelable(true);
+            mDialog.setOnCancelListener(cancelListener);
+            mDialog.setMessage("업로드중입니다.");
+            mDialog.show();
+        }
+
         @Override
         protected Void doInBackground(ArrayBlockingQueue<UploadFile>... params) {
-
-
             /**
              * 소비자 클래스
              * @author falbb
@@ -153,11 +177,34 @@ public class UploadBackgroundService extends Service {
                     e.printStackTrace();
                 }
             }
-
-
-
-
         }
+
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            if (progress[0].equals("progress")) {
+                mDialog.setProgress(Integer.parseInt(progress[1]));
+                mDialog.setMessage(progress[2]);
+            } else if (progress[0].equals("max")) {
+                mDialog.setMax(Integer.parseInt(progress[1]));
+            }
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPostExecute(String unused) {
+            mDialog.dismiss();
+            //Toast.makeText(mContext, Integer.toString(result) + " total sum",
+            //Toast.LENGTH_SHORT).show();
+        }
+
+        DialogInterface.OnCancelListener cancelListener = new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // TODO Auto-generated method stub
+
+            }
+        };
+
 
     }
 }
