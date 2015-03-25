@@ -40,6 +40,7 @@ public class UploadBackgroundService extends Service {
 
     public static String id ="";
 
+
     private static ArrayBlockingQueue<UploadFile> queue =null;
 
     public static UploadQueue uploadThread = new UploadQueue();

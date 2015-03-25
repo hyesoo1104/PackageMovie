@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.activity.FileManagementActivity;
 import com.example.ohhye.packagemovie.activity.LoginActivity;
+import com.example.ohhye.packagemovie.activity.SettingsActivity;
 import com.example.ohhye.packagemovie.activity.SignUpActivity;
 import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.singletone_object.VolleySingleton;
@@ -137,8 +138,8 @@ public class Network{
     /* ------------------------------------------------------------------------------------------------
     *  비밀번호 변경
    ------------------------------------------------------------------------ ---------------------------*/
-    public void user_update(final String Groupname, final String Password, final String new_password){
-        uri = server_ip+"login";
+    public void pwd_change(final String Groupname, final String Password, final String NewPassword){
+        uri = server_ip+"editGroup";
         StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -146,14 +147,9 @@ public class Network{
                 result = parser.result_parser(response);
                 Log.d("result", result);
 
-                //임시!! 항상 로그인
-                result ="200";
 
-                if(result.equals("200")) {
-                    ((LoginActivity)context).login(Groupname,Password);
-                }else {
-                    ((LoginActivity)context).toast(result);
-                }
+                ((SettingsActivity)context).toast(result);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -167,6 +163,7 @@ public class Network{
                 mParams = new HashMap<String, String>();
                 mParams.put("group_id", Groupname);
                 mParams.put("group_password", Password);
+                mParams.put("new_password", NewPassword);
 
                 return mParams;
             }
@@ -381,5 +378,43 @@ public class Network{
         Log.d("Running Time",running_time);
         return running_time;
     }
+
+
+    /* ------------------------------------------------------------------------------------------------
+    *  파일삭제
+   ------------------------------------------------------------------------ ---------------------------*/
+    public void file_delete(final String Groupname, final String File_name, final int Position){
+        uri = server_ip+"deleteFile";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // response
+                result = parser.result_parser(response);
+                Log.d("result", result);
+
+                if(result.equals("200")) {
+                    FileManagementActivity.removeItem(Position);
+                    ((FileManagementActivity)context).toast(result);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error
+                // Log.d("Error.Response", response);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                mParams = new HashMap<String, String>();
+                mParams.put("group_id", Groupname);
+                mParams.put("video_name", File_name);
+
+                return mParams;
+            }
+        };
+        VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
+    }
+
 
 }

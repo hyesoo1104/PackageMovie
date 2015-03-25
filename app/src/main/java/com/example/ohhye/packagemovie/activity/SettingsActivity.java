@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.util.Network;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -21,6 +22,8 @@ import com.example.ohhye.packagemovie.R;
 public class SettingsActivity extends ActionBarActivity implements View.OnClickListener{
 
     private TextView btn_wifiUploadOnOff;
+
+    Network net;
 
     ImageView settings_pwd_bg;
     TextView txt_current_pwd;
@@ -43,6 +46,8 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_settings);
+
+        net = new Network(this);
 
         edit = LoginActivity.mPref.edit();
 
@@ -193,33 +198,25 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 String current_pwd = LoginActivity.mPref.getString("pwd","null");
 
                 String pwd = settings_current_pwd.getText().toString();
-                String c_pwd=settings_new_pwd.getText().toString();
-                String c_re_pwd =settings_re_new_pwd.getText().toString();
+                String new_pwd=settings_new_pwd.getText().toString();
+                String new_re_pwd =settings_re_new_pwd.getText().toString();
 
 
-                Log.d("current_pwd.equals(c_pwd)", current_pwd.equals(c_pwd) + "       " + current_pwd + "         " + c_pwd);
-                Log.d("c_pwd.equals(c_re_pwd)",c_pwd.equals(c_re_pwd)+"         "+c_pwd+"       "+c_re_pwd);
+                Log.d("current_pwd.equals(c_pwd)", current_pwd.equals(new_pwd) + "       " + current_pwd + "         " + new_pwd);
+                Log.d("c_pwd.equals(c_re_pwd)",new_pwd.equals(new_re_pwd)+"         "+new_pwd+"       "+new_re_pwd);
 
+                if (!new_pwd.equals(new_re_pwd)) {
+                    Toast.makeText(this, "변경할 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                }
 
-                if(current_pwd.equals(c_pwd))
+                if(current_pwd.equals(new_pwd))
                 {
                     Toast.makeText(this, "변경할 비밀번호가 현재 비밀번호와 같습니다.", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    if(current_pwd.equals(pwd)) {
-                        if (c_pwd.equals(c_re_pwd)) {
-                            edit = LoginActivity.mPref.edit();
-                            edit.putString("pwd", settings_new_pwd.getText().toString());
-                            edit.remove("autoLogin");
-                            edit.commit();
-                            Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show();
-                            changePwdLayout(false);
-                        } else {
-                            Toast.makeText(this, "변경할 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    }else
-                        Toast.makeText(this, "현재 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-                }
+
+                net.pwd_change(pwd,new_pwd,new_re_pwd);
+
+
                 break;
 
             case R.id.btn_pwd_cancel:
@@ -232,5 +229,18 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.hold,R.anim.finish_fade);
+    }
+
+    public void toast(String result){
+        if(result.equals("200")) {
+            edit = LoginActivity.mPref.edit();
+            edit.putString("pwd", settings_new_pwd.getText().toString());
+            edit.remove("autoLogin");
+            edit.commit();
+            Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+            changePwdLayout(false);
+        }
+        else if(result.equals("602"))
+            Toast.makeText(this,"현재 비밀번호를 확인해주세요.",Toast.LENGTH_SHORT).show();
     }
 }

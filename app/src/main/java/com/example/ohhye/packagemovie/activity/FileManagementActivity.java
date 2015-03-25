@@ -1,11 +1,13 @@
 package com.example.ohhye.packagemovie.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -89,6 +91,7 @@ public class FileManagementActivity  extends ActionBarActivity{
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         fileList.setAdapter(mAdapter);
         fileList.setOnItemClickListener(mItemClickListener);
+        fileList.setOnItemLongClickListener(mItemLongClickListener);
 
 
         btn_file_add = (ImageView)findViewById(R.id.btn_file_add);
@@ -127,7 +130,9 @@ public class FileManagementActivity  extends ActionBarActivity{
     };
 
 
-
+    /*---------------------------------------------------------------------------------------------------------------
+        *   Click
+    ---------------------------------------------------------------------------------------------------------------*/
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long l_position) {
@@ -141,20 +146,40 @@ public class FileManagementActivity  extends ActionBarActivity{
     };
 
     /*---------------------------------------------------------------------------------------------------------------
-    *   LongClick
+        *   LongClick
     ---------------------------------------------------------------------------------------------------------------*/
+    private AdapterView.OnItemLongClickListener mItemLongClickListener = new AdapterView.OnItemLongClickListener() {
 
-    private class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
-    {
+
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-        {
+        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long l_position) {
             Log.d("LongClick","LongClicksw!!!");
             //LongClick
+            final String file_name = dataArr.get(position).name;
+
+            //동영상제목 설정
+            AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+            alert.setMessage("파일으르 삭제하시겠습니까?");
+
+
+            alert.setNegativeButton("취소",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    });
+
+            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                  net.file_delete(id, file_name, position);
+                }
+            });
+
+            alert.show();
             return false;
         }
+    };
 
-    }
 
 
 
@@ -386,7 +411,7 @@ public class FileManagementActivity  extends ActionBarActivity{
     /*---------------------------------------------------------------------------------------------------------------
     *   RemoveItem
     ---------------------------------------------------------------------------------------------------------------*/
-    public void removeItem(int position){
+    public static void removeItem(int position){
         dataArr.remove(position);
         mAdapter.notifyDataSetChanged();
     }
@@ -451,6 +476,15 @@ public class FileManagementActivity  extends ActionBarActivity{
             return convertView;
         }
 
+    }
+
+    public void toast(String result){
+        if(result.equals("200"))
+            Toast.makeText(mContext, "파일이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+        else if(result.equals("601"))
+            Toast.makeText(mContext,"존재하지 않은 그룹 아이디입니다.",Toast.LENGTH_SHORT).show();
+        else if(result.equals("602"))
+            Toast.makeText(mContext,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
     }
 
 }
