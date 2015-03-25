@@ -65,8 +65,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         {
             String pref_id = mPref.getString("id",null);
             String pref_pwd = mPref.getString("pwd",null);
-           // net.login(pref_id,pref_pwd);
-            login(pref_id,pref_pwd);
+            net.login(pref_id,pref_pwd);
+            //login(pref_id,pref_pwd);
         }
 
 
@@ -78,7 +78,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 String pwd = login_pwd.getText().toString();
                 group_name = login_group_id.getText().toString();
                 net.login(group_name,pwd);
-
+                //login(group_name,pwd);
                 break;
             case R.id.btn_createGroup:
                 signUp();

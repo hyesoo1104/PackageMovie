@@ -1,10 +1,10 @@
 package com.example.ohhye.packagemovie.service;
 
-import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -17,8 +17,6 @@ import com.example.ohhye.packagemovie.vo.UploadFile;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -28,16 +26,23 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class UploadBackgroundService extends Service {
 
+    public static Context mContext;
+
+    @Override
+    public Context getApplicationContext() {
+        mContext = super.getApplicationContext();
+        return mContext;
+    }
 
     public static String id ="";
 
     private static ArrayBlockingQueue<UploadFile> queue =null;
+
+    public static UploadQueue uploadThread = new UploadQueue();
 
     public static ArrayBlockingQueue<UploadFile> getUploadQueue(){
         if (queue == null) {
@@ -49,14 +54,15 @@ public class UploadBackgroundService extends Service {
 
     public void onCreate(){
         Toast.makeText(getApplicationContext(),"Service Start",Toast.LENGTH_SHORT).show();
-
+        //UploadQueue 동작
+        ArrayBlockingQueue<UploadFile> q = getUploadQueue();
+        if(LoginActivity.mPref.getBoolean("WifiOption",false)==false) {
+            uploadThread.execute(q, null, null);
+        }
     }
 
 
     public int onStartCommand(Intent intent, int flags, int startId){
-        //UploadQueue 동작
-        ArrayBlockingQueue<UploadFile> q = getUploadQueue();
-        new UploadQueue(getApplicationContext()).execute(q, null, null);
 
         return START_STICKY;
     }
@@ -70,16 +76,10 @@ public class UploadBackgroundService extends Service {
 
 
 
+
+
     public static class UploadQueue extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void, Void> {
 
-        private Context mContext;
-        ProgressDialog mDialog ;
-
-        public UploadQueue(Context context) {
-            mContext = context;
-            mDialog = new ProgressDialog(mContext);
-
-        }
 
         Parser parser = new Parser();
 
@@ -91,19 +91,11 @@ public class UploadBackgroundService extends Service {
 
         //String path = Environment.getExternalStorageDirectory()+"/Movies/PackageMovie/";
         String url = "http://210.118.74.131:8080/PackageMovie/uploadFile";
+        public static Boolean isEnable=true;
 
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mDialog.setCancelable(true);
-            mDialog.setOnCancelListener(cancelListener);
-            mDialog.setMessage("업로드중입니다.");
-            mDialog.show();
-        }
+        ConnectivityManager manager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         @Override
         protected Void doInBackground(ArrayBlockingQueue<UploadFile>... params) {
@@ -112,15 +104,18 @@ public class UploadBackgroundService extends Service {
              * @author falbb
              *
              */
-            while(true) {
-                try {
 
-                    if(LoginActivity.mPref.getBoolean("WifiOption",false)==false)
-                    {
+            while(true) {
+                //Wifi일때만 업로드하는데 와이파이가 안켜져이써!!!! 그럼업로드를 못하겠지??????
+                if(LoginActivity.mPref.getBoolean("WifiOption", false) == true && wifi.isConnected()==false){
+                    continue;
+                }
+                else{
+                    try {
                         Log.d("Upload(BackgroundService)", "running");
                         //ArrayBlockingQueue<UploadFile> queue = getUploadQueue();
                         UploadFile file_info = queue.take();
-
+                        Log.d("Upload(BackgroundService)", file_info.getName());
 
                         File file = new File(file_info.getPath());
 
@@ -135,7 +130,7 @@ public class UploadBackgroundService extends Service {
                         //파일 데이터 추가
                         builder.addPart("multipart_file", new FileBody(file)); //빌더에 FileBody 객체에 인자로 File 객체를 넣어준다.
 
-                        Log.d("Upload","\ngroupid  :  " +file_info.getGroupId()+"\nvideo name  :  "+file_info.getName()+"\nrunning time  :  "+file_info.getRunning_time() );
+                        Log.d("Upload", "\ngroupid  :  " + file_info.getGroupId() + "\nvideo name  :  " + file_info.getName() + "\nrunning time  :  " + file_info.getRunning_time());
 
                         //전송
                         HttpClient client = AndroidHttpClient.newInstance("Android");
@@ -149,62 +144,22 @@ public class UploadBackgroundService extends Service {
                                 response = EntityUtils.toString(httpEntity);
                                 String result = parser.result_parser(response);
                                 Log.d("result", response);
-                                if(result.equals("200")){
+                                if (result.equals("200")) {
                                     Log.d("result", "file list refresh");
                                     //FileManagementActivity.refreshList();
                                 }
                             }
-                        }
-                        catch (UnsupportedEncodingException e)
-                        {
+                        } catch (Exception e) {
+                            getUploadQueue().put(file_info);
                             e.printStackTrace();
                         }
-                        catch (ClientProtocolException e1)
-                        {
-                            e1.printStackTrace();
-                        }
-                        catch (IOException e1)
-                        {
-                            e1.printStackTrace();
-                        }
-                        catch (ParseException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-
-        @Override
-        protected void onProgressUpdate(String... progress) {
-            if (progress[0].equals("progress")) {
-                mDialog.setProgress(Integer.parseInt(progress[1]));
-                mDialog.setMessage(progress[2]);
-            } else if (progress[0].equals("max")) {
-                mDialog.setMax(Integer.parseInt(progress[1]));
-            }
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        protected void onPostExecute(String unused) {
-            mDialog.dismiss();
-            //Toast.makeText(mContext, Integer.toString(result) + " total sum",
-            //Toast.LENGTH_SHORT).show();
-        }
-
-        DialogInterface.OnCancelListener cancelListener = new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                // TODO Auto-generated method stub
-
-            }
-        };
-
-
     }
 }

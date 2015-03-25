@@ -161,8 +161,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                     btn_wifiUploadOnOff.setText("ON");
                     String onColor = "#FFFFD15B";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(onColor));
-                    edit.putBoolean("WifiOption",true);
-
+                    edit.putBoolean("WifiOption", true);
                 }
                 //ON일때  (OFF로 설정)
                 else if(wifiUploadOnOff==1){
