@@ -132,8 +132,10 @@ public class FileManagementActivity  extends ActionBarActivity{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long l_position) {
             String s_path = mAdapter.getItem(position).streaming_path;
+            String v_path = mAdapter.getItem(position).path;
             Intent i = new Intent(getApplication(), StreamingActivity.class);
-            i.putExtra("URL",s_path);
+            i.putExtra("streaming_path",s_path);
+            i.putExtra("video_path",v_path);
             startActivity(i);
         }
     };

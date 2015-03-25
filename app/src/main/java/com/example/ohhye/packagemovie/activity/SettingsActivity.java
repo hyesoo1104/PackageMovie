@@ -73,8 +73,12 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         btn_settings_pwd_change = (TextView)findViewById(R.id.btn_settings_pwd_change);
         btn_settings_pwd_change.setOnClickListener(this);
 
+
         btn_wifiUploadOnOff=(TextView)findViewById(R.id.wifiUploadOnOff);
         btn_wifiUploadOnOff.setOnClickListener(this);
+
+        if(LoginActivity.mPref.getBoolean("WifiOption",false)==true) btn_wifiUploadOnOff.setText("ON");
+        else if(LoginActivity.mPref.getBoolean("WifiOption",false)==false) btn_wifiUploadOnOff.setText("OFF");
 
         changePwdLayout(false);
     }
@@ -151,19 +155,22 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.wifiUploadOnOff:
                 //On = FFFFD15B       Off = ff959595
-                //OFF일때
+                //OFF일때  (ON으로 설정)
                 if(wifiUploadOnOff==0) {
                     wifiUploadOnOff=1;
                     btn_wifiUploadOnOff.setText("ON");
                     String onColor = "#FFFFD15B";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(onColor));
+                    edit.putBoolean("WifiOption",true);
+
                 }
-                //ON일때
+                //ON일때  (OFF로 설정)
                 else if(wifiUploadOnOff==1){
                     wifiUploadOnOff=0;
                     btn_wifiUploadOnOff.setText("OFF");
                     String offColor = "#ff959595";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(offColor));
+                    edit.putBoolean("WifiOption",false);
                 }
                 break;
 

@@ -1,5 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sl="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,44 +8,24 @@
     android:orientation="horizontal"
     tools:context="com.example.ohhye.packagemovie.activity.StreamingActivity">
 
-    <com.ssomai.android.scalablelayout.ScalableLayout
+    <com.example.ohhye.packagemovie.util.CustomVideoView
+        android:id="@+id/streaming_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+    />
+
+
+    <ImageView
+        android:id="@+id/btn_streaming_download"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/main_sl"
-        android:background="#000000"
-        sl:scale_base_width="1.92"
-        sl:scale_base_height="1.08">
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_streaming_download"
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            sl:scale_top="0.0"
-            sl:scale_left="0.0"
-            sl:scale_width="1.7"
-            sl:scale_height="1.08">
-
-            <VideoView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/streaming_view"
-            />
-        </FrameLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/app_title"
-            android:background="@drawable/btn_upload"
-            sl:scale_top="0.9"
-            sl:scale_left="1.73"
-            sl:scale_width="0.15"
-            sl:scale_height="0.15"
         />
 
 
-    </com.ssomai.android.scalablelayout.ScalableLayout>
 
 
-
-
-</LinearLayout>
+</FrameLayout>

@@ -58,7 +58,7 @@ public class FileManager {
         running_time = Long.toString(duration);
 
 
-        UploadFile temp = new UploadFile(LoginActivity.group_name,file_path,file_name,running_time);
+        UploadFile temp = new UploadFile(LoginActivity.getID(),file_path,file_name,running_time);
 
         try {
             uploadQueue.put(temp);
