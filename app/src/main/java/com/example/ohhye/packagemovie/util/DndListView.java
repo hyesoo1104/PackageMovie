@@ -310,7 +310,7 @@ public class DndListView extends ListView {
         mWindowParams.windowAnimations = 0;
 
         ImageView v = new ImageView(mContext);
-        int backGroundColor = Color.parseColor("#20B2B2B2");
+        int backGroundColor = Color.parseColor("#81B2B2B2");
         //int backGroundColor = mContext.getResources().getColor(R.color.dragndrop_background);
 
         v.setBackgroundColor(backGroundColor);

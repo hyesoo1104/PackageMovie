@@ -216,18 +216,32 @@ public class FileManagementActivity  extends ActionBarActivity{
 
 
                 String running_time = "";
+                String fileExtend = getExtension(path);
 
-                //재생시간 얻기
-                running_time = getRunningTime(path);
+                Log.d("FileSelect","확장자 = "+fileExtend);
 
-                UploadFile temp = new UploadFile(id, path, name, running_time);
+                if(fileExtend.equals("mp4")) {
+                    //재생시간 얻기
+                    running_time = getRunningTime(path);
 
-                try {
-                    uploadQueue.put(temp);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    UploadFile temp = new UploadFile(id, path, name, running_time);
+
+                    try {
+                        uploadQueue.put(temp);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("FileSelect", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time);
                 }
-                Log.d("FileSelect", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time );
+                else
+                {
+                    //TODO: mp4파일만올릴수 있다고 다이얼로그 띄워주기기
+                    AlertDialog.Builder ab = new AlertDialog.Builder(FileManagementActivity.this);
+                    ab.setMessage("MP4 형식의 동영상만 업로드할 수 있습니다.");
+                    ab.setPositiveButton("확인", null);
+                    ab.show();
+
+                }
             }
 
         }
@@ -490,4 +504,14 @@ public class FileManagementActivity  extends ActionBarActivity{
             Toast.makeText(mContext,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
     }
 
+
+    /**
+     * 파일의 확장자 조회
+     *
+     * @param fileStr
+     * @return
+     */
+    public static String getExtension(String fileStr) {
+        return fileStr.substring(fileStr.lastIndexOf(".") + 1, fileStr.length());
+    }
 }

@@ -214,7 +214,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 // Do something with value!
                 Toast.makeText(EditActivity.this, value,Toast.LENGTH_SHORT).show();
                 Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.edit_text_icon);
-                Edit_SceneListFragment.addItem(null, bm, value, "00:03");
+                Edit_SceneListFragment.addItem(null, bm, value, "0:3");
 
             }
         });
@@ -262,23 +262,37 @@ public class EditActivity  extends Activity implements View.OnClickListener {
             if(requestCode == SELECT_MOVIE)
             {
                 Uri uri = intent.getData();
+
                 String path = getPath(uri);
                 String name = getName(uri);
                 String id = getId(uri);         //ID는 썸네일 추출시 필요
+                String fileExtend = getExtension(path);
 
+                Log.d("FileSelect","확장자 = "+fileExtend);
 
-                String running_time = "";
+                if(fileExtend.equals("mp4"))
+                {
+                    String running_time = "";
 
-                //재생시간 얻기
-                running_time = getRunningTime(path);
+                    //재생시간 얻기
+                    running_time = getRunningTime(path);
 
-                long video_id = Long.parseLong(id);
+                    long video_id = Long.parseLong(id);
 
-                //썸네일 얻기
-                Bitmap bm = mGetVideoThumnailImg(video_id);
+                    //썸네일 얻기
+                    Bitmap bm = mGetVideoThumnailImg(video_id);
 
-                Edit_SceneListFragment.addItem(path,bm,name,running_time);
-                Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time + "\nID : " + id );
+                    Edit_SceneListFragment.addItem(path,bm,name,running_time);
+                    Log.e("###", "실제경로 : " + path + "\n파일명 : " + name + "\n재생시간 : " + running_time + "\nID : " + id );
+                }
+                else
+                {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(EditActivity.this);
+                    ab.setMessage("MP4 형식의 동영상만 편집할 수 있습니다.");
+                    ab.setPositiveButton("확인", null);
+                    ab.show();
+
+               }
             }
 
         }
@@ -370,5 +384,15 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
     }
 
+
+    /**
+     * 파일의 확장자 조회
+     *
+     * @param fileStr
+     * @return
+     */
+    public static String getExtension(String fileStr) {
+        return fileStr.substring(fileStr.lastIndexOf(".") + 1, fileStr.length());
+    }
 
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,33 +100,14 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
         clearArr();
 
 
-        //리스트 아이템 추가
-        dataArr.add(new SceneData("path1", BitmapFactory.decodeResource(getResources(),
+        //리스트 아이템 추가 더미
+        /*dataArr.add(new SceneData("path1", BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene1",  "03:20") );
         dataArr.add(new SceneData("path2",BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene2",  "00:02") );
         dataArr.add(new SceneData("path3",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene3",  "01:15") );
-        dataArr.add(new SceneData("path4", BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene4",  "03:20") );
-        dataArr.add(new SceneData("path5",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene5",  "00:02") );
-        dataArr.add(new SceneData("path6",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene6",  "01:15") );
-        dataArr.add(new SceneData("path7", BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene7",  "03:20") );
-        dataArr.add(new SceneData("path8",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene8",  "00:02") );
-        dataArr.add(new SceneData("path9",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene9",  "01:15") );
-        dataArr.add(new SceneData("path6",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene10",  "01:15") );
-        dataArr.add(new SceneData("path7", BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene11",  "03:20") );
-        dataArr.add(new SceneData("path8",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene12",  "00:02") );
-        dataArr.add(new SceneData("path9",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene13",  "01:15") );
+                R.drawable.ic_launcher), "Scene3",  "01:15") );*/
+
 
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);
         sceneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -184,15 +164,15 @@ public class Edit_SceneListFragment extends ListFragment implements DndListView.
 
 
     /*---------------------------------------------------------------------------------------------------------------
-  *  Data Array Clear
-  ---------------------------------------------------------------------------------------------------------------*/
+      *  Data Array Clear
+    ---------------------------------------------------------------------------------------------------------------*/
     public static void clearArr(){
         dataArr.clear();
     }
 
     /*---------------------------------------------------------------------------------------------------------------
- *   AddItem
- ---------------------------------------------------------------------------------------------------------------*/
+     *   AddItem
+     ---------------------------------------------------------------------------------------------------------------*/
     public static void addItem(String path,Bitmap thumbnail, String name, String duration){
         dataArr.add(new SceneData(path,thumbnail,name,duration));
         mAdapter.notifyDataSetChanged();

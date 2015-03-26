@@ -2,6 +2,7 @@ package com.example.ohhye.packagemovie.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -274,6 +275,8 @@ public class Network{
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                Bitmap defalut_img = BitmapFactory.decodeResource( context.getResources(),R.drawable.default_thumbnail);
+                FileManagementActivity.addItem(video_path,defalut_img, video_name, convertTime(running_time),streaming_path);
             }
         });
         VolleySingleton.getInstance(context).getRequestQueue().add(imageRequest);
@@ -381,6 +384,8 @@ public class Network{
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                Bitmap defalut_img = BitmapFactory.decodeResource( context.getResources(),R.drawable.default_thumbnail);
+                FileManagementActivity.addItem(video_path,defalut_img, video_name, convertTime(running_time),streaming_path);
             }
         });
         VolleySingleton.getInstance(context).getRequestQueue().add(imageRequest);
