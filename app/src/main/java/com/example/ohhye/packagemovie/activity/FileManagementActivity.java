@@ -160,7 +160,7 @@ public class FileManagementActivity  extends ActionBarActivity{
             //동영상제목 설정
             AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
 
-            alert.setMessage("파일으르 삭제하시겠습니까?");
+            alert.setMessage("파일 삭제하시겠습니까?");
 
 
             alert.setNegativeButton("취소",
@@ -234,8 +234,11 @@ public class FileManagementActivity  extends ActionBarActivity{
     }
 
     public static void refreshList(){
+        if(dataArr != null)
+        {
         dataArr.clear();
         net.load_file_list();
+        }
     }
 
     /*---------------------------------------------------------------------------

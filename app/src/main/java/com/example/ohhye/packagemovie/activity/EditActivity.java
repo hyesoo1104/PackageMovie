@@ -154,6 +154,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 FRAGMENT_FLAG = 1;
                 btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text);
                 fr = new Edit_SceneListFragment();
+                net.load_scene_list();
                 setFragment(fr);
                 break;
 

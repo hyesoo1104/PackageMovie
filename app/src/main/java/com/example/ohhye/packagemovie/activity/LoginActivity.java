@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
-import com.example.ohhye.packagemovie.service.UploadBackgroundService;
 import com.example.ohhye.packagemovie.util.Network;
 
 
@@ -67,6 +66,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         {
             String pref_id = mPref.getString("id",null);
             String pref_pwd = mPref.getString("pwd",null);
+            login_group_id.setText(pref_id);
+            login_pwd.setText(pref_pwd);
             net.login(pref_id,pref_pwd);
             //login(pref_id,pref_pwd);
         }
@@ -102,9 +103,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
       /*  //UploadQueue 동작
         ArrayBlockingQueue<UploadFile> q = UploadQueue.getUploadQueue();
         new UploadQueue().execute(q, null, null);*/
-
-        Intent serviceIntent = new Intent(this,UploadBackgroundService.class);
-        startService(serviceIntent);
 
         //아이디 비번 저장, 자동로그인 저장
         SharedPreferences.Editor editor = mPref.edit();

@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.util.Network;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 /**
  * Created by ohhye on 2015-01-26.
  */
@@ -40,6 +42,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     private TextView btn_settings_pwd_change;
     private int wifiUploadOnOff = 0; //OFF
 
+    SharedPreferences mPref;
     SharedPreferences.Editor edit;
 
     @Override
@@ -49,11 +52,10 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
 
         net = new Network(this);
 
-        edit = LoginActivity.mPref.edit();
+        mPref = getDefaultSharedPreferences(this.getBaseContext());
+
 
         settings_id = (TextView)findViewById(R.id.settings_id);
-
-
         settings_pwd_bg = (ImageView)findViewById(R.id.settings_bg2);
         txt_current_pwd = (TextView)findViewById(R.id.txt_current_pwd);
         settings_current_pwd = (EditText)findViewById(R.id.settings_current_pwd);
@@ -82,8 +84,18 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         btn_wifiUploadOnOff=(TextView)findViewById(R.id.wifiUploadOnOff);
         btn_wifiUploadOnOff.setOnClickListener(this);
 
-        if(LoginActivity.mPref.getBoolean("WifiOption",false)==true) btn_wifiUploadOnOff.setText("ON");
-        else if(LoginActivity.mPref.getBoolean("WifiOption",false)==false) btn_wifiUploadOnOff.setText("OFF");
+        Boolean isWifi = mPref.getBoolean("WifiOption",false);
+        if(mPref.getBoolean("WifiOption",false)==true) {
+
+            Log.d("WifiOption",isWifi.toString());
+            btn_wifiUploadOnOff.setText("ON");
+            btn_wifiUploadOnOff.setTextColor(Color.parseColor("#FFFFD15B"));
+        }
+        else if(mPref.getBoolean("WifiOption",false)==false) {
+            Log.d("WifiOption",isWifi.toString());
+            btn_wifiUploadOnOff.setText("OFF");
+            btn_wifiUploadOnOff.setTextColor(Color.parseColor("#ff959595"));
+        }
 
         changePwdLayout(false);
     }
@@ -162,23 +174,34 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 //On = FFFFD15B       Off = ff959595
                 //OFF일때  (ON으로 설정)
                 if(wifiUploadOnOff==0) {
+
                     wifiUploadOnOff=1;
                     btn_wifiUploadOnOff.setText("ON");
                     String onColor = "#FFFFD15B";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(onColor));
+                    edit = mPref.edit();
                     edit.putBoolean("WifiOption", true);
+                    edit.commit();
+                    Boolean isWifi = mPref.getBoolean("WifiOption",false);
+                    Log.d("WifiOption",isWifi.toString());
                 }
                 //ON일때  (OFF로 설정)
                 else if(wifiUploadOnOff==1){
+
                     wifiUploadOnOff=0;
                     btn_wifiUploadOnOff.setText("OFF");
                     String offColor = "#ff959595";
                     btn_wifiUploadOnOff.setTextColor(Color.parseColor(offColor));
+                    edit = mPref.edit();
                     edit.putBoolean("WifiOption",false);
+                    edit.commit();
+                    Boolean isWifi = mPref.getBoolean("WifiOption",false);
+                    Log.d("WifiOption",isWifi.toString());
                 }
                 break;
 
             case R.id.btn_logout:
+                edit = mPref.edit();
                 edit.remove("autoLogin");
                 edit.remove("id");
                 edit.remove("pwd");

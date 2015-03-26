@@ -23,6 +23,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,7 +112,7 @@ public class Network{
 
                 if(result.equals("200")) {
                     Log.d("Network","GroupName  :  "+Groupname+"     Password  :  "+Password);
-                    ((LoginActivity)context).login(Groupname,Password);
+                    ((LoginActivity)context).login(Groupname, Password);
                 }else {
                     ((LoginActivity)context).toast(result);
                 }
@@ -250,7 +252,17 @@ public class Network{
 
     public void getSceneListThumbnail(final String video_name, final String video_path,final String streaming_path, final String running_time, String image_url){
         //uri = "http://210.118.74.131:8080/PackageMovie/viewImage/test1/test";
-        uri = image_url;
+        String e_name="";
+
+        try {
+            e_name = URLEncoder.encode(video_name,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            e_name = video_name;
+        }
+
+        uri = "http://210.118.74.131:8080/PackageMovie/viewImage/"+LoginActivity.getID()+"/"+e_name;
+
         Log.d("getThumbnail",""+uri);
 
         ImageRequest imageRequest = new ImageRequest(uri, new Response.Listener<Bitmap>(){
@@ -347,7 +359,17 @@ public class Network{
 
 
     public void getFileListThumbnail(final String video_name, final String video_path,final String streaming_path, final String running_time, String image_url){
-        uri = image_url;
+        String e_name="";
+
+        try {
+            e_name = URLEncoder.encode(video_name,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            e_name = video_name;
+        }
+
+        uri = "http://210.118.74.131:8080/PackageMovie/viewImage/"+LoginActivity.getID()+"/"+e_name;
+
         Log.d("getThumbnail",""+uri);
 
         ImageRequest imageRequest = new ImageRequest(uri, new Response.Listener<Bitmap>(){
@@ -367,17 +389,19 @@ public class Network{
 
 
     private String convertTime(String time){
-        String running_time = "";
+        String convert_time = "";
         long duration = Long.parseLong(time);
         long hours = duration / 3600;
         long minutes = (duration - hours * 3600) / 60;
         long seconds = duration - (hours * 3600 + minutes * 60);
 
-        if(hours!=0) running_time = running_time+hours+":";
-        running_time = minutes+":"+seconds;
+        if(hours!=0) {
+            convert_time = hours+":";
+        }
+        convert_time = minutes+":"+seconds;
 
-        Log.d("Running Time",running_time);
-        return running_time;
+        Log.d("Running Time",convert_time);
+        return convert_time;
     }
 
 
@@ -385,7 +409,7 @@ public class Network{
     *  파일삭제
    ------------------------------------------------------------------------ ---------------------------*/
     public void file_delete(final String Groupname, final String File_name, final int Position){
-        uri = server_ip+"deleteFile";
+        uri = server_ip+"deleteFile/"+Groupname+"/"+File_name;
         StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -408,8 +432,6 @@ public class Network{
             @Override
             protected Map<String, String> getParams() {
                 mParams = new HashMap<String, String>();
-                mParams.put("group_id", Groupname);
-                mParams.put("video_name", File_name);
 
                 return mParams;
             }

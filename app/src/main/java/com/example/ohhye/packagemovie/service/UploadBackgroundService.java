@@ -3,15 +3,14 @@ package com.example.ohhye.packagemovie.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.ohhye.packagemovie.activity.LoginActivity;
 import com.example.ohhye.packagemovie.util.Parser;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
@@ -28,14 +27,17 @@ import org.apache.http.util.EntityUtils;
 import java.io.File;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class UploadBackgroundService extends Service {
 
     public static Context mContext;
 
-
+    public static boolean canUpload = true;
 
     public static String id ="";
 
+    public static SharedPreferences mPref ;
 
     private static ArrayBlockingQueue<UploadFile> queue =null;
 
@@ -50,17 +52,15 @@ public class UploadBackgroundService extends Service {
 
 
     public void onCreate(){
-        Toast.makeText(getApplicationContext(),"Service Start",Toast.LENGTH_SHORT).show();
+        Log.d("Service", "Service Start");
         //UploadQueue 동작
         mContext = getApplicationContext();
-
+        mPref = getDefaultSharedPreferences(mContext);
         if(uploadThread==null){
             uploadThread = new UploadQueue();
         }
-        ArrayBlockingQueue<UploadFile> q = getUploadQueue();
-        if(LoginActivity.mPref.getBoolean("WifiOption",false)==false) {
-            uploadThread.execute(q, null, null);
-        }
+        uploadThread.execute(getUploadQueue(), null, null);
+
     }
 
 
@@ -79,6 +79,20 @@ public class UploadBackgroundService extends Service {
 
 
 
+    private static Boolean checkNetwordState() {
+        if(mPref.getBoolean("WifiOption", false)==true) {
+            ConnectivityManager connManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo state_wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if(state_wifi.isConnected() ==false){
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            return true;
+        }
+    }
+
 
     public static class UploadQueue extends AsyncTask<ArrayBlockingQueue<UploadFile>, Void, Void> {
 
@@ -95,10 +109,6 @@ public class UploadBackgroundService extends Service {
         String url = "http://210.118.74.131:8080/PackageMovie/uploadFile";
         public static Boolean isEnable=true;
 
-        ConnectivityManager manager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
         @Override
         protected Void doInBackground(ArrayBlockingQueue<UploadFile>... params) {
             /**
@@ -108,15 +118,24 @@ public class UploadBackgroundService extends Service {
              */
 
             while(true) {
+                Boolean isWifiOption = UploadBackgroundService.mPref.getBoolean("WifiOption", false);
+                //Log.e("WifiOption",checkNetwordState().toString()+"");
                 //Wifi일때만 업로드하는데 와이파이가 안켜져이써!!!! 그럼업로드를 못하겠지??????
-                if(LoginActivity.mPref.getBoolean("WifiOption", false) == true && wifi.isConnected()==false){
-                    continue;
+                if(checkNetwordState()==false){
+                    //Log.e("WifiOption",isWifiOption.toString()+"        isConnected-->>"+wifi.isConnected());
                 }
                 else{
                     try {
                         Log.d("Upload(BackgroundService)", "running");
                         //ArrayBlockingQueue<UploadFile> queue = getUploadQueue();
                         UploadFile file_info = queue.take();
+
+                        if(checkNetwordState()==false){
+                            queue.put(file_info);
+                            Log.d("Upload(BackgroundService)", "Re enqueue");
+                            continue;
+                        }
+
                         Log.d("Upload(BackgroundService)", file_info.getName());
 
                         File file = new File(file_info.getPath());
@@ -141,6 +160,7 @@ public class UploadBackgroundService extends Service {
                             post.setEntity(builder.build()); //builder.build() 메쏘드를 사용하여 httpEntity 객체를 얻는다.
                             HttpResponse httpRes;
                             httpRes = client.execute(post);
+                            Log.d("Upload(BackgroundService)", "post request");
                             HttpEntity httpEntity = httpRes.getEntity();
                             if (httpEntity != null) {
                                 response = EntityUtils.toString(httpEntity);
@@ -148,7 +168,7 @@ public class UploadBackgroundService extends Service {
                                 Log.d("result", response);
                                 if (result.equals("200")) {
                                     Log.d("result", "file list refresh");
-                                    //FileManagementActivity.refreshList();
+                                   // FileManagementActivity.refreshList();
                                 }
                             }
                         } catch (Exception e) {

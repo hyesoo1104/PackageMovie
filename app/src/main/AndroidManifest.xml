@@ -90,11 +90,17 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-        <receiver android:name=".service.WifiReceiver" android:enabled="true" >
+
+        <receiver
+            android:name=".service.BootReceiver"
+            android:enabled="true"
+            android:exported="true" >
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
