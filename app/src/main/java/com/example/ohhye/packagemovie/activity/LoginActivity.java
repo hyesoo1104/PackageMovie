@@ -36,12 +36,14 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     public static SharedPreferences mPref;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mContext = this;
+
 
         mPref = PreferenceManager.getDefaultSharedPreferences(mContext);
 
@@ -94,7 +96,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     public void login(String id, String pwd){
         String group_id = id;
         String password = pwd;
-        UploadBackgroundService.id = group_id;
+        //UploadBackgroundService.id = group_id;
         FileManagementActivity.id = group_id;
 
       /*  //UploadQueue 동작

@@ -109,6 +109,7 @@ public class Network{
 
 
                 if(result.equals("200")) {
+                    Log.d("Network","GroupName  :  "+Groupname+"     Password  :  "+Password);
                     ((LoginActivity)context).login(Groupname,Password);
                 }else {
                     ((LoginActivity)context).toast(result);

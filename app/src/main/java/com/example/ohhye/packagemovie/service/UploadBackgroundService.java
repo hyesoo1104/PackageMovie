@@ -32,18 +32,14 @@ public class UploadBackgroundService extends Service {
 
     public static Context mContext;
 
-    @Override
-    public Context getApplicationContext() {
-        mContext = super.getApplicationContext();
-        return mContext;
-    }
+
 
     public static String id ="";
 
 
     private static ArrayBlockingQueue<UploadFile> queue =null;
 
-    public static UploadQueue uploadThread = new UploadQueue();
+    public static UploadQueue uploadThread;
 
     public static ArrayBlockingQueue<UploadFile> getUploadQueue(){
         if (queue == null) {
@@ -56,6 +52,11 @@ public class UploadBackgroundService extends Service {
     public void onCreate(){
         Toast.makeText(getApplicationContext(),"Service Start",Toast.LENGTH_SHORT).show();
         //UploadQueue 동작
+        mContext = getApplicationContext();
+
+        if(uploadThread==null){
+            uploadThread = new UploadQueue();
+        }
         ArrayBlockingQueue<UploadFile> q = getUploadQueue();
         if(LoginActivity.mPref.getBoolean("WifiOption",false)==false) {
             uploadThread.execute(q, null, null);

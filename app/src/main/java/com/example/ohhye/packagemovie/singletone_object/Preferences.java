@@ -2,17 +2,14 @@ package com.example.ohhye.packagemovie.singletone_object;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * Created by ohhye on 2015-03-26.
  */
 public class Preferences {
     public static SharedPreferences mPref;
+    Context mContext;
 
-    private Preferences(Context mContext){
-        mPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-    }
 
     public static SharedPreferences getPrefernces(){
         return mPref;
