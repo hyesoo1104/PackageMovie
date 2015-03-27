@@ -218,7 +218,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 break;
 
             case R.id.btn_pwd_change:
-                String current_pwd = LoginActivity.mPref.getString("pwd","null");
+                String current_pwd = mPref.getString("pwd","null");
 
                 String pwd = settings_current_pwd.getText().toString();
                 String new_pwd=settings_new_pwd.getText().toString();
@@ -256,7 +256,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
 
     public void toast(String result){
         if(result.equals("200")) {
-            edit = LoginActivity.mPref.edit();
+            edit = mPref.edit();
             edit.putString("pwd", settings_new_pwd.getText().toString());
             edit.remove("autoLogin");
             edit.commit();
