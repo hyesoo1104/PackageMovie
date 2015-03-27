@@ -26,7 +26,6 @@ import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
-import com.example.ohhye.packagemovie.util.Edit_AddBGM;
 import com.example.ohhye.packagemovie.util.Network;
 
 /**
@@ -46,7 +45,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     Button btn_edit_complete;
 
     //Fragment
-    private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : BGM
+    private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : 전환효과, 3 : BGM
 
 
     @Override
@@ -112,6 +111,18 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         //서버로부터 리스트 로딩
         Edit_SceneListFragment.clearArr();
         net.load_scene_list();
+
+        /* dataArr.add(new BGMData(R.drawable.icon_bgm_no, "Original",  "녹화된 동영상의 소리가 재생됩니다.", null) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_bikerides, "Bike Rides",  "genre1", "android.resource://" + mContext.getPackageName() + "/"+R.raw.bike_rides) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_blueskies, "Blue Skies",  "genre2", "android.resource://" + mContext.getPackageName() + "/"+R.raw.blue_skies) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_dixeoutlandish, "Dixie Outlandish",  "genre3","android.resource://" + mContext.getPackageName() + "/"+R.raw.dixie_outlandish) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_grassyhill, "Grassy Hill",  "genre4","android.resource://" + mContext.getPackageName() + "/"+R.raw.grassy_hill) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_ifihadachiken, "If I Had A Chicken",  "genre5","android.resource://" + mContext.getPackageName() + "/"+R.raw.if_i_had_a_chicken) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_jackinthebox, "Jack In The Box",  "genre6","android.resource://" + mContext.getPackageName() + "/"+R.raw.jack_in_the_box) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_moringscroll, "Morining Scroll",  "genre7","android.resource://" + mContext.getPackageName() + "/"+R.raw.morning_stroll) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_mrpink, "Mr Pink",  "genre8", "android.resource://" + mContext.getPackageName() + "/"+R.raw.mr_pink) );*/
+
+        Edit_BgmFragment.addDefaultBGM(this);
     }
 
     @Override
@@ -143,7 +154,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                     addScene();
                 }
                 //BGM
-                else if(FRAGMENT_FLAG==2){
+                else if(FRAGMENT_FLAG==3){
                     Log.d("MyTag","Add BGM Click");
                     addBGM();
                 }
@@ -152,7 +163,11 @@ public class EditActivity  extends Activity implements View.OnClickListener {
             case R.id.btn_edit_list:
                 Log.d("MyTag","list btn click");
                 FRAGMENT_FLAG = 1;
-                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text);
+                btn_edit_add.setBackgroundResource(R.drawable.btn_add_video);
+                btn_edit_list.setBackgroundResource(R.drawable.btn_scenelist_selected);
+                btn_edit_text.setBackgroundResource(R.drawable.btn_add_subtitle);
+                btn_edit_trans.setBackgroundResource(R.drawable.btn_trasition);
+                btn_edit_bgm.setBackgroundResource(R.drawable.btn_bgm);
                 fr = new Edit_SceneListFragment();
                 net.load_scene_list();
                 setFragment(fr);
@@ -163,8 +178,12 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btn_edit_trans:
-                FRAGMENT_FLAG = 0;
-                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text_unable);
+                FRAGMENT_FLAG = 2;
+                btn_edit_add.setBackgroundResource(R.drawable.btn_edit_unable);
+                btn_edit_list.setBackgroundResource(R.drawable.btn_scenelist);
+                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_unable);
+                btn_edit_trans.setBackgroundResource(R.drawable.btn_trasition_selected);
+                btn_edit_bgm.setBackgroundResource(R.drawable.btn_bgm);
                 Log.d("MyTag","trans btn click");
                 fr = new Edit_TransFrgment();
                 setFragment(fr);
@@ -172,8 +191,12 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
             case R.id.btn_edit_bgm:
                 Log.d("MyTag","bgm btn click");
-                FRAGMENT_FLAG = 2;
-                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_text_unable);
+                FRAGMENT_FLAG = 3;
+                btn_edit_add.setBackgroundResource(R.drawable.btn_add_bgm);
+                btn_edit_list.setBackgroundResource(R.drawable.btn_scenelist);
+                btn_edit_text.setBackgroundResource(R.drawable.btn_edit_unable);
+                btn_edit_trans.setBackgroundResource(R.drawable.btn_trasition);
+                btn_edit_bgm.setBackgroundResource(R.drawable.btn_bgm_selected);
                 fr = new Edit_BgmFragment();
                 setFragment(fr);
                 break;

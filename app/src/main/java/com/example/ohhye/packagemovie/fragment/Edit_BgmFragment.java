@@ -3,11 +3,12 @@ package com.example.ohhye.packagemovie.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +27,20 @@ import java.util.ArrayList;
 public class Edit_BgmFragment extends Fragment {
 
     ListView bgmList;
-    BGMAdapter mAdapter;
+    static BGMAdapter mAdapter;
     Context mContext;
-    ArrayList<BGMData> dataArr = new ArrayList<BGMData>();
+    static ArrayList<BGMData> dataArr = new ArrayList<BGMData>();
     MediaPlayer mp;
     View rootView;
     View temp;
+
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = activity.getApplicationContext();
+        Log.d("onAttach","Attach");
     }
 
     @Override
@@ -51,30 +55,21 @@ public class Edit_BgmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         rootView = inflater.inflate(R.layout.fragment_edit_bgm, container, false);
 
-
+        Log.d("onCreateView","onCreateView");
         bgmList = (ListView)rootView.findViewById(R.id.bgmListView);
 
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Original",  "녹화된 동영상의 소리가 재생됩니다.", 0) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Bike Rides",  "genre1", R.raw.bike_rides) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Blue Skies",  "genre2", R.raw.blue_skies) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Dixie Outlandish",  "genre3", R.raw.dixie_outlandish) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Grassy Hill",  "genre4", R.raw.grassy_hill) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "If I Had A Chicken",  "genre5", R.raw.if_i_had_a_chicken) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Jack In The Box",  "genre6", R.raw.jack_in_the_box) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Morining Scroll",  "genre7", R.raw.morning_stroll) );
-        dataArr.add(new BGMData(BitmapFactory.decodeResource(getResources(),
-                R.drawable.bgm_temp_image), "Mr Pink",  "genre8", R.raw.mr_pink) );
+       /* dataArr.add(new BGMData(R.drawable.icon_bgm_no, "Original",  "녹화된 동영상의 소리가 재생됩니다.", null) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_bikerides, "Bike Rides",  "genre1", "android.resource://" + mContext.getPackageName() + "/"+R.raw.bike_rides) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_blueskies, "Blue Skies",  "genre2", "android.resource://" + mContext.getPackageName() + "/"+R.raw.blue_skies) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_dixeoutlandish, "Dixie Outlandish",  "genre3","android.resource://" + mContext.getPackageName() + "/"+R.raw.dixie_outlandish) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_grassyhill, "Grassy Hill",  "genre4","android.resource://" + mContext.getPackageName() + "/"+R.raw.grassy_hill) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_ifihadachiken, "If I Had A Chicken",  "genre5","android.resource://" + mContext.getPackageName() + "/"+R.raw.if_i_had_a_chicken) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_jackinthebox, "Jack In The Box",  "genre6","android.resource://" + mContext.getPackageName() + "/"+R.raw.jack_in_the_box) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_moringscroll, "Morining Scroll",  "genre7","android.resource://" + mContext.getPackageName() + "/"+R.raw.morning_stroll) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_mrpink, "Mr Pink",  "genre8", "android.resource://" + mContext.getPackageName() + "/"+R.raw.mr_pink) );*/
+
 
         mAdapter = new BGMAdapter(mContext, R.layout.item_edit_bgm_list, dataArr);
-
 
 
         bgmList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -98,14 +93,14 @@ public class Edit_BgmFragment extends Fragment {
                     mp.stop();
                 }
                 BGMData item = mAdapter.bgmDataArr.get(position);
-                int path = item.path;
+                String path = item.path;
                 view.findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
 
                 Snapmovie.getSnapmovie().setBGMType(position);
 
                 mAdapter.notifyDataSetChanged();
-                if(mAdapter.bgmDataArr.get(position).path!=0) {
-                    mp = MediaPlayer.create(mContext, path);
+                if(mAdapter.bgmDataArr.get(position).path!=null) {
+                    mp = MediaPlayer.create(mContext, Uri.parse(path));
                     mp.start();
                 }
             }
@@ -117,19 +112,34 @@ public class Edit_BgmFragment extends Fragment {
     }
 
 
-
+    public static void addDefaultBGM(Context mContext){
+        dataArr.add(new BGMData(R.drawable.icon_bgm_no, "Original",  "녹화된 동영상의 소리가 재생됩니다.", null) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_bikerides, "Bike Rides",  "Bounce", "android.resource://" + mContext.getPackageName() + "/"+R.raw.bike_rides) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_blueskies, "Blue Skies",  "Soft", "android.resource://" + mContext.getPackageName() + "/"+R.raw.blue_skies) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_dixeoutlandish, "Dixie Outlandish",  "Jazz","android.resource://" + mContext.getPackageName() + "/"+R.raw.dixie_outlandish) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_grassyhill, "Grassy Hill",  "Alternative Rock","android.resource://" + mContext.getPackageName() + "/"+R.raw.grassy_hill) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_ifihadachiken, "If I Had A Chicken",  "Happy","android.resource://" + mContext.getPackageName() + "/"+R.raw.if_i_had_a_chicken) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_jackinthebox, "Jack In The Box",  "Ordinary","android.resource://" + mContext.getPackageName() + "/"+R.raw.jack_in_the_box) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_moringscroll, "Morning Scroll",  "Fresh","android.resource://" + mContext.getPackageName() + "/"+R.raw.morning_stroll) );
+        dataArr.add(new BGMData(R.drawable.icon_bgm_mrpink, "Mr Pink",  "Reggae", "android.resource://" + mContext.getPackageName() + "/"+R.raw.mr_pink) );
+    }
+    public static void addCustomBGM(String name, String path, String artist){
+        BGMData bgm_data = new BGMData( R.drawable.icon_bgm_custom, name,artist, path);
+        dataArr.add(bgm_data);
+        mAdapter.notifyDataSetChanged();
+    }
 }
 
 
 
 //-----------------------------------------------BGMData--------------------------------------------------------------------------
 class BGMData{
-    Bitmap bgmImg;
+    int bgmImg;
     String name;
     String genre;
-    int path;
+    String path;
 
-    BGMData(Bitmap _bgmImg, String _name, String _genre, int _path){
+    BGMData(int _bgmImg, String _name, String _genre, String _path){
         bgmImg = _bgmImg;
         name = _name;
         genre = _genre;
@@ -190,7 +200,7 @@ class BGMAdapter extends BaseAdapter {
 
 
         ImageView bgmImage = (ImageView)convertView.findViewById(R.id.bgm_list_item_image);
-        bgmImage.setImageBitmap(bgmDataArr.get(position).bgmImg);
+        bgmImage.setImageBitmap( BitmapFactory.decodeResource(context.getResources(), bgmDataArr.get(position).bgmImg));
 
         TextView bgmName = (TextView)convertView.findViewById(R.id.bgm_list_item_bgm_name);
         bgmName.setText(bgmDataArr.get(position).name);

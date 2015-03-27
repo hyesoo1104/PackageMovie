@@ -45,7 +45,7 @@
                 android:id="@+id/bgm_list_item_bgm_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="BGM Name" android:textSize="20sp" android:textColor="#ff787878"/>
+                android:text="BGM Name" android:textSize="17sp" android:textColor="#ff787878"/>
 
             <TextView
                 android:id="@+id/bgm_list_item_bgm_genre"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="BGM Genre"
                 android:textColor="#ffb1b1b1"
-                android:textSize="15sp"/>
+                android:textSize="13sp"/>
         </LinearLayout>
 
     </LinearLayout>
