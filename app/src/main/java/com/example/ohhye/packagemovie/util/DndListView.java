@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -47,16 +48,30 @@ public class DndListView extends ListView {
     private int mItemHeightNormal;
     private int mItemHeightExpanded;
 
+    private int menu_height;
+
+    private int bottomPointY;
+
+    private boolean lastItemVisibleFlag =false;//화면에 리스트의 마지막 아이템이 보여지는지 체크
+
     public DndListView(Context context, AttributeSet attrs) {
         super(context, attrs);
 //        SharedPreferences pref = context.getSharedPreferences("Music", 3);
 //        mRemoveMode = pref.getInt("deletemode", -1);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mContext = context;
+
+        Display dis;
+
+        dis = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        menu_height = dis.getHeight();
+
+
 //        Resources res = getResources();
 //        mItemHeightNormal = res.getDimensionPixelSize(R.dimen.normal_height);
 //        mItemHeightExpanded = res.getDimensionPixelSize(R.dimen.expanded_height);
     }
+
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -94,9 +109,13 @@ public class DndListView extends ListView {
                         mDragPos = itemnum;
                         mFirstDragPos = mDragPos;
                         mHeight = getHeight();
+                        Log.d("onInterceptTouchEvent","Height  :  "+mHeight);
+
                         int touchSlop = mTouchSlop;
                         mUpperBound = Math.min(y - touchSlop, mHeight / 3);
                         mLowerBound = Math.max(y + touchSlop, mHeight * 2 /3);
+
+                        Log.d("onInterceptTouchEvent","UpperBound  :  "+mUpperBound+"    //    LowerBound  :  "+mLowerBound);
                         return false;
                     }
                     mDragView = null;
@@ -106,10 +125,12 @@ public class DndListView extends ListView {
         return super.onInterceptTouchEvent(ev);
     }
 
+
+
     /*
-     * pointToPosition() doesn't consider invisible views, but we
-     * need to, so implement a slightly different version.
-     */
+         * pointToPosition() doesn't consider invisible views, but we
+         * need to, so implement a slightly different version.
+         */
     private int myPointToPosition(int x, int y) {
         Rect frame = mTempRect;
         final int count = getChildCount();
@@ -119,6 +140,7 @@ public class DndListView extends ListView {
             if (frame.contains(x, y)) {
                 return getFirstVisiblePosition() + i;
             }
+            else return 0;
         }
         return INVALID_POSITION;
     }
@@ -262,13 +284,18 @@ public class DndListView extends ListView {
                             doExpansion();
                         }
                         int speed = 0;
+
                         adjustScrollBounds(y);
-                        if (y > mLowerBound) {
+                        Log.d("onTouchEvent","y  :  "+y);
+
+                        if ( mLowerBound<y) {
                             // scroll the list up a bit
                             speed = y > (mHeight + mLowerBound) / 2 ? 16 : 4;
-                        } else if (y < mUpperBound) {
+                            Log.d("onTouchEvent","y  :  "+y+"  //  mHeight  :  "+mHeight+" //  mLowerBound  :  "+mLowerBound +" //  speed  :  "+speed);
+                        } else if (0<y&&y < mUpperBound) {
                             // scroll the list down a bit
                             speed = y < mUpperBound / 2 ? -16 : -4;
+                            Log.d("onTouchEvent","y  :  "+y+"  //  mHeight  :  "+mHeight+" //  mUpperBound  :  "+mUpperBound +" //  speed  :  "+speed);
                         }
                         if (speed != 0) {
                             int ref = pointToPosition(0, mHeight / 2);
@@ -279,6 +306,9 @@ public class DndListView extends ListView {
                             View v = getChildAt(ref - getFirstVisiblePosition());
                             if (v!= null) {
                                 int pos = v.getTop();
+                                int debug = pos-speed;
+                                Log.d("Scroll","position : "+ref+"  //  y : "+debug+"  //  pos : "+pos);
+
                                 setSelectionFromTop(ref, pos - speed);
                             }
                         }
