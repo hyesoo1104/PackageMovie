@@ -117,7 +117,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
             btn_pwd_cancel = (Button)findViewById(R.id.btn_pwd_cancel);*/
 
 
-            settings_id.setText(LoginActivity.group_name+"");
+            settings_id.setText(LoginActivity.getID()+"");
             settings_id.setVisibility(View.VISIBLE);
 
             Log.d("id",settings_id.getText().toString());
@@ -237,7 +237,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                     Toast.makeText(this, "변경할 비밀번호가 현재 비밀번호와 같습니다.", Toast.LENGTH_SHORT).show();
                 }
 
-                net.pwd_change(pwd,new_pwd,new_re_pwd);
+                net.pwd_change(LoginActivity.getID(),pwd,new_pwd);
 
 
                 break;

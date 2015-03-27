@@ -109,6 +109,7 @@ public class StreamingActivity extends ActionBarActivity implements View.OnClick
             mDownloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         }
 
+
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request( uri );
 
