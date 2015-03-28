@@ -11,40 +11,40 @@
         android:id="@+id/layout_scenelist_btn"
         android:layout_width="30dp"
         android:layout_height="fill_parent"
-        android:background="#ffefefef"
+        android:background="#fff5f5f5"
         android:gravity="center"
         android:layout_alignParentRight="true"
         android:orientation="vertical">
 
 
         <Button
-
             android:id="@+id/btn_scenelist_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text ="u"
-            />
+            android:background="@drawable/btn_edit_list_up"
+            android:layout_marginBottom="30dp"/>
 
         <Button
             android:id="@+id/btn_scenelist_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text ="r"/>
+            android:background="@drawable/btn_edit_list_delete"
+            android:layout_marginBottom="30dp"/>
 
         <Button
             android:id="@+id/btn_scenelist_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text ="d"/>
+            android:background="@drawable/btn_edit_list_down"/>
 
     </LinearLayout>
 
-    <!-- TODO: 발리로 서버에 있는거 가져와서 리스트 구현 -->
+
     <ListView android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/edit_scene_list"
         android:layout_toStartOf="@id/layout_scenelist_btn"
-         />
+    />
 
 
 

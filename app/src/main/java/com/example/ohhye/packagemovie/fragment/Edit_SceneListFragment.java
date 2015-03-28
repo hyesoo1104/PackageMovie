@@ -1,8 +1,10 @@
 package com.example.ohhye.packagemovie.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -55,6 +57,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         mContext = activity.getApplicationContext();
 
     }
@@ -203,9 +206,29 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
                     break;
                 }
                 Log.d("DELETE",selectedItemPosition+"");
-                dataArr.remove(selectedItemPosition);
-                mAdapter.notifyDataSetChanged();
-                selectedItemPosition=-1;
+                AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
+                alt_bld.setMessage("파일을 삭제하시겠습니까?").setCancelable(
+                        false).setPositiveButton("삭제",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Action for 'Yes' Button
+                                dataArr.remove(selectedItemPosition);
+                                mAdapter.notifyDataSetChanged();
+                                selectedItemPosition=-1;
+                            }
+                        }).setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = alt_bld.create();
+                // Title for AlertDialog
+                alert.setTitle("파일 삭제");
+                alert.show();
+
+
                 Log.d("DELETE",selectedItemPosition+"");
 
                 break;
