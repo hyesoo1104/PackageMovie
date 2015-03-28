@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="record_filter">
+        <item>원본</item>
+        <item>흑백</item>
+        <item>대비</item>
+        <item>로모</item>
+        <item>반전</item>
+        <item>모션블러</item>
+        <item>모자이크</item>
+        <item>세피아</item>
+        <item>9</item>
+    </string-array>
+</resources>

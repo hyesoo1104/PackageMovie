@@ -5,11 +5,22 @@
 
         <!-- Customize your theme here. -->
         <item name="colorAccent">#fffff454</item>
-        <item name="colorPrimary">#ff68b589</item>
-        <item name="colorPrimaryDark">#ff449f8f</item>
-        <item name="colorControlHighlight">#ff65ccaf</item>
-        <item name="colorControlNormal">#ffdacb9e</item>
+                <item name="colorPrimary">#ff68b589</item>
+                <item name="colorPrimaryDark">#ff449f8f</item>
+                <item name="colorControlHighlight">#ff65ccaf</item>
+                <item name="colorControlNormal">#ffdacb9e</item>
+    </style>
 
+    <style name="RecordThemeStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">2dip</item>
+        <item name="android:padding">2dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:layout_marginLeft">10dip</item>
     </style>
 
 </resources>
