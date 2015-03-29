@@ -15,6 +15,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -220,11 +221,15 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle("자막 추가");
-        alert.setMessage("추가할 자막의 내용을 입력하세요.");
+        alert.setMessage("추가할 자막의 내용을 입력하세요. (20자 이내)");
 
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
         alert.setView(input);
+
+        InputFilter[] FilterArray = new InputFilter[1];
+        FilterArray[0] = new InputFilter.LengthFilter(20);
+        input.setFilters(FilterArray);
 
         alert.setNegativeButton("취소",
                 new DialogInterface.OnClickListener() {

@@ -60,6 +60,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         btn_login.setOnClickListener(this);
         btn_createGroup.setOnClickListener(this);
 
+        group_name = mPref.getString("id",null);
 
         Log.d("AutoLogin",mPref.getBoolean("autoLogin",false)+"");
         if(mPref.getBoolean("autoLogin",false)==true)
@@ -91,8 +92,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     public static String getID(){
-
-        return mPref.getString("id",null);
+        if(mPref.getString("id",null)==null)
+            return group_name;
+        else
+            return mPref.getString("id",null);
     }
 
     public void login(String id, String pwd){

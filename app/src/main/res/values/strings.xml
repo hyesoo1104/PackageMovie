@@ -50,18 +50,10 @@
     <string name="record_preview_theme_recording">녹화</string>
     <string name="record_preview_theme_bsmall">bsmall</string>
 
-
-
-
-
     <color name="dragndrop_background">#e0103010</color>
-
-
-
-
-
 
     <string name="title_activity_streaming">StreamingActivity</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_bitmap">BitmapActivity</string>
 
 </resources>
