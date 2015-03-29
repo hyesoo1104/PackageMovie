@@ -232,8 +232,9 @@ public class Network{
 
                             if(!file.exists()) continue;
 
-                            getSceneListThumbnail(video_name,video_path,streaming_path,running_time,thumbnail_path);
-                           // Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");
+                            getSceneListThumbnail(video_name,file.getAbsolutePath(),streaming_path,running_time,thumbnail_path);
+
+
 
                         }
 

@@ -92,11 +92,15 @@ public class Edit_BgmFragment extends Fragment {
                 if(mp!=null){
                     mp.stop();
                 }
+
                 BGMData item = mAdapter.bgmDataArr.get(position);
                 String path = item.path;
+
                 view.findViewById(R.id.bgm_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
 
+
                 Snapmovie.getSnapmovie().setBGMType(position);
+                Snapmovie.getSnapmovie().setBGMPath(path);
 
                 mAdapter.notifyDataSetChanged();
                 if(mAdapter.bgmDataArr.get(position).path!=null) {

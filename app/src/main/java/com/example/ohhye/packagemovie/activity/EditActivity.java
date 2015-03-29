@@ -11,9 +11,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Log;
@@ -28,6 +33,11 @@ import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Network;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Date;
 
 /**
  * Created by ohhye on 2015-01-26.
@@ -205,6 +215,11 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btn_edit_complete:
+                Log.e("SnapMovie Count", Snapmovie.getSnapmovie().getListCount()+"");
+
+                Log.d("SnapMovie SceneList", Snapmovie.getSnapmovie().getSceneList().toString());
+
+                Log.d("SnapMovie BGMPath",Snapmovie.getSnapmovie().getBGMPath().toString());
                 break;
         }
 
@@ -244,7 +259,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 // Do something with value!
                 Toast.makeText(EditActivity.this, value,Toast.LENGTH_SHORT).show();
                 Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.edit_text_icon);
-                Edit_SceneListFragment.addItem(null, bm, value, "0:3");
+                String subtitle_path = createText(value);
+                Edit_SceneListFragment.addItem(subtitle_path, bm, value, "0:3");
 
             }
         });
@@ -253,7 +269,43 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     }
 
 
+    public String createText(String text){
+        Typeface font = Typeface.createFromAsset(getAssets(),"NanumBarunpenR.ttf");
 
+        String path = "";
+
+        Bitmap bm = Bitmap.createBitmap(480, 480, Bitmap.Config.ARGB_8888);
+        Paint pnt = new Paint();
+        Canvas c = new Canvas(bm);
+        int centerPos = (c.getWidth() / 2);
+
+        c.drawColor(Color.BLACK);
+        pnt.reset();
+        pnt.setColor(Color.WHITE);
+        pnt.setTextAlign(Paint.Align.CENTER);
+        pnt.setAntiAlias(true);
+        pnt.setTextSize(25);
+        pnt.setTypeface(font);
+        c.drawText(text,centerPos,centerPos,pnt);
+
+        // imageview.setImageBitmap(bm);
+        Date d = new Date();
+        //CharSequence s  = DateFormat.format("EEEE, MMMM d, yyyy ", d.getTime());
+
+        File file = new File("/storage/emulated/0/" + Environment.DIRECTORY_MOVIES + "/PackageMovie/"+text+ ".png");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        bm.compress(Bitmap.CompressFormat.PNG, 0, fos);
+
+        path = file.getAbsolutePath();
+
+        return path;
+    }
 
 
     //--------------------------------------------음악추가----------------------------------------------------------------------

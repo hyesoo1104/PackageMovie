@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
 
-import java.util.HashMap;
+import java.io.File;
 
 /**
  * Created by ohhye on 2015-02-27.
@@ -19,19 +19,16 @@ public class Snapmovie {
     private JSONArray scene_list = null;
 
     //자막 리스트
-    private final static HashMap<Integer,String> subtitle= new HashMap<Integer,String>();
-    private static int trans_num = 0;
-    private static int bgm_num = 0;
+    private int trans_num = 0;
 
-    private final static int TRANS_EFFECT_BLACK = 1;
-    private final static int TRANS_EFFECT_WHITE = 2;
-    private final static int TRANS_EFFECT_CROSS = 3;
+
 
     //BGM
-    private final static String bgm_path ="";
+    private String bgm_path ="";
+    private static int bgm_num = 0;
 
     public Snapmovie(){
-
+        scene_list = new JSONArray();
     }
 
 
@@ -50,23 +47,39 @@ public class Snapmovie {
 
 
 
-
-
     /*--------------------------------------------------------------------
      *  SceneList
      --------------------------------------------------------------------*/
     //Set Path --> JSONArray 안에 넣는거
-    public void setSceneList(int index, int type, String path) throws JSONException {  // type  -->   1 = 동영상   //  2 = 자막
-        JSONObject scene = null;
+    public void setSceneList(int index, String path) throws JSONException {  // type  -->   1 = 동영상   //  2 = 자막
+        JSONObject scene = new JSONObject();
         scene.put("index",index);
-        scene.put("type",type);
         scene.put("path",path);
+
+        File tmp = new File(path);
+        String fileName = tmp.getName();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1,fileName.length());
+        log(ext);
+
+        //확장자로 자막인지 영상인지 확인한다음 type넣어줌
+
+        if(ext.equals("png")){
+            scene.put("type","text");
+        }
+        else{
+            scene.put("type","video");
+        }
 
         scene_list.add(scene);
     }
 
+    //Clear SceneList Data
+    public void clearSceneListData(){
+        scene_list.clear();
+    }
 
-    //Get Path
+
+    //Get SceneList Data
     public JSONArray getSceneList() {
         return scene_list;
     }
@@ -87,6 +100,14 @@ public class Snapmovie {
 
     public void setBGMType(int type){
         bgm_num = type;
+    }
+
+    public void setBGMPath(String path){
+        bgm_path = path;
+    }
+
+    public String getBGMPath(){
+        return bgm_path;
     }
 
 

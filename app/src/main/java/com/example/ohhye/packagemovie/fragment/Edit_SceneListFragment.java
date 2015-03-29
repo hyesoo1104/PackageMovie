@@ -21,12 +21,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ohhye.packagemovie.R;
+import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
 import com.example.ohhye.packagemovie.util.Network;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class Edit_SceneListFragment extends Fragment implements AbsListView.OnScrollListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
+    Snapmovie sm = null;
     boolean isLoad = false;
     Network net;
     Context mContext;
@@ -56,11 +60,29 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         mContext = activity.getApplicationContext();
-
+        setSnapmovieList();
     }
 
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        setSnapmovieList();
+    }
+
+
+    public void setSnapmovieList(){
+        Snapmovie.getSnapmovie().clearSceneListData();
+        for(int i = 0; i<dataArr.size(); i++){
+            try {
+                Snapmovie.getSnapmovie().setSceneList(i,dataArr.get(i).path);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * The fragment's ListView/GridView.
      */
@@ -149,16 +171,12 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
         sceneList.setOnItemClickListener(this);
 
 
-
+        setSnapmovieList();
         return view;
     }
 
 
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
 
 
