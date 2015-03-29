@@ -248,15 +248,44 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
                     if (!isRecording) {
                         //촬영시작
                         sound_pool.play(record_sound,1f,1f,0,0,1f);
-                        filterMenuOff();
-                        settingMenuOff();
-                        startRecord();
+                        mTimer = new Timer();
+                        //뷰
+                        mTimer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable(){
+                                    public void run(){
+                                        //촬영시작
+                                        Log.d("Timer","Complete!!");
+                                        stopTimer();
+                                        filterMenuOff();
+                                        settingMenuOff();
+                                        startRecord();
+                                    }
+                                });
+                            }
+                        },500);
                         Log.d("Motion", "촬영시작!");
                     } else if (isRecording) {
                         //촬영종료
+                        mTimer = new Timer();
+                        //뷰
+                        mTimer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable(){
+                                    public void run(){
+                                        //촬영시작
+                                        Log.d("Timer","Complete!!");
+                                        stopTimer();
+                                        stopRecord();
+                                        checkSave();
+                                    }
+                                });
+                            }
+                        },500);
                         sound_pool.play(record_sound,1f,1f,0,0,1f);
-                        stopRecord();
-                        checkSave();
+
                         Log.d("Motion", "촬영종료!");
                     }
                 }

@@ -124,8 +124,8 @@ public class StreamingActivity extends ActionBarActivity implements View.OnClick
         DownloadManager.Request request = new DownloadManager.Request( uri );
 
         List<String> pathSegmentList = uri.getPathSegments();
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
         mFileName = pathSegmentList.get(pathSegmentList.size()-1);
         request.setTitle("PackageMovie");
         request.setDescription(mFileName+".mp4");

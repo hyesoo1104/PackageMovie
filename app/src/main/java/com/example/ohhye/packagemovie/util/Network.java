@@ -3,6 +3,7 @@ package com.example.ohhye.packagemovie.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -24,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -92,6 +94,7 @@ public class Network{
                 return mParams;
             }
         };
+
         VolleySingleton.getInstance(context).getRequestQueue().add(postRequest);
     }
 
@@ -223,6 +226,11 @@ public class Network{
                             streaming_path = item.get("streaming_path").toString();
                             thumbnail_path = item.get("thumbnail_path").toString();
                             running_time = item.get("running_time").toString();
+
+                            String fileChk = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)+"/PackageMovie/"+video_name+".mp4";
+                            File file = new File(fileChk);
+
+                            if(!file.exists()) continue;
 
                             getSceneListThumbnail(video_name,video_path,streaming_path,running_time,thumbnail_path);
                            // Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");

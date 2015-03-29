@@ -71,7 +71,7 @@ public class Edit_TransFrgment extends Fragment {
                 view.findViewById(R.id.trans_list_item_checked_area).setBackgroundColor(Color.rgb(255, 198, 0));
                 mAdapter.notifyDataSetChanged();
 
-                Snapmovie.getSnapmovie().setTransEffectType(position);
+                //Snapmovie.getSnapmovie().setTransEffectType(position);
             }
         });
 

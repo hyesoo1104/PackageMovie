@@ -1,14 +1,22 @@
 package com.example.ohhye.packagemovie.singletone_object;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+
 import java.util.HashMap;
 
 /**
  * Created by ohhye on 2015-02-27.
  */
 public class Snapmovie {
-    //TODO: 편집 시 필요한 Snapmovie에 대한 정보
+
     private static Snapmovie mSnapmovie = null;
+
     //씬리스트 순서 정보
+    private JSONArray scene_list = null;
 
     //자막 리스트
     private final static HashMap<Integer,String> subtitle= new HashMap<Integer,String>();
@@ -22,15 +30,14 @@ public class Snapmovie {
     //BGM
     private final static String bgm_path ="";
 
-    public Snapmovie(int _trans,int _bgm){
-        trans_num = _trans;
-        bgm_num = _bgm;
+    public Snapmovie(){
+
     }
 
 
     public static Snapmovie getSnapmovie() {
         if (mSnapmovie == null) {
-            mSnapmovie = new Snapmovie(0,0);
+            mSnapmovie = new Snapmovie();
         }
         return mSnapmovie;
     }
@@ -40,6 +47,40 @@ public class Snapmovie {
         bgm_num = 0;
     }
 
+
+
+
+
+
+    /*--------------------------------------------------------------------
+     *  SceneList
+     --------------------------------------------------------------------*/
+    //Set Path --> JSONArray 안에 넣는거
+    public void setSceneList(int index, int type, String path) throws JSONException {  // type  -->   1 = 동영상   //  2 = 자막
+        JSONObject scene = null;
+        scene.put("index",index);
+        scene.put("type",type);
+        scene.put("path",path);
+
+        scene_list.add(scene);
+    }
+
+
+    //Get Path
+    public JSONArray getSceneList() {
+        return scene_list;
+    }
+
+
+    //Get Count
+    public int getListCount() {
+        return scene_list.size();
+    }
+
+
+    /*--------------------------------------------------------------------
+     *  BGM
+     --------------------------------------------------------------------*/
     public int getBGMType(){
         return bgm_num;
     }
@@ -48,11 +89,25 @@ public class Snapmovie {
         bgm_num = type;
     }
 
-    public int getTransEffectType(){
+
+    /*--------------------------------------------------------------------
+     *  TransEffect
+     --------------------------------------------------------------------*/
+    public int getTransEffectType() {
         return trans_num;
     }
 
     public void setTransEffectType(int type){
         trans_num = type;
     }
+
+
+
+    /*--------------------------------------------------------------------
+     *  Log
+     --------------------------------------------------------------------*/
+    public void log(String msg){
+        Log.d("SnapMoive", msg);
+    }
+
 }

@@ -344,11 +344,10 @@ public class FileManagementActivity  extends ActionBarActivity{
         }
     }
 
+
     protected void onProgressUpdate(String... progress) {
         progressDialog.setProgress(Integer.parseInt(progress[0]));
     }
-
-
 
 
     private BroadcastReceiver mCompleteReceiver = new BroadcastReceiver() {
