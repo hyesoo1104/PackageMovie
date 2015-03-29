@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,12 +116,10 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
         btn_delete.setOnClickListener(this);
 
 
-        //데이터 리셋
-        clearSceneList();
 
 
         //리스트 아이템 추가 더미
-        dataArr.add(new SceneData("path1", BitmapFactory.decodeResource(getResources(),
+      /*  dataArr.add(new SceneData("path1", BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene1",  "03:20") );
         dataArr.add(new SceneData("path2",BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene2",  "00:02") );
@@ -139,7 +136,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
         dataArr.add(new SceneData("path2",BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_launcher), "Scene8",  "00:02") );
         dataArr.add(new SceneData("path3",BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher), "Scene9",  "01:15") );
+                R.drawable.ic_launcher), "Scene9",  "01:15") );*/
 
 
         mAdapter = new SceneListAdapter(mContext, R.layout.item_edit_scene_list, dataArr);

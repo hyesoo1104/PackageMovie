@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
 import com.example.ohhye.packagemovie.util.CustomVideoView;
+import com.yixia.camera.util.DeviceUtils;
 
 import java.io.File;
 import java.util.List;
@@ -42,11 +43,17 @@ public class StreamingActivity extends ActionBarActivity implements View.OnClick
     MediaController mediaController;
     Uri uri;
 
+    private int mWindowWidth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_streaming);
+
+        mWindowWidth = DeviceUtils.getScreenWidth(this);
+
 
         //videoView = new CustomVideoView(this,);
 
@@ -62,6 +69,9 @@ public class StreamingActivity extends ActionBarActivity implements View.OnClick
         btn_streaming_download.setOnClickListener(this);
 
         videoView = (CustomVideoView)findViewById(R.id.streaming_view);
+
+       /* videoView.getLayoutParams().width = mWindowWidth;
+        videoView.getLayoutParams().height = mWindowWidth;*/
 
 
         //비디오뷰에 연결

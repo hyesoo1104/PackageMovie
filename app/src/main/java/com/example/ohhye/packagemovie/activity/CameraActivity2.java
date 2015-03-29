@@ -10,6 +10,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -122,6 +124,10 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
 
     private volatile boolean mPressedStatus, mReleased, mStartEncoding;
 
+    private SoundPool sound_pool;
+    private int record_sound;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +149,9 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         //Sensor
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        sound_pool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        record_sound = sound_pool.load(this, R.raw.record_audio,1);
 
         //Timer
         mTimer = new Timer();
@@ -166,6 +175,7 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         btn_camera_settings = (ImageView)findViewById(R.id.btn_camera_settings);
         btn_camera_change = (ImageView)findViewById(R.id.btn_camera_change);
         btn_camera_record = (ImageView)findViewById(R.id.btn_camera_record);
+        btn_camera_record.setSoundEffectsEnabled(true);
         time_view = (ImageView)findViewById(R.id.time_view);
 
         //Listener Register
@@ -237,12 +247,14 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
                 if (isMotion && s_isClose) {
                     if (!isRecording) {
                         //촬영시작
+                        sound_pool.play(record_sound,1f,1f,0,0,1f);
                         filterMenuOff();
                         settingMenuOff();
                         startRecord();
                         Log.d("Motion", "촬영시작!");
                     } else if (isRecording) {
                         //촬영종료
+                        sound_pool.play(record_sound,1f,1f,0,0,1f);
                         stopRecord();
                         checkSave();
                         Log.d("Motion", "촬영종료!");
@@ -641,6 +653,8 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
                 break;
 
             case R.id.btn_camera_record:
+                sound_pool.play(record_sound,1f,1f,0,0,1f);
+
                 if(isRecording == true) {
                     stopRecord();
                     checkSave();

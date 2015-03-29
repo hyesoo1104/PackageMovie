@@ -59,6 +59,7 @@ public class FileManagementActivity  extends ActionBarActivity{
     private ProgressDialog progressDialog;
     public static final int progressbarType = 0;
 
+
     String server_ip = "";
     String upload_url = "";
     String download_url = "http://210.118.74.131:8080/PackageMovie/downloadFile/test1/test3"; //test1 = group_id, test3 = video_name

@@ -12,12 +12,14 @@ import android.widget.VideoView;
 public class CustomVideoView extends VideoView {
     Context mContext;
 
+    private int mWindowWidth;
     public CustomVideoView(Context context, AttributeSet attrs) {
         super(context,attrs);
         mContext = context;
     }
+
     protected void onMeasure(int width, int height){
         Display dis = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        setMeasuredDimension(dis.getWidth(),dis.getHeight());
+        setMeasuredDimension(dis.getWidth(),dis.getWidth());
     }
 }

@@ -90,7 +90,7 @@
         <activity
             android:name=".activity.StreamingActivity"
             android:label="@string/title_activity_streaming"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
         </activity>
 
 

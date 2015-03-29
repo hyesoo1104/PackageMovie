@@ -108,6 +108,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         fragmentTransaction.commit();
 
 
+        Log.d("EditActivity","onCreate");
         //서버로부터 리스트 로딩
         Edit_SceneListFragment.clearSceneList();
         net.load_scene_list();
@@ -170,7 +171,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 btn_edit_trans.setBackgroundResource(R.drawable.btn_trasition);
                 btn_edit_bgm.setBackgroundResource(R.drawable.btn_bgm);
                 fr = new Edit_SceneListFragment();
-                net.load_scene_list();
+                //net.load_scene_list();
                 setFragment(fr);
                 break;
 
