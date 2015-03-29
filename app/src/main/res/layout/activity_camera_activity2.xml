@@ -5,30 +5,42 @@
     android:background="#000000" >
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/frameLayout" />
-
-    <com.yixia.camera.view.CameraNdkView
-        android:id="@+id/camera_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <ImageView
-        android:id="@+id/camera_grid"
+        android:layout_marginTop="60dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/camera_grid"/>
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:id="@+id/frameLayout" >
+
+        <com.yixia.camera.view.CameraNdkView
+            android:id="@+id/camera_preview"
+            android:padding="0dp"
+            android:layout_margin="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/camera_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/camera_grid"/>
+
+        <ImageView
+            android:id="@+id/time_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
 
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="62dp"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@android:color/transparent">
+        android:background="#000000">
 
 
         <ImageView
@@ -37,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:src="@drawable/btn_camera_change" />
+            android:src="@drawable/btn_camera_change_selector" />
 
 
         <ImageView
@@ -47,8 +59,23 @@
             android:layout_alignParentLeft="true"
             android:rotation="90"
             android:layout_margin="10dp"
-            android:src="@drawable/btn_camera_settings" />
+            android:src="@drawable/btn_camera_settings_selector" />
 
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/buttomRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#000000"
+        android:layout_below="@id/frameLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/title"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -110,13 +137,16 @@
         </RadioGroup>
     </HorizontalScrollView>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_centerVertical="true"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:background="@android:color/transparent">
+        android:background="#ffffffff"
+        android:layout_below="@id/buttomRelativeLayout">
 
         <ImageView
             android:id="@+id/btn_camera_record"

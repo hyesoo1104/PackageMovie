@@ -123,10 +123,15 @@ public class Edit_BgmFragment extends Fragment {
         dataArr.add(new BGMData(R.drawable.icon_bgm_moringscroll, "Morning Scroll",  "Fresh","android.resource://" + mContext.getPackageName() + "/"+R.raw.morning_stroll) );
         dataArr.add(new BGMData(R.drawable.icon_bgm_mrpink, "Mr Pink",  "Reggae", "android.resource://" + mContext.getPackageName() + "/"+R.raw.mr_pink) );
     }
+
     public static void addCustomBGM(String name, String path, String artist){
         BGMData bgm_data = new BGMData( R.drawable.icon_bgm_custom, name,artist, path);
         dataArr.add(bgm_data);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public static void clearBGMList(){
+        dataArr.clear();
     }
 }
 

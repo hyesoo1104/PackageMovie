@@ -109,7 +109,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
 
         //서버로부터 리스트 로딩
-        Edit_SceneListFragment.clearArr();
+        Edit_SceneListFragment.clearSceneList();
         net.load_scene_list();
 
         /* dataArr.add(new BGMData(R.drawable.icon_bgm_no, "Original",  "녹화된 동영상의 소리가 재생됩니다.", null) );
@@ -122,6 +122,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         dataArr.add(new BGMData(R.drawable.icon_bgm_moringscroll, "Morining Scroll",  "genre7","android.resource://" + mContext.getPackageName() + "/"+R.raw.morning_stroll) );
         dataArr.add(new BGMData(R.drawable.icon_bgm_mrpink, "Mr Pink",  "genre8", "android.resource://" + mContext.getPackageName() + "/"+R.raw.mr_pink) );*/
 
+        Edit_BgmFragment.clearBGMList();
         Edit_BgmFragment.addDefaultBGM(this);
     }
 

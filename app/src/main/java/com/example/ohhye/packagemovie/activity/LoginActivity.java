@@ -91,6 +91,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     public static String getID(){
+
         return mPref.getString("id",null);
     }
 

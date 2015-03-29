@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,18 +37,21 @@ import com.example.ohhye.packagemovie.util.Network;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ohhye on 2015-01-26.
  */
 public class FileManagementActivity  extends ActionBarActivity{
-    public static String id = LoginActivity.getID();
+
     private final int SELECT_MOVIE = 2;
     File file;
-
+    public static String id;
     private DownloadManager mDownloadManager; //다운로드 매니저.
     private int mDownloadQueueId; //다운로드 큐 아이디..
     private String mFileName ; //파일다운로드 완료후...파일을 열기 위해 저장된 위치를 입력해둔다.
@@ -81,16 +84,18 @@ public class FileManagementActivity  extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_file);
 
+
         mContext = this;
         net = new Network(mContext);
 
+        String id = LoginActivity.getID();
         fileList = (ListView)findViewById(R.id.main_file_list);
         mAdapter = new FileListAdapter(mContext, R.layout.item_file_list, dataArr);
 
 
         fileList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         fileList.setAdapter(mAdapter);
-        fileList.setOnItemClickListener(mItemClickListener);
+        //fileList.setOnItemClickListener(mItemClickListener);
         fileList.setOnItemLongClickListener(mItemLongClickListener);
 
 
@@ -103,9 +108,7 @@ public class FileManagementActivity  extends ActionBarActivity{
         uploadQueue = UploadBackgroundService.getUploadQueue();
         Log.d("myTag",upload_url);
 
-        dataArr.clear();
-        net.load_file_list();
-
+        refreshList();
 
 
     }
@@ -113,26 +116,58 @@ public class FileManagementActivity  extends ActionBarActivity{
     private View.OnClickListener btnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             switch (v.getId()) {
+                case R.id.file_list_item_thumbnail:
+                    String s_path = mAdapter.getItem((Integer)v.getTag()).streaming_path;
+                    String v_path = mAdapter.getItem((Integer)v.getTag()).path;
+
+                    Intent i = new Intent(getApplication(), StreamingActivity.class);
+                    i.putExtra("streaming_path",s_path);
+                    i.putExtra("video_path",v_path);
+                    startActivity(i);
+
+                    break;
+
                 case R.id.btn_file_add:
                     selectFile();
                     break;
 
 
                 case R.id.btn_file_download:
-                    String file_url = "http://";
-                    file_url = file_url+(String)v.getTag();
+                    int position = (Integer)v.getTag();
+                    String file_url =  "http://210.118.74.131:8080/PackageMovie/downloadFile/"+LoginActivity.getID()+"/";
+
+                    String e_name = "";
+
+                    try {
+                        e_name = URLEncoder.encode(mAdapter.fileDataArr.get(position).name, "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        e_name = mAdapter.fileDataArr.get(position).name;
+                    }
+
+                    file_url = file_url+e_name;
+
+                    String fileChk = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)+"/PackageMovie/"+mAdapter.fileDataArr.get(position).name+".mp4";
+                    File file = new File(fileChk);
+                    Log.e("1",fileChk);
+
+
+                    if(file.exists())
+                        break;
+
                     download(file_url,mContext);
-                    Log.d("Download",file_url+"//////down!!!");
+                    Log.d("Download",file_url+"             //////down!!!");
                     break;
             }
         }
     };
 
 
-    /*---------------------------------------------------------------------------------------------------------------
+/*    *//*---------------------------------------------------------------------------------------------------------------
         *   Click
-    ---------------------------------------------------------------------------------------------------------------*/
+    ---------------------------------------------------------------------------------------------------------------*//*
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long l_position) {
@@ -144,7 +179,7 @@ public class FileManagementActivity  extends ActionBarActivity{
             i.putExtra("video_path",v_path);
             startActivity(i);
         }
-    };
+    };*/
 
     /*---------------------------------------------------------------------------------------------------------------
         *   LongClick
@@ -172,7 +207,16 @@ public class FileManagementActivity  extends ActionBarActivity{
 
             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                  net.file_delete(id, file_name, position);
+                    String e_name = "";
+
+                    try {
+                        e_name = URLEncoder.encode(mAdapter.fileDataArr.get(position).name, "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        e_name = mAdapter.fileDataArr.get(position).name;
+                    }
+                    Log.d("Name",e_name);
+                    net.file_delete(id, e_name, position);
                 }
             });
 
@@ -223,7 +267,7 @@ public class FileManagementActivity  extends ActionBarActivity{
 
                 if(fileExtend.equals("mp4")) {
                     //재생시간 얻기
-                    running_time = getRunningTime(path);
+                    running_time = getRunningTime(path,mContext);
 
                     UploadFile temp = new UploadFile(id, path, name, running_time);
 
@@ -266,12 +310,14 @@ public class FileManagementActivity  extends ActionBarActivity{
             mDownloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         }
 
+
         Uri uri = Uri.parse(url);
+        Log.e("Download Uri",uri.toString());
         DownloadManager.Request request = new DownloadManager.Request( uri );
 
         List<String> pathSegmentList = uri.getPathSegments();
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES + "/PackageMovie").mkdirs();  //경로는 입맛에 따라...바꾸시면됩니다.
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES + "/PackageMovie", pathSegmentList.get(pathSegmentList.size()-1) +".mp4");
         mFileName = pathSegmentList.get(pathSegmentList.size()-1);
         request.setTitle("PackageMovie");
         request.setDescription(mFileName+".mp4");
@@ -360,9 +406,17 @@ public class FileManagementActivity  extends ActionBarActivity{
      --------------------------------------------*/
 
     //재생시간 얻기
-    public static String getRunningTime(String path)
+    public static String getRunningTime(String path,Context context)
     {
-        String rt="";
+        MediaPlayer mp = MediaPlayer.create(context, Uri.parse(path));
+        int duration = mp.getDuration();
+        mp.release();
+
+        long time = TimeUnit.MILLISECONDS.toSeconds(duration);
+
+        return Long.toString(time);
+
+       /* String rt="";
         //재생시간 얻기
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(path);
@@ -370,7 +424,7 @@ public class FileManagementActivity  extends ActionBarActivity{
         long timeInmillisec = Long.parseLong( time );
 
         rt = Long.toString(timeInmillisec);
-        return rt;
+        return rt;*/
     }
 
 
@@ -479,7 +533,9 @@ public class FileManagementActivity  extends ActionBarActivity{
             }
 
             ImageView itemThumbnail = (ImageView)convertView.findViewById(R.id.file_list_item_thumbnail);
+            itemThumbnail.setTag(position);
             itemThumbnail.setImageBitmap(fileDataArr.get(position).thumbnail);
+            itemThumbnail.setOnClickListener(btnClickListener);
 
             TextView sceneName = (TextView)convertView.findViewById(R.id.file_list_item_name);
             sceneName.setText(fileDataArr.get(position).name);
@@ -488,8 +544,25 @@ public class FileManagementActivity  extends ActionBarActivity{
             sceneDesciption.setText(fileDataArr.get(position).duration);
 
             Button btn_file_download = (Button)convertView.findViewById(R.id.btn_file_download);
-            btn_file_download.setTag(fileDataArr.get(position).path);
+
+
+            //태그를 이름으로 해놓고 Download 함수에서 isexist 확인한다음에 fasle일때만 name으로 url만들어서 다운로드
+            btn_file_download.setTag(position);
             btn_file_download.setOnClickListener(btnClickListener);
+
+            //아니면 리소스를 확인해서 다운로드 할지 안할지 결정정
+
+            String fileChk = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)+"/PackageMovie/"+fileDataArr.get(position).name+".mp4";
+            File file = new File(fileChk);
+
+
+            if(file.exists()) //파일이 존재할때
+            {
+                btn_file_download.setBackgroundResource(R.drawable.file_exist);
+            }
+            else { //파일이 존재하지 않을때
+                btn_file_download.setBackgroundResource(R.drawable.btn_file_download);
+            }
 
             return convertView;
         }

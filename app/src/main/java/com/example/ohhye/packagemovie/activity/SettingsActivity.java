@@ -1,5 +1,6 @@
 package com.example.ohhye.packagemovie.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -42,6 +43,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     private TextView btn_settings_pwd_change;
     private int wifiUploadOnOff = 0; //OFF
 
+    Context mContext;
     SharedPreferences mPref;
     SharedPreferences.Editor edit;
 
@@ -52,6 +54,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
 
         net = new Network(this);
 
+        mContext = this;
         mPref = getDefaultSharedPreferences(this.getBaseContext());
 
 

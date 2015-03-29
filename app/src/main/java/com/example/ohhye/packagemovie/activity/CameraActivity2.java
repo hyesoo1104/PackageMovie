@@ -94,6 +94,7 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
     private ImageView btn_camera_record;
     private ImageView btn_camera_change;
     private ImageView btn_camera_settings;
+    private ImageView time_view;
 
     private Button btn_camera_settings_grid;
     private Button btn_camera_settings_flash;
@@ -133,8 +134,11 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        mSurfaceView.getLayoutParams().height = dm.heightPixels;
-        //mSurfaceView.getLayoutParams().height;
+        mSurfaceView.getLayoutParams().height = mWindowWidth;
+
+
+        camera_grid.getLayoutParams().width = mWindowWidth;
+        camera_grid.getLayoutParams().height = mWindowWidth;
 
         //Sensor
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -162,6 +166,7 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         btn_camera_settings = (ImageView)findViewById(R.id.btn_camera_settings);
         btn_camera_change = (ImageView)findViewById(R.id.btn_camera_change);
         btn_camera_record = (ImageView)findViewById(R.id.btn_camera_record);
+        time_view = (ImageView)findViewById(R.id.time_view);
 
         //Listener Register
         btn_camera_settings_grid.setOnClickListener(this);
@@ -267,9 +272,37 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         super.onResume();
         if(isRecording==true) {
             // checkReRecord();
-            startRecord();
+            reRecode();
         }
 
+    }
+
+    private void reRecode() {
+        //동영상제목 설정
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("이어서 촬영하시겠습니까?");
+        //alert.setMessage("촬영한 영상의 제목을 입력해주세요");
+
+        alert.setNegativeButton("아니요",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (mMediaObject != null) {
+                            MediaObject.MediaPart part = mMediaObject.getCurrentPart();
+                            if (part != null) {
+                                mMediaObject.removePart(part, true);
+                            }
+                        }
+                        isRecording = false;
+                    }
+                });
+
+        alert.setPositiveButton("네", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                startRecord();
+            }
+        });
+        alert.show();
     }
 
     @Override
@@ -580,6 +613,17 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         settings_menu.startAnimation(aniShow);
         setting_menu_visible = true;
     }
+
+    private void autoFocus() {
+        mMediaRecorder.autoFocus(new Camera.AutoFocusCallback() {
+            public void onAutoFocus(boolean success, Camera camera) {
+                if(success){
+                    //camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+                }
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -587,11 +631,13 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
             case R.id.camera_grid:
                 filterMenuOff();
                 settingMenuOff();
+                autoFocus();
                 break;
 
             case R.id.camera_preview:
                 filterMenuOff();
                 settingMenuOff();
+                autoFocus();
                 break;
 
             case R.id.btn_camera_record:
@@ -603,7 +649,7 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
                     filterMenuOff();
                     settingMenuOff();
                     if(timer_time != 0)
-                        startTimer();
+                        startTimer(timer_time);
                     else
                         startRecord();
                 }
@@ -715,9 +761,11 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
         }
     }
 
-    public void startTimer()
+    public void startTimer(final int time)
     {
+        setTimeImage(time);
         mTimer = new Timer();
+        //뷰
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -726,13 +774,71 @@ public class CameraActivity2 extends BaseActivity implements OnErrorListener, On
                         //촬영시작
                         Log.d("Timer","Complete!!");
                         stopTimer();
-                        startRecord();
+                        if(time == 1) {
+                            time_view.setVisibility(View.GONE);
+                            startRecord();
+                        }
+                        else {
+                            int t = time-1;
+                            startTimer(t);
+                        }
                     }
                 });
             }
-        },timer_time*1000);
+        },1000);
         Log.d("Timer","Start!!!");
+
+
     }
+
+    public void setTimeImage(int time)
+    {
+        time_view.setVisibility(View.VISIBLE);
+        switch (time)
+        {
+            case 1:
+                time_view.setBackgroundResource(R.drawable.timer_1);
+                break;
+
+            case 2:
+                time_view.setBackgroundResource(R.drawable.timer_2);
+                break;
+
+            case 3:
+                time_view.setBackgroundResource(R.drawable.timer_3);
+                break;
+
+            case 4:
+                time_view.setBackgroundResource(R.drawable.timer_4);
+                break;
+
+            case 5:
+                time_view.setBackgroundResource(R.drawable.timer_5);
+                break;
+
+            case 6:
+                time_view.setBackgroundResource(R.drawable.timer_6);
+                break;
+
+            case 7:
+                time_view.setBackgroundResource(R.drawable.timer_7);
+                break;
+
+            case 8:
+                time_view.setBackgroundResource(R.drawable.timer_8);
+                break;
+
+            case 9:
+                time_view.setBackgroundResource(R.drawable.timer_9);
+                break;
+
+            case 10:
+                time_view.setBackgroundResource(R.drawable.timer_10);
+                break;
+        }
+
+    }
+
 
     public void stopTimer()
     {

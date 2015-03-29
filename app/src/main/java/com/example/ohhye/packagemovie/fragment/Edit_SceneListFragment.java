@@ -118,7 +118,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
 
 
         //데이터 리셋
-        clearArr();
+        clearSceneList();
 
 
         //리스트 아이템 추가 더미
@@ -296,7 +296,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
     /*---------------------------------------------------------------------------------------------------------------
       *  Data Array Clear
     ---------------------------------------------------------------------------------------------------------------*/
-    public static void clearArr(){
+    public static void clearSceneList(){
         dataArr.clear();
     }
 
@@ -396,6 +396,8 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
             {
                 convertView.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }
+
+
 
 
             return convertView;

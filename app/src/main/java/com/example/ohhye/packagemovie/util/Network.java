@@ -103,13 +103,15 @@ public class Network{
     ---------------------------------------------------------------------------------------------------*/
     public void login(final String Groupname, final String Password){
         uri = server_ip+"login";
+        /*final ProgressDialog dialog = ProgressDialog.show(context, "",
+                "Login...", true);*/
         StringRequest postRequest = new StringRequest(Request.Method.POST, uri, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 // response
                 result = parser.result_parser(response);
                 Log.d("result", result);
-
+               // dialog.dismiss();
 
                 if(result.equals("200")) {
                     Log.d("Network","GroupName  :  "+Groupname+"     Password  :  "+Password);
@@ -223,7 +225,7 @@ public class Network{
                             running_time = item.get("running_time").toString();
 
                             getSceneListThumbnail(video_name,video_path,streaming_path,running_time,thumbnail_path);
-                            Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");
+                           // Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");
 
                         }
 
@@ -264,19 +266,21 @@ public class Network{
 
         uri = "http://210.118.74.131:8080/PackageMovie/viewImage/"+LoginActivity.getID()+"/"+e_name;
 
+
+
         Log.d("getThumbnail",""+uri);
 
         ImageRequest imageRequest = new ImageRequest(uri, new Response.Listener<Bitmap>(){
             @Override
             public void onResponse(Bitmap response) {
-                Log.d("getThumbnail Response","Response!!!");
+                //Log.d("getThumbnail Response","Response!!!");
                 Edit_SceneListFragment.addItem(video_path, response, video_name, convertTime(running_time));
             }
         }, /*maxWidth*/0, /*maxHeight*/ 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Bitmap defalut_img = BitmapFactory.decodeResource( context.getResources(),R.drawable.default_thumbnail);
-                FileManagementActivity.addItem(video_path,defalut_img, video_name, convertTime(running_time),streaming_path);
+                Edit_SceneListFragment.addItem(video_path, defalut_img, video_name, convertTime(running_time));
             }
         });
         VolleySingleton.getInstance(context).getRequestQueue().add(imageRequest);
@@ -332,7 +336,7 @@ public class Network{
                             running_time = item.get("running_time").toString();
 
                             getFileListThumbnail(video_name,video_path,streaming_path,running_time,thumbnail_path);
-                            Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");
+                           // Log.d("ListItemParsing",video_name+"///"+video_path+"///"+running_time+"///");
 
                         }
 
@@ -373,7 +377,7 @@ public class Network{
 
         uri = "http://210.118.74.131:8080/PackageMovie/viewImage/"+LoginActivity.getID()+"/"+e_name;
 
-        Log.d("getThumbnail",""+uri);
+       // Log.d("getThumbnail",""+uri);
 
         ImageRequest imageRequest = new ImageRequest(uri, new Response.Listener<Bitmap>(){
             @Override
@@ -405,8 +409,10 @@ public class Network{
         }
         convert_time = minutes+":"+seconds;
 
-        Log.d("Running Time",convert_time);
+       // Log.d("Running Time",convert_time);
         return convert_time;
+
+
     }
 
 

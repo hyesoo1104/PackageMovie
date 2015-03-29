@@ -1,6 +1,8 @@
 package com.example.ohhye.packagemovie.service;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.ohhye.packagemovie.activity.FileManagementActivity;
 import com.example.ohhye.packagemovie.util.Parser;
 import com.example.ohhye.packagemovie.vo.UploadFile;
 
@@ -25,6 +28,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -100,7 +104,7 @@ public class UploadBackgroundService extends Service {
         Parser parser = new Parser();
 
 
-       // public static String id ="";
+        // public static String id ="";
 
 
         String response ="";
@@ -167,15 +171,21 @@ public class UploadBackgroundService extends Service {
                                 String result = parser.result_parser(response);
                                 Log.d("result", response);
                                 if (result.equals("200")) {
-                                    Log.d("result", "file list refresh");
-                                   // FileManagementActivity.refreshList();
+                                    ActivityManager am = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+                                    List<ActivityManager.RunningTaskInfo> Info = am.getRunningTasks(1);
+                                    ComponentName topActivity = Info.get(0).topActivity;
+                                    String topactivityname = topActivity.getClassName();
+                                    Log.d("Top Activity",topActivity.toString());
+                                    if(topactivityname.equals("com.example.ohhye.packagemovie.activity.FileManagementActivity")){
+                                        Log.d("result", "file list refresh");
+                                        FileManagementActivity.refreshList();
+                                    }
                                 }
                             }
                         } catch (Exception e) {
-                            getUploadQueue().put(file_info);
+                           getUploadQueue().put(file_info);
                             e.printStackTrace();
                         }
-
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
