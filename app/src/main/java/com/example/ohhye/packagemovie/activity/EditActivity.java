@@ -1,6 +1,5 @@
 package com.example.ohhye.packagemovie.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,7 +15,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.ohhye.packagemovie.R;
@@ -32,17 +34,30 @@ import com.example.ohhye.packagemovie.fragment.Edit_BgmFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_SceneListFragment;
 import com.example.ohhye.packagemovie.fragment.Edit_TransFrgment;
 import com.example.ohhye.packagemovie.singletone_object.Snapmovie;
+import com.example.ohhye.packagemovie.ui.VideoView;
 import com.example.ohhye.packagemovie.util.Network;
+import com.yixia.camera.FFMpegUtils;
+import com.yixia.camera.MediaRecorder;
+import com.yixia.camera.MediaRecorderFilter;
+import com.yixia.camera.VCamera;
+import com.yixia.camera.model.MediaObject;
+import com.yixia.camera.util.DeviceUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+
+
 
 /**
  * Created by ohhye on 2015-01-26.
  */
-public class EditActivity  extends Activity implements View.OnClickListener {
+public class EditActivity  extends BaseActivity implements View.OnClickListener,MediaPlayer.OnPreparedListener {
 
     private final int SELECT_MOVIE = 2;
 
@@ -55,8 +70,21 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     Button btn_edit_bgm;
     Button btn_edit_complete;
 
+    private MediaRecorder mMediaRecorder;
+    private MediaObject mMediaObject;
+    private VideoView mVideoView;
+    private MediaObject.MediaPart mMediaPart;
+    private String mVideoPath;
+    private int mWindowWidth;
+    private int count;
+    private RelativeLayout mRelative;
+
+
+
+
     //Fragment
     private int FRAGMENT_FLAG = 1; //1 : 리스트, 2 : 전환효과, 3 : BGM
+    private ArrayList<String> arrList;
 
 
     @Override
@@ -91,6 +119,9 @@ public class EditActivity  extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main_edit);
 
         Snapmovie.getSnapmovie().resetSnapmovie();
@@ -112,6 +143,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
         btn_edit_complete.setOnClickListener(this);
 
 
+        mVideoView = (VideoView) findViewById(R.id.record_preview);
+        mVideoView.setOnPreparedListener(this);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -136,7 +169,145 @@ public class EditActivity  extends Activity implements View.OnClickListener {
 
         Edit_BgmFragment.clearBGMList();
         Edit_BgmFragment.addDefaultBGM(this);
+
+
+        mMediaRecorder = new MediaRecorderFilter();
+        String key = String.valueOf(System.currentTimeMillis());
+        mMediaObject = mMediaRecorder.setOutputDirectory(key, VCamera.getVideoCachePath() + key);
+
+        mRelative = (RelativeLayout) findViewById(R.id.record_layout);
+        //mRelative.setVisibility(View.GONE);
+        //mVideoView.setVisibility(View.GONE);
+        mWindowWidth = DeviceUtils.getScreenWidth(this);
+
     }
+
+    private void startEncoding() {
+        if(Snapmovie.getSnapmovie().getListCount() < 1) {
+            Toast.makeText(getApplicationContext(), "파일이 없습니다", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+            saveObjectFile saveAsyc = new saveObjectFile();
+            saveAsyc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+
+        count = 0;
+        JSONObject obj = (JSONObject) Snapmovie.getSnapmovie().getSceneList().get(count);
+
+        String type = "";
+        try {
+            type = obj.getString("type");
+            mVideoPath = obj.getString("path");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("toString", obj.toString());
+        Log.d("type", type);
+        Log.d("path", mVideoPath);
+
+        mVideoView.setVideoPath(mVideoPath);
+        mVideoView.start();
+
+        int duration  = mVideoView.getDuration();
+        Log.d("duration", ""+duration);
+
+
+        mMediaPart = mMediaObject.buildMediaPart(mVideoPath, duration, MediaObject.MEDIA_PART_TYPE_IMPORT_VIDEO);
+
+    }
+
+    //Object File 저장반복 쓰레드
+    public class saveObjectFile extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d("count : ", ""+count);
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Log.d("saveObjectFile", ""+count);
+            boolean result = FFMpegUtils.importVideo(mMediaPart, mWindowWidth, mVideoView.getVideoWidth(), mVideoView.getVideoHeight(), 0, 0, true);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            saveMediaObject(mMediaObject);
+            super.onPostExecute(result);
+            Log.d("results", ""+result);
+            if(count == (Snapmovie.getSnapmovie().getListCount()-1)) {
+                Log.d("startEncoding", ""+count);
+                startEncodingAsync startAsync = new startEncodingAsync();
+                startAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+            else {
+                Log.d("saveObject", ""+count);
+                count++;
+                try {
+                    mVideoPath = ((JSONObject)Snapmovie.getSnapmovie().getSceneList().get(count)).getString("path");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                int duration = mMediaObject.getMaxDuration() - mMediaObject.getDuration();
+                if (duration > mVideoView.getDuration())
+                    duration = mVideoView.getDuration();
+                mMediaPart = mMediaObject.buildMediaPart(mVideoPath, duration, MediaObject.MEDIA_PART_TYPE_IMPORT_VIDEO);
+
+                saveObjectFile saveObjectAsync = new saveObjectFile();
+                saveObjectAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+
+    }
+
+    // 인코딩 쓰레드
+    public class startEncodingAsync extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            Log.d("doinBackground", "");
+            boolean result = FFMpegUtils.videoTranscoding(mMediaObject, mMediaObject.getOutputVideoPath(), mWindowWidth, false);
+            if (result && mMediaRecorder != null) {
+                mMediaRecorder.release();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            if (result) {
+                if (saveMediaObject(mMediaObject)) { }
+                else
+                    Toast.makeText(getApplicationContext(), R.string.record_camera_save_faild, Toast.LENGTH_SHORT).show();
+            }
+            else
+                Toast.makeText(getApplicationContext(), R.string.record_video_transcoding_faild, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     @Override
     public void finish() {
@@ -184,6 +355,7 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 fr = new Edit_SceneListFragment();
                 //net.load_scene_list();
                 setFragment(fr);
+
                 break;
 
             case R.id.btn_edit_text:
@@ -215,6 +387,8 @@ public class EditActivity  extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btn_edit_complete:
+                Edit_SceneListFragment.setSnapmovieList();
+                startEncoding();
                 Log.e("SnapMovie Count", Snapmovie.getSnapmovie().getListCount()+"");
 
                 Log.d("SnapMovie SceneList", Snapmovie.getSnapmovie().getSceneList().toString());

@@ -9,6 +9,17 @@
     android:gravity="center"
     android:layout_gravity="center">
 
+    <RelativeLayout
+        android:id="@+id/record_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" >
+
+        <com.example.ohhye.packagemovie.ui.VideoView
+            android:id="@+id/record_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
 
     <com.ssomai.android.scalablelayout.ScalableLayout
         android:layout_width="fill_parent"
@@ -125,7 +136,6 @@
         android:layout_height="match_parent"
         tools:layout="@layout/activity_main_edit"
      />
-
 
 
 </LinearLayout>

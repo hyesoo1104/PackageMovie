@@ -61,7 +61,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = activity.getApplicationContext();
-        setSnapmovieList();
+
     }
 
 
@@ -73,7 +73,7 @@ public class Edit_SceneListFragment extends Fragment implements AbsListView.OnSc
     }
 
 
-    public void setSnapmovieList(){
+    public static void setSnapmovieList(){
         Snapmovie.getSnapmovie().clearSceneListData();
         for(int i = 0; i<dataArr.size(); i++){
             try {
